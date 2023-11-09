@@ -1,0 +1,60 @@
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../img/bkgrdW.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#formContainer {
+    background-color: rgba(0, 0, 0, 0.35);
+    border-radius: 80px;
+}
+
+#loginForm {
+    padding: 65px;
+    text-align: center;
+}
+
+#formTitle {
+    background-color: #ffd013; /* Fond du cadre du titre en jaune */
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    font-size: 1.5em; /* Taille de la police pour le titre */
+    color: #333; /* Couleur du texte du titre */
+  }
+
+label {
+    display: block;
+    margin-bottom: 15px;
+    color: #fff
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background-color: rgb(233, 212, 250);
+}
+
+button {
+    background-color: #ffd013;
+    color: black;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+#navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
