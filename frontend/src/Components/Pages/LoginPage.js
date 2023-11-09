@@ -10,17 +10,21 @@ function renderLoginForm() {
     const main = document.querySelector('main');
 
     main.innerHTML = `
-    <div id="formContainer">
-      <form id="loginForm">
-        <div id="formTitle">Connectez-vous !</div>
+    <div id="formContainer" class="container">
+      <form id="loginForm" class="p-5 text-center text-light">
+        <div id="formTitle" class="bg-warning p-2 rounded mb-4 text-dark">Connectez-vous !</div>
 
-        <label for="username">Pseudo :</label>
-        <input type="text" id="username" name="username" required>
+        <div class="mb-2">
+          <label for="username" class="form-label">Pseudo :</label>
+          <input type="text"  id="username" name="username" required>
+        </div>
 
-        <label for="password">Mot de passe :</label>
-        <input type="password" id="password" name="password" required>
+        <div class="mb-3">
+          <label for="password" class="form-label">Mot de passe :</label>
+          <input type="password"  id="password" name="password" required>
+        </div>
 
-        <button type="submit">Se connecter</button>
+        <button type="submit" class="btn btn-warning mt-3">Se connecter</button>
       </form>
     </div>
     `;
