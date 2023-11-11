@@ -12,8 +12,7 @@ const Navbar = () => {
   const navbarWrapper = document.querySelector('#navbarWrapper');
   const navbar = `
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Add your brand here</a>
+  <div class="container-fluid">          <a class="navbar-brand" href="#">Add your brand here</a>
           <button
             class="navbar-toggler"
             type="button"
@@ -35,7 +34,10 @@ const Navbar = () => {
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#" data-uri="/new">New Page</a>
-              </li>                        
+              </li>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" data-uri="/score">Score Page</a>                        
             </ul>
           </div>
         </div>
