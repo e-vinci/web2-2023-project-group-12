@@ -10,7 +10,7 @@ function renderLoginForm() {
     const main = document.querySelector('main');
 
     main.innerHTML = `
-    <div class="container bg-black p-5 rounded-5 bg-opacity-50 col-3 mt-5">
+    <div class="container bg-black p-5 rounded-5 bg-opacity-50 col-3">
       <form class="text-center text-light">
         <div class="bg-warning p-2 rounded mb-3 text-dark fs-3">Connectez-vous !</div>
 

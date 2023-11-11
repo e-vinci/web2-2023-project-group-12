@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { Navbar as BootstrapNavbar } from 'bootstrap';
+import logo from '../../img/logo.svg';
 
 /**
  * Render the Navbar which is styled by using Bootstrap
@@ -13,7 +14,7 @@ const Navbar = () => {
   const navbar = `
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Add your brand here</a>
+          <a class="navbar-brand" href="#" ><img data-uri="/" class="logo col-10" src="${logo}" alt="SPACE LOVER"></a>
           <button
             class="navbar-toggler"
             type="button"
@@ -25,28 +26,23 @@ const Navbar = () => {
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <div id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mt-4 mb-lg-0 w-100 ">
               
-              <li class="nav-item">
-                <a class="nav-link" href="#" data-uri="/game">Game</a>
-              </li>
-              
-              <li class="nav-item">
-                <a class="nav-link" href="#" data-uri="/login">Se connecter</a>
-              </li>
-              
-              <li class="nav-item">
-                <a class="nav-link" href="#" data-uri="/register">S'inscrire</a> 
-              </li>
-
-              
-              <li class="nav-item">
-                <a class="nav-link" href="#" data-uri="/score">Score Page</a> 
+              <li class="nav-item btn btn-warning mx-2">
+                <a class="nav-link text-black" href="#" data-uri="/score">Score Page</a> 
               </li>                      
 
-              <li class="nav-item">
-                <a class="nav-link" href="#" data-uri="/rank">Classement</a>
+              <li class="nav-item btn btn-warning mx-2">
+                <a class="nav-link text-black" href="#" data-uri="/rank">Classement</a>
+              </li>
+              
+              <li class="nav-item btn btn-warning mx-2">
+                <a class="nav-link text-black" href="#" data-uri="/login">Se connecter</a>
+              </li>
+              
+              <li class="nav-item btn btn-warning mx-2">
+                <a class="nav-link text-black" href="#" data-uri="/register">S'inscrire</a> 
               </li>
               
             </ul>

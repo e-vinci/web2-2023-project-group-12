@@ -9,7 +9,7 @@ function renderScoreForm() {
 const main = document.querySelector('main');
 
 main.innerHTML = `
-<div class="container mt-5 col-3 bg-black p-5 rounded-5 bg-opacity-50 text-center justify-content-center">
+<div class="container col-3 bg-black p-5 rounded-5 bg-opacity-50 text-center justify-content-center">
     <div class="bg-warning p-2 rounded mb-4 fs-3 ">Scores</div>
     <div>
         <div>
