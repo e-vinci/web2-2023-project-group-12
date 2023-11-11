@@ -1,6 +1,24 @@
+import { clearPage } from '../../utils/render';
+import robotsHomepage from '../../img/robots-homepage.png';
+
 const HomePage = () => {
-  const main = document.querySelector('main');
-  main.innerHTML = 'Deal with the content of your HomePage';
+  clearPage();
+  renderHomePage();
 };
+
+function renderHomePage() {
+  const main = document.querySelector('main');
+  const homepage = `
+  <div class="d-flex align-items-center justify-content-center h-100">
+      <button type="button" class="btn btn-warning position-absolute start-45 py-4 w-25 fs-3">
+        LANCER LA PARTIE
+      </button>
+  
+    <div class="d-flex align-items-end h-100">
+        <img class="col-12" src="${robotsHomepage}" alt="robots">
+    </div>
+  </div>`;
+  main.innerHTML = homepage;
+}
 
 export default HomePage;
