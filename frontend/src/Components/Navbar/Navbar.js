@@ -12,20 +12,9 @@ import logo from '../../img/logo.svg';
 const Navbar = () => {
   const navbarWrapper = document.querySelector('#navbarWrapper');
   const navbar = `
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand navbar-light">
         <div class="container-fluid">
           <a class="navbar-brand" href="#" ><img data-uri="/" class="logo col-10" src="${logo}" alt="SPACE LOVER"></a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
           <div id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mt-4 mb-lg-0 w-100 ">
               
