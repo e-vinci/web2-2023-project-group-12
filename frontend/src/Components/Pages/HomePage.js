@@ -9,7 +9,8 @@ const HomePage = () => {
 function renderHomePage() {
   const main = document.querySelector('main');
   const homepage = `
-  <div class="d-flex align-items-center justify-content-center h-100">
+  <div class="d-flex flex-column align-items-center justify-content-center h-100">
+    <h3 class="text-lavender position-absolute bottom-50 start-50">Aimez-vous 💜</h3>
       <button type="button" class="btn btn-warning position-absolute start-45 py-4 w-25 fs-3">
         LANCER LA PARTIE
       </button>

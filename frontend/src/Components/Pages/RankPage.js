@@ -18,20 +18,20 @@ function renderRankPage() {
             </div>
             <div>
                 <div class="d-flex justify-content-between">
-                    <p class="bg-white col-sm-7 py-1 rounded-3">ChatGPT</p>
-                    <p class="bg-white col-4">101</p>
+                    <p class="bg-lavender col-sm-7 py-1 rounded-3">ChatGPT</p>
+                    <p class="bg-lavender col-4">101</p>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <p class="bg-white col-7 py-1 rounded-3">Youssef</p>
-                    <p class="bg-white col-4">100</p>
+                    <p class="bg-lavender col-7 py-1 rounded-3">Youssef</p>
+                    <p class="bg-lavender col-4">100</p>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <p class="bg-white col-7 py-1 rounded-3">Le daron à nour</p>
-                    <p class="bg-white col-4">76</p>
+                    <p class="bg-lavender col-7 py-1 rounded-3">Le daron à nour</p>
+                    <p class="bg-lavender col-4">76</p>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <p class="bg-white col-7 py-1 rounded-3">Nour</p>
-                    <p class="bg-white col-4">2</p>
+                    <p class="bg-lavender col-7 py-1 rounded-3">Nour</p>
+                    <p class="bg-lavender col-4">2</p>
             </div>
             </div>
         </div>
