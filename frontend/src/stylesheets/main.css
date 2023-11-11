@@ -1,0 +1,35 @@
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../img/homepage-bkgrd.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#formContainer {
+    background-color: rgba(0, 0, 0, 0.35);
+    border-radius: 80px;
+
+}
+
+#formTitle {
+    font-size: 1.5em; 
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background-color: rgb(233, 212, 250);
+}
+
+#navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
