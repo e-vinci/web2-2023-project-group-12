@@ -19,7 +19,7 @@ const Navbar = () => {
             <ul class="navbar-nav me-auto mt-4 mb-lg-0 w-100 ">
               
               <li class="nav-item btn btn-warning mx-2">
-                <a class="nav-link text-black" href="#" data-uri="/score">Score Page</a> 
+                <a class="nav-link text-black" href="#" data-uri="/score">Scores</a> 
               </li>                      
 
               <li class="nav-item btn btn-warning mx-2">
