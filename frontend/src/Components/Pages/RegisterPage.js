@@ -10,9 +10,9 @@ function renderRegisterForm() {
     const main = document.querySelector('main');
 
     main.innerHTML = `
-    <div class="container bg-black pt-5 px-5 pb-4 rounded-5 bg-opacity-50 col-3">
+    <div class="container bg-black px-5 py-4 rounded-5 bg-opacity-50 col-3">
       <form class="text-center text-light">
-        <div class="bg-warning p-2 rounded mb-3 text-dark fs-3">S'inscrire</div>
+        <div class="bg-warning p-2 rounded mt-2 mb-3 text-dark fs-3">S'inscrire</div>
 
         <div class="d-flex flex-column form-group">
           <label for="username" class="form-label">Pseudo :</label>

@@ -9,8 +9,8 @@ function renderRankPage() {
   const main = document.querySelector('main');
 
   main.innerHTML = `
-    <div class="container col-3 bg-black p-5 rounded-5 bg-opacity-50 text-center justify-content-center">
-        <div class="bg-warning p-2 rounded mb-4 fs-3 ">Classement</div>
+    <div class="container col-3 bg-black px-5 pt-4 pb-5 rounded-5 bg-opacity-50 text-center justify-content-center">
+        <div class="bg-warning p-2 rounded mt-2 mb-4 fs-3 ">Classement</div>
         <div>
             <div class="d-flex text-white justify-content-around">
                 <p class="col-7">Pseudo</p>
