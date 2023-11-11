@@ -3,3 +3,8 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
 }
+
+/* position of the "LANCER LA PARTIE" btn */
+.start-45 {
+    left: 45%;
+}
