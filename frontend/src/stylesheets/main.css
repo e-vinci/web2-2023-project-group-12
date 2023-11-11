@@ -3,7 +3,6 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
 }
-
 input {
     width: 100%;
     padding: 8px;
@@ -13,9 +12,7 @@ input {
     background-color: rgb(233, 212, 250);
 }
 
-
 /* position of the "LANCER LA PARTIE" btn */
 .start-45 {
     left: 45%;
 }
-
