@@ -35,7 +35,10 @@ const Navbar = () => {
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#" data-uri="/new">New Page</a>
-              </li>                        
+              </li>
+              <li>
+                <a class="nav-link" href="#" data-uri="/rank">Classement</a>
+              </li>                       
             </ul>
           </div>
         </div>
