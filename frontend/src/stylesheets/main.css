@@ -1,11 +1,6 @@
 body {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-image: url(../img/homepage-bkgrd.png);
+    background-image: url(../img/background.png);
     background-size: cover;
-    background-position: center;
     background-repeat: no-repeat;
 }
 
@@ -28,8 +23,8 @@ input {
     background-color: rgb(233, 212, 250);
 }
 
-#navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
+
+/* position of the "LANCER LA PARTIE" btn */
+.start-45 {
+    left: 45%;
 }
