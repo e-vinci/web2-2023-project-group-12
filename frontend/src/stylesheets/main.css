@@ -9,6 +9,11 @@ body {
     left: 45%;
 }
 
+/* position of the rules icon */
+.end-1 {
+    right: 1%;
+}
+
 /* position of "Aimez-vous" */
 .text-lavender {
     color: #e9d4fa;

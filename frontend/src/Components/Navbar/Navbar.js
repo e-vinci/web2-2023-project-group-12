@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-import { Navbar as BootstrapNavbar } from 'bootstrap';
 import logo from '../../img/logo.svg';
+import rankIcon from '../../img/rank-icon.svg';
+import scoreIcon from '../../img/score-icon.svg';
 
 /**
  * Render the Navbar which is styled by using Bootstrap
@@ -15,25 +16,24 @@ const Navbar = () => {
     <nav class="navbar navbar-expand navbar-light">
         <div class="container-fluid">
           <a class="navbar-brand" href="#" ><img data-uri="/" class="logo col-10" src="${logo}" alt="SPACE LOVER"></a>
-          <div id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mt-4 mb-lg-0 w-100 ">
+          <div>
+            <ul class="navbar-nav justify-content-end">
               
-              <li class="nav-item btn btn-warning mx-2">
-                <a class="nav-link text-black" href="#" data-uri="/score">Scores</a> 
-              </li>                      
+              <li class="nav-item col-2">
+                <a class="nav-link" href="#" ><img data-uri="/score" class="mt-4" src="${scoreIcon}" alt="Scores"></a>
+              </li>
 
-              <li class="nav-item btn btn-warning mx-2">
-                <a class="nav-link text-black" href="#" data-uri="/rank">Classement</a>
+              <li class="nav-item col-2">
+                <a class="nav-link" href="#" ><img data-uri="/rank" class="w-100 mt-4" src="${rankIcon}" alt="Classement"></a>
               </li>
               
-              <li class="nav-item btn btn-warning mx-2">
+              <li class="nav-item btn btn-warning mx-2 my-5" data-uri="/login">
                 <a class="nav-link text-black" href="#" data-uri="/login">Se connecter</a>
               </li>
               
-              <li class="nav-item btn btn-warning mx-2">
+              <li class="nav-item btn btn-warning mx-2 my-5" data-uri="/register">
                 <a class="nav-link text-black" href="#" data-uri="/register">S'inscrire</a> 
               </li>
-              
             </ul>
           </div>
         </div>
