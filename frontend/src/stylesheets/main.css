@@ -1,6 +1,6 @@
 @font-face {
-    font-family: 'Pugnax';
-    src: url('../fonts/PUGNAX-Bold.woff') format('woff');
+    font-family: 'Bauhaus';
+    src: url('../fonts/BauhausRegular.woff');
     font-weight: normal;
     font-style: normal;
 }
@@ -8,7 +8,7 @@ body {
     background-image: url(../img/background.png);
     background-size: cover;
     background-repeat: no-repeat;
-    font-family: 'Pugnax';
+    font-family: 'Bauhaus';
 
 }
 
