@@ -32,21 +32,21 @@ function renderHomePage() {
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h3 class="modal-title" id="rulesLabel">Règles du jeu</h3>
+            <h2 class="modal-title fw-bold" id="rulesLabel">Règles du jeu</h2>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <h5> <u>Description du jeu :</u></h5>
-            <p> Space Lover est un jeu de "combat" 1v1 en 2D qui plonge les joueurs dans un univers spatial et futuriste.
+            <h5><b><u>Description du jeu</u> :</b></h5>
+            <p class="fs-5"> Space Lover est un jeu de "combat" 1v1 en 2D qui plonge les joueurs dans un univers spatial et futuriste.
                 Il se démarque des jeux de combat traditionnels.<br><br>
                 Au début de la partie, la jauge d'affection des joueurs est totalement vide.<br>
                 Les attaques consistent en câlins et bisous afin de remplir la jauge d'affection de l'adversaire.<br>
                 Enfin, le joueur perd la partie lorsque sa propre jauge atteint son maximum. 
             </p>
-            <h5><u>Commandes :</u></h5>
+            <h5><b><u>Commandes</u> :</b></h5>
             <div class="d-flex text-center pt-2">
               <div> 
-                <p> <b> Joueur 1</b></p>
+                <p> <b> JOUEUR 1</b></p>
                 <img class="col-12 pt-0 p-4" src="${player1Controls}" 
                   alt="Le joueur 1 jouera avec les flèches directionnelles gauche, droite et haut 
                     afin de respectivement se déplacer à gauche, droite et sauter. 
@@ -54,7 +54,7 @@ function renderHomePage() {
               </div>
               
               <div> 
-                <p> <b> Joueur 2</b></p>
+                <p> <b> JOUEUR 2</b></p>
                 <img class="col-12 pt-0 p-4" src="${player2Controls}" 
                   alt="Le joueur 2 jouera avec les touches Q (gauche), D (droite) et Z (saut).
                     Il lancera ses attaques avec B (bisous) et V (câlin)">

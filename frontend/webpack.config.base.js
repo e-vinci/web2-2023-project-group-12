@@ -54,6 +54,27 @@ module.exports = {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
+      // loader for fonts
+      {
+        test: /\.woff2$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 8192, // Limite de la taille du fichier en octets (8 Ko dans cet exemple)
+            name: 'fonts/[name].[ext]', // Nom du fichier de sortie et emplacement
+          },
+        },
+      },
+      {
+        test: /\.woff$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 8192, // Limite de la taille du fichier en octets (8 Ko dans cet exemple)
+            name: 'fonts/[name].[ext]', // Nom du fichier de sortie et emplacement
+          },
+        },
+      },
 
       // emits a separate file and exports the URLs => works for import in JS and url in CSS
       // default condition: a file with size less than 8kb will be treated as a inline
@@ -121,3 +142,4 @@ module.exports = {
     }),
   ],
 };
+
