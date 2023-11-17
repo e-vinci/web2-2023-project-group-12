@@ -17,7 +17,7 @@ const Footer = () => {
       const originalAdvice = data.slip.advice;
       const translatedAdvice = await translateToFrench(originalAdvice)
     footer.classList.add('text-center', 'pt-2', 'bg-warning', 'fixed-bottom');
-    footer.innerHTML = `<h6>${translatedAdvice}</h6>`;
+    footer.innerHTML = `<h6><u>Conseil</u> : ${translatedAdvice}</h6>`;
   }) 
     .catch((error) => {
       console.log(error)
