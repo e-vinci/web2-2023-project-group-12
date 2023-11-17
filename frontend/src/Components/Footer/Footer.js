@@ -4,7 +4,7 @@ const Footer = () => {
   getRandomQuote();
 }
 
-// api for translating to french
+// api to translate to french
 async function translateToFrench(text) {
   const response = await fetch(
     `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|fr`
@@ -13,7 +13,7 @@ async function translateToFrench(text) {
   return data.responseData.translatedText;
 }
 
-// api for getting a random quote
+// api to get a random quote
 function getRandomQuote() {
   fetch('https://api.quotable.io/random')
   .then(response => response.json())
