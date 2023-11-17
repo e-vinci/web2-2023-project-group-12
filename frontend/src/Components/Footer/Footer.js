@@ -2,7 +2,7 @@ const footer = document.querySelector('footer');
 const Footer = () => {
   footer.classList.add('text-center', 'pt-2', 'bg-warning', 'fixed-bottom');
   getRandomQuote();
-}
+};
 
 // api to translate to french
 async function translateToFrench(text) {
@@ -11,7 +11,7 @@ async function translateToFrench(text) {
   );
   const data = await response.json();
   return data.responseData.translatedText;
-}
+};
 
 // api to get a random quote
 function getRandomQuote() {
