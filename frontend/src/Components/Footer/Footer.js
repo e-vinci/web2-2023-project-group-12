@@ -1,26 +1,32 @@
+const footer = document.querySelector('footer');
 const Footer = () => {
-  const footer = document.querySelector('footer');
+  footer.classList.add('text-center', 'pt-2', 'bg-warning', 'fixed-bottom');
+  getRandomQuote();
+}
 
-  // api for translating advice
-  async function translateToFrench(text) {
-    const response = await fetch(
-      `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|fr`
-    );
-    const data = await response.json();
-    return data.responseData.translatedText;
-  }
+// api for translating to french
+async function translateToFrench(text) {
+  const response = await fetch(
+    `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|fr`
+  );
+  const data = await response.json();
+  return data.responseData.translatedText;
+}
 
-  // api giving random advices
-  fetch('https://api.adviceslip.com/advice')
-    .then((response) => response.json())
-    .then(async (data) => {
-      const originalAdvice = data.slip.advice;
-      const translatedAdvice = await translateToFrench(originalAdvice)
-    footer.classList.add('text-center', 'pt-2', 'bg-warning', 'fixed-bottom');
-    footer.innerHTML = `<h6><u>Conseil</u> : ${translatedAdvice}</h6>`;
-  }) 
-    .catch((error) => {
-      console.log(error)
+// api for getting a random quote
+function getRandomQuote() {
+  fetch('https://api.quotable.io/random')
+  .then(response => response.json())
+  .then( async data => {
+    if (data.content.length >= 160) getRandomQuote();
+    const quote = await translateToFrench(data.content);
+    const {author} = data;
+    // Utilisation de la citation et de l'auteur
+    footer.innerHTML = `<h6><i>« ${quote} »</i><b> - ${author} </b></h6>`;
+  })
+  .catch( () => {
+    footer.innerHTML = `<h6><i>« L'amitié est un esprit en deux corps. »</i><b> - Mencius </b></h6>`;
   });
 };
+
 export default Footer;
