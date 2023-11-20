@@ -1,7 +1,20 @@
+const footer = document.querySelector('footer');
 const Footer = () => {
-  const footer = document.querySelector('footer');
   footer.classList.add('text-center', 'pt-2', 'bg-warning', 'fixed-bottom');
-  footer.innerHTML = `<h6>Mangez 5 fruits et légumes par jour !</h6>`;
+  getRandomAdvice();
+};
+
+// api to get a random advice
+function getRandomAdvice() {
+  fetch('https://api.adviceslip.com/advice')
+    .then((response) => response.json())
+    .then((data) => {
+      const {advice} = data.slip;
+    footer.innerHTML = `<h6><u> Advice</u>: <i> ${advice} </i></h6>`;
+  })
+  .catch( () => {
+    footer.innerHTML = `<h6><u> Advice</u>: <i> Happiness is a journey, not a destination. </i></h6>`;
+  });
 };
 
 export default Footer;
