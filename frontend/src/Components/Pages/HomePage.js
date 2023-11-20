@@ -12,6 +12,8 @@ const HomePage = () => {
   popUpRules();
 };
 
+
+
 function renderHomePage() {
   const main = document.querySelector('main');
   const homepage = `
