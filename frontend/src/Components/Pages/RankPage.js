@@ -10,11 +10,11 @@ function renderRankPage() {
 
   main.innerHTML = `
     <div class="container col-3 bg-black px-5 pt-4 pb-5 rounded-5 bg-opacity-50 text-center justify-content-center">
-        <div class="bg-warning p-2 rounded mt-2 mb-4 fs-3 ">Classement</div>
+        <div class="bg-warning p-2 rounded mt-2 mb-4 fs-3 ">Ranking</div>
         <div>
             <div class="d-flex text-white justify-content-around">
-                <p class="col-7">Pseudo</p>
-                <p class="col">Parties gagnées</p>
+                <p class="col-7">Nicknames</p>
+                <p class="col">Games won</p>
             </div>
             <div>
                 <div class="d-flex justify-content-between">
