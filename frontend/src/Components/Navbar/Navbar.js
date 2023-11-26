@@ -14,24 +14,24 @@ const Navbar = () => {
   const navbarWrapper = document.querySelector('#navbarWrapper');
   const navbar = `
     <nav class="navbar navbar-expand navbar-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#" ><img data-uri="/" class="logo col-10" src="${logo}" alt="SPACE LOVER"></a>
+        <div class="container-fluid p-0">
+          <a href="#" ><img data-uri="/" class="logo col-10" src="${logo}" alt="SPACE LOVER"></a>
           <div>
             <ul class="navbar-nav justify-content-end">
               
               <li class="nav-item col-2">
-                <a class="nav-link" href="#" ><img data-uri="/score" class="mt-4" src="${scoreIcon}" alt="Scores"></a>
+                <a class="nav-link" href="#" ><img data-uri="/score" src="${scoreIcon}" alt="Scores"></a>
               </li>
 
               <li class="nav-item col-2">
-                <a class="nav-link" href="#" ><img data-uri="/rank" class="w-100 mt-4" src="${rankIcon}" alt="Ranking"></a>
+                <a class="nav-link" href="#" ><img data-uri="/rank" class="col-12" src="${rankIcon}" alt="Ranking"></a>
               </li>
               
-              <li class="nav-item btn btn-warning mx-2 my-5" data-uri="/login">
+              <li class="nav-item btn btn-warning mx-2 h-75 mt-3 fs-5" data-uri="/login">
                 <a class="nav-link text-black" href="#" data-uri="/login">Log in</a>
               </li>
               
-              <li class="nav-item btn btn-warning mx-2 my-5" data-uri="/register">
+              <li class="nav-item btn btn-warning mx-2 h-75 mt-3 fs-5" data-uri="/register">
                 <a class="nav-link text-black" href="#" data-uri="/register">Sign in</a> 
               </li>
             </ul>
