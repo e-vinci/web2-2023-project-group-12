@@ -10,10 +10,10 @@ function getRandomAdvice() {
     .then((response) => response.json())
     .then((data) => {
       const {advice} = data.slip;
-    footer.innerHTML = `<h6><u> Advice</u>: <i> ${advice} </i></h6>`;
+    footer.innerHTML = `<h6><b><u> Advice</u> : </b><i> ${advice} </i></h6>`;
   })
   .catch( () => {
-    footer.innerHTML = `<h6><u> Advice</u>: <i> Happiness is a journey, not a destination. </i></h6>`;
+    footer.innerHTML = `<h6><b><u> Advice</u> : </b><i> Happiness is a journey, not a destination. </i></h6>`;
   });
 };
 

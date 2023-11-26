@@ -24,15 +24,15 @@ const Navbar = () => {
               </li>
 
               <li class="nav-item col-2">
-                <a class="nav-link" href="#" ><img data-uri="/rank" class="w-100 mt-4" src="${rankIcon}" alt="Classement"></a>
+                <a class="nav-link" href="#" ><img data-uri="/rank" class="w-100 mt-4" src="${rankIcon}" alt="Ranking"></a>
               </li>
               
               <li class="nav-item btn btn-warning mx-2 my-5" data-uri="/login">
-                <a class="nav-link text-black" href="#" data-uri="/login">Se connecter</a>
+                <a class="nav-link text-black" href="#" data-uri="/login">Log in</a>
               </li>
               
               <li class="nav-item btn btn-warning mx-2 my-5" data-uri="/register">
-                <a class="nav-link text-black" href="#" data-uri="/register">S'inscrire</a> 
+                <a class="nav-link text-black" href="#" data-uri="/register">Sign in</a> 
               </li>
             </ul>
           </div>
