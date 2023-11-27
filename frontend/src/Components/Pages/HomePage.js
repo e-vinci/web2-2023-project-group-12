@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import { Modal } from 'bootstrap';
 import { clearPage } from '../../utils/render';
+import Navigate from '../Router/Navigate';
 import robotsHomepage from '../../img/robots-homepage.png';
 import rulesIcon from '../../img/rules-icon.png';
 import player1Controls from '../../img/player1-controls.png';
@@ -9,6 +10,7 @@ import player2Controls from '../../img/player2-controls.png';
 const HomePage = () => {
   clearPage();
   renderHomePage();
+  startGame();
   popUpRules();
 };
 
@@ -19,7 +21,7 @@ function renderHomePage() {
   
     <di class="position-absolute position-love d-flex flex-column align-items-center col-6">
       <h1 class="text-lavender pb-4">Let's LOVE each other ! 💜</h1>
-      <button type="button" class="btn btn-warning p-3 col-5 fs-1">
+      <button type="button" class="btn btn-warning p-3 col-5 fs-1 start-game-btn">
         START
       </button>
     </div>
@@ -81,5 +83,12 @@ function popUpRules () {
     myModal.show();
   });
 };
+
+function startGame () {
+  const btn = document.querySelector('.start-game-btn');
+  btn.addEventListener('click', () =>{
+    Navigate('/game');
+  });
+}
 
 export default HomePage;
