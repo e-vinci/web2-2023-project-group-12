@@ -12,13 +12,7 @@ body {
 
 }
 
-/* position of the "LANCER LA PARTIE" btn */
-.start-45 {
-    left: 45%;
-    bottom: 40%;
-}
-
-/* position of "let's love each other !" */
+/* position of "let's love each other !" and the START button*/
 .position-love {
     top: 38%;
     left: 30%;
