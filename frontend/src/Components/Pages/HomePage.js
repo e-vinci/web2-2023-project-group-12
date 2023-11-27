@@ -19,12 +19,12 @@ function renderHomePage() {
   
     <di class="position-absolute position-love d-flex flex-column align-items-center col-6">
       <h1 class="text-lavender pb-4">Let's LOVE each other ! 💜</h1>
-      <button type="button" class="btn btn-warning p-3 col-5  fs-1">
+      <button type="button" class="btn btn-warning p-3 col-5 fs-1">
         START
       </button>
     </div>
   
-    <div class="d-flex align-items-end h-100 position-relative">
+    <div class="d-flex align-items-end h-100">
       <div class="col-1 position-absolute end-1 mb-5 d-flex justify-content-end">
       <img id="rules-icon" class="col-7" role="button" data-bs-toggle="modal" data-bs-target="#rules" src="${rulesIcon}" alt="Game rules">
       </div>
