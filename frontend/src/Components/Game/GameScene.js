@@ -1,11 +1,11 @@
 import Phaser from 'phaser';
 import ScoreLabel from './ScoreLabel';
 import BombSpawner from './BombSpawner';
-import skyAsset from '../../assets/sky.png';
-import platformAsset from '../../assets/platform.png';
+import skyAsset from '../../assets/arena.png';
+import platformAsset from '../../assets/arena_platform.png';
 import starAsset from '../../assets/star.png';
 import bombAsset from '../../assets/bomb.png';
-import dudeAsset from '../../assets/dude.png';
+import dudeAsset from '../../assets/blue-rrobot.png';
 
 const GROUND_KEY = 'ground';
 const DUDE_KEY = 'dude';
@@ -28,15 +28,15 @@ class GameScene extends Phaser.Scene {
     this.load.image(GROUND_KEY, platformAsset);
     this.load.image(STAR_KEY, starAsset);
     this.load.image(BOMB_KEY, bombAsset);
-
+    
     this.load.spritesheet(DUDE_KEY, dudeAsset, {
-      frameWidth: 32,
-      frameHeight: 48,
+      frameWidth: 82,
+      frameHeight: 80,
     });
   }
 
   create() {
-    this.add.image(400, 300, 'sky');
+    this.add.image(401, 350, 'sky').setScale(0.4).setY(330).setX(601);
     const platforms = this.createPlatforms();
     this.player = this.createPlayer();
     this.stars = this.createStars();
@@ -71,7 +71,11 @@ class GameScene extends Phaser.Scene {
     }
 
     if (this.cursors.up.isDown && this.player.body.touching.down) {
-      this.player.setVelocityY(-330);
+      this.player.setVelocityY(-300);
+    }
+
+    if (this.cursors.down.isDown){
+      this.player.setVelocityY(300);
     }
   }
 
@@ -80,12 +84,9 @@ class GameScene extends Phaser.Scene {
 
     platforms
       .create(400, 568, GROUND_KEY)
-      .setScale(2)
+      .setScale(0.4)
+      .setX(600)
       .refreshBody();
-
-    platforms.create(600, 400, GROUND_KEY);
-    platforms.create(50, 250, GROUND_KEY);
-    platforms.create(750, 220, GROUND_KEY);
     return platforms;
   }
 
@@ -111,7 +112,7 @@ class GameScene extends Phaser.Scene {
 
     this.anims.create({
       key: 'right',
-      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 5, end: 8 }),
+      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 4, end: 7 }),
       frameRate: 10,
       repeat: -1,
     });

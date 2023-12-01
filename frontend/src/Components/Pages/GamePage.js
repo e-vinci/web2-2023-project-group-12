@@ -13,15 +13,17 @@ const GamePage = () => {
 
   const config = {
     type: Phaser.AUTO,
-    width: 800,
+    width: 1200,
     height: 600,
     physics: {
       default: 'arcade',
       arcade: {
-        gravity: { y: 300 },
+        gravity: { y: 500 },
         debug: false,
       },
     },
+    canvasStyle: 'border: 4px solid #DAA520; box-sizing: border-box;', // Add any other styles as needed
+
     scene: [GameScene],
     //  parent DOM element into which the canvas created by the renderer will be injected.
     parent: 'gameDiv',

@@ -32,3 +32,9 @@ body {
 .bg-lavender {
     background-color: #e1dbf7;
 }
+
+.phaser-container {
+    border: 2px solid #000;
+    box-sizing: border-box; /* Ensure the border is included in the element's total width and height */
+    /* Add any other styles as needed */
+  }
