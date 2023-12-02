@@ -70,6 +70,10 @@ class GameScene extends Phaser.Scene {
   }
   
   update() {  
+    if (this.gameOver) {
+      return;
+    }
+
     // player 1 controls
     if (this.cursors.left.isDown) {
       this.player.setVelocityX(-160);
