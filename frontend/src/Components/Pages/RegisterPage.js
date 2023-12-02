@@ -1,4 +1,5 @@
 import { clearPage } from "../../utils/render";
+import Navigate from '../Router/Navigate';
 
 const RegisterPage = () => {
     clearPage();
@@ -27,5 +28,57 @@ function renderRegisterForm() {
       </form>
     </div>
     `;
+  const form = document.getElementById('registrationForm');
+  form.addEventListener('submit', onRegister);
+}
+
+async function onRegister(e) {
+
+  e.preventDefault();
+
+
+  const username = document.querySelector('#username').value;
+
+  const password = document.querySelector('#password').value;
+
+  const confirmPassword = document.querySelector('#comfirm_password')
+
+  const options = {
+
+    method: 'POST',
+
+    body: JSON.stringify({
+
+      username,
+
+      password,
+
+      confirmPassword,
+
+    }),
+
+    headers: {
+
+      'Content-Type': 'application/json',
+
+    },
+
+  };
+
+
+  const response = await fetch('/api/auths/register', options);
+
+
+  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+
+
+  const authenticatedUser = await response.json();
+
+
+  console.log('Newly registered & authenticated user : ', authenticatedUser);
+
+
+  Navigate('/');
+
 }
 export default RegisterPage;
