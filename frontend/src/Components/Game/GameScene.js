@@ -3,9 +3,11 @@ import skyAsset from '../../assets/arena.png';
 import platformAsset from '../../assets/arena_platform.png';
 import blueRobotAsset from '../../assets/blue-robot.png';
 import roseRobotAsset from '../../assets/rose-robot.png';
+import heart from '../../assets/heart-rotation.png';
 
 const BLUE_ROBOT_KEY = 'blue-robot';
 const ROSE_ROBOT_KEY = 'rose-robot';
+const HEART = 'heart';
 
 class GameScene extends Phaser.Scene {
   constructor() {
@@ -27,6 +29,10 @@ class GameScene extends Phaser.Scene {
     this.load.spritesheet(ROSE_ROBOT_KEY, roseRobotAsset, {
       frameWidth: 93.25,
       frameHeight: 90,
+    });
+    this.load.spritesheet(HEART, heart, {
+      frameWidth: 35.25,
+      frameHeight: 30,
     });
   }
 
@@ -51,10 +57,10 @@ class GameScene extends Phaser.Scene {
 
     // player 1 controls
     if (this.cursors.left.isDown) {
-      this.player1.setVelocityX(-160);
+      this.player1.setVelocityX(-250);
       this.player1.anims.play('left-blue-robot', true);
     } else if (this.cursors.right.isDown) {
-      this.player1.setVelocityX(160);
+      this.player1.setVelocityX(250);
       this.player1.anims.play('right-blue-robot', true);
     } else {
       this.player1.setVelocityX(0);
@@ -62,20 +68,18 @@ class GameScene extends Phaser.Scene {
     }
   
     if (this.cursors.up.isDown && this.player1.body.touching.down) {
-      this.player1.setVelocityY(-300);
-    }
-  
-    if (this.cursors.down.isDown){
-      this.player1.setVelocityY(300);
+      this.player1.setVelocityY(-500);
     }
 
-
+    if(this.input.keyboard.addKey('P').isDown){
+      this.throwHeart();
+    }
     // player 2 controls
     if (this.input.keyboard.addKey('Q').isDown) {
-      this.player2.setVelocityX(-160);
+      this.player2.setVelocityX(-250);
       this.player2.anims.play('left-rose-robot', true);
     } else if (this.input.keyboard.addKey('D').isDown) {
-      this.player2.setVelocityX(160);
+      this.player2.setVelocityX(250);
       this.player2.anims.play('right-rose-robot', true);
     } else {
       this.player2.setVelocityX(0);
@@ -83,11 +87,7 @@ class GameScene extends Phaser.Scene {
     }
   
     if (this.input.keyboard.addKey('Z').isDown && this.player2.body.touching.down) {
-      this.player2.setVelocityY(-300);
-    }
-  
-    if (this.input.keyboard.addKey('S').isDown){
-      this.player2.setVelocityY(300);
+      this.player2.setVelocityY(-500);
     }
   }
 
