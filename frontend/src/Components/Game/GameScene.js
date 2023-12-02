@@ -4,15 +4,14 @@ import platformAsset from '../../assets/arena_platform.png';
 import blueRobotAsset from '../../assets/blue-robot.png';
 import roseRobotAsset from '../../assets/rose-robot.png';
 
-
 const BLUE_ROBOT_KEY = 'blue-robot';
 const ROSE_ROBOT_KEY = 'rose-robot';
 
 class GameScene extends Phaser.Scene {
   constructor() {
     super('game-scene');
-    this.player2 = undefined;
     this.player1 = undefined;
+    this.player2 = undefined;
     this.cursors = undefined;
     // this.scoreLabel = undefined;
     this.gameOver = false;
@@ -34,10 +33,10 @@ class GameScene extends Phaser.Scene {
   create() {
     this.add.image(401, 350, 'sky').setScale(0.4).setY(225).setX(600);
     const platform = this.physics.add.staticGroup().create(600, 350, 'ground').setScale(0.4).setY(460).refreshBody();
-    this.player1 = this.createPlayer(100, 200, BLUE_ROBOT_KEY);
-    this.player2 = this.createPlayer(1100, 200, ROSE_ROBOT_KEY);
-    this.physics.add.collider(this.player2, platform);
+    this.player1 = this.createPlayer(1100, 200, BLUE_ROBOT_KEY);
+    this.player2 = this.createPlayer(100, 200, ROSE_ROBOT_KEY);
     this.physics.add.collider(this.player1, platform);
+    this.physics.add.collider(this.player2, platform);
     this.physics.add.collider(this.player1, this.player2);
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -50,50 +49,45 @@ class GameScene extends Phaser.Scene {
       return;
     }
 
-    if (this.physics.collide(this.player2, this.player1)) {
-      this.player2.setVelocity(0);
-    }
     // player 1 controls
     if (this.cursors.left.isDown) {
-      this.player2.setVelocityX(-160);
-      this.player2.anims.play('left-blue-robot', true);
-    } else if (this.cursors.right.isDown) {
-      this.player2.setVelocityX(160);
-      this.player2.anims.play('right-blue-robot', true);
-    } else {
-      this.player2.setVelocityX(0);
-      this.player2.anims.play('turn-blue-robot');
-    }
-  
-    if (this.cursors.up.isDown && this.player2.body.touching.down) {
-      this.player2.setVelocityY(-300);
-    }
-  
-    if (this.cursors.down.isDown){
-      this.player2.setVelocityY(300);
-    }
-  
-    if (this.physics.collide(this.player2, this.player1)) {
-      this.player1.setVelocity(0);
-    }
-    // player 2 controls
-    if (this.input.keyboard.addKey('Q').isDown) {
       this.player1.setVelocityX(-160);
-      this.player1.anims.play('left-rose-robot', true);
-    } else if (this.input.keyboard.addKey('D').isDown) {
+      this.player1.anims.play('left-blue-robot', true);
+    } else if (this.cursors.right.isDown) {
       this.player1.setVelocityX(160);
-      this.player1.anims.play('right-rose-robot', true);
+      this.player1.anims.play('right-blue-robot', true);
     } else {
       this.player1.setVelocityX(0);
-      this.player1.anims.play('turn-rose-robot');
+      this.player1.anims.play('turn-blue-robot');
     }
   
-    if (this.input.keyboard.addKey('Z').isDown && this.player1.body.touching.down) {
+    if (this.cursors.up.isDown && this.player1.body.touching.down) {
       this.player1.setVelocityY(-300);
     }
   
-    if (this.input.keyboard.addKey('S').isDown){
+    if (this.cursors.down.isDown){
       this.player1.setVelocityY(300);
+    }
+
+
+    // player 2 controls
+    if (this.input.keyboard.addKey('Q').isDown) {
+      this.player2.setVelocityX(-160);
+      this.player2.anims.play('left-rose-robot', true);
+    } else if (this.input.keyboard.addKey('D').isDown) {
+      this.player2.setVelocityX(160);
+      this.player2.anims.play('right-rose-robot', true);
+    } else {
+      this.player2.setVelocityX(0);
+      this.player2.anims.play('turn-rose-robot');
+    }
+  
+    if (this.input.keyboard.addKey('Z').isDown && this.player2.body.touching.down) {
+      this.player2.setVelocityY(-300);
+    }
+  
+    if (this.input.keyboard.addKey('S').isDown){
+      this.player2.setVelocityY(300);
     }
   }
 
