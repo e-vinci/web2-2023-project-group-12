@@ -5,10 +5,13 @@ import skyAsset from '../../assets/arena.png';
 import platformAsset from '../../assets/arena_platform.png';
 import starAsset from '../../assets/star.png';
 import bombAsset from '../../assets/bomb.png';
-import dudeAsset from '../../assets/blue-rrobot.png';
+import blueRobotAsset from '../../assets/blue-rrobot.png';
+import roseRobotAsset from '../../assets/rose-robot.png';
+
 
 const GROUND_KEY = 'ground';
-const DUDE_KEY = 'dude';
+const BLUE_ROBOT_KEY = 'blue-robot';
+const ROSE_ROBOT_KEY = 'rose-robot';
 const STAR_KEY = 'star';
 const BOMB_KEY = 'bomb';
 
@@ -16,6 +19,7 @@ class GameScene extends Phaser.Scene {
   constructor() {
     super('game-scene');
     this.player = undefined;
+    this.player2 = undefined;
     this.cursors = undefined;
     this.scoreLabel = undefined;
     this.stars = undefined;
@@ -29,8 +33,13 @@ class GameScene extends Phaser.Scene {
     this.load.image(STAR_KEY, starAsset);
     this.load.image(BOMB_KEY, bombAsset);
     
-    this.load.spritesheet(DUDE_KEY, dudeAsset, {
+    this.load.spritesheet(BLUE_ROBOT_KEY, blueRobotAsset, {
       frameWidth: 82,
+      frameHeight: 80,
+    });
+
+    this.load.spritesheet(ROSE_ROBOT_KEY, roseRobotAsset, {
+      frameWidth: 83,
       frameHeight: 80,
     });
   }
@@ -38,44 +47,67 @@ class GameScene extends Phaser.Scene {
   create() {
     this.add.image(401, 350, 'sky').setScale(0.4).setY(330).setX(601);
     const platforms = this.createPlatforms();
-    this.player = this.createPlayer();
+    this.player = this.createPlayer(100, 450, BLUE_ROBOT_KEY);
+    this.player2 = this.createPlayer(900, 450, ROSE_ROBOT_KEY);
+
     this.stars = this.createStars();
     this.scoreLabel = this.createScoreLabel(16, 16, 0);
     this.bombSpawner = new BombSpawner(this, BOMB_KEY);
     const bombsGroup = this.bombSpawner.group;
     this.physics.add.collider(this.stars, platforms);
     this.physics.add.collider(this.player, platforms);
+    this.physics.add.collider(this.player2, platforms);
+
     this.physics.add.collider(bombsGroup, platforms);
     this.physics.add.collider(this.player, bombsGroup, this.hitBomb, null, this);
     this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
+    this.physics.add.collider(this.player2, bombsGroup, this.hitBomb, null, this);
+    this.physics.add.overlap(this.player2, this.stars, this.collectStar, null, this);
     this.cursors = this.input.keyboard.createCursorKeys();
 
     /* The Collider takes two objects and tests for collision and performs separation against them.
     Note that we could call a callback in case of collision... */
   }
-
-  update() {
-    if (this.gameOver) {
-      return;
-    }
-
+  
+  update() {  
+    // player 1 controls
     if (this.cursors.left.isDown) {
       this.player.setVelocityX(-160);
-      this.player.anims.play('left', true);
+      this.player.anims.play('left-blue-robot', true);
     } else if (this.cursors.right.isDown) {
       this.player.setVelocityX(160);
-      this.player.anims.play('right', true);
+      this.player.anims.play('right-blue-robot', true);
     } else {
       this.player.setVelocityX(0);
-      this.player.anims.play('turn');
+      this.player.anims.play('turn-blue-robot');
     }
-
+  
     if (this.cursors.up.isDown && this.player.body.touching.down) {
       this.player.setVelocityY(-300);
     }
-
+  
     if (this.cursors.down.isDown){
       this.player.setVelocityY(300);
+    }
+  
+    // player 2 controls
+    if (this.input.keyboard.addKey('Q').isDown) {
+      this.player2.setVelocityX(-160);
+      this.player2.anims.play('left-rose-robot', true);
+    } else if (this.input.keyboard.addKey('D').isDown) {
+      this.player2.setVelocityX(160);
+      this.player2.anims.play('right-rose-robot', true);
+    } else {
+      this.player2.setVelocityX(0);
+      this.player2.anims.play('turn-rose-robot');
+    }
+  
+    if (this.input.keyboard.addKey('Z').isDown && this.player2.body.touching.down) {
+      this.player2.setVelocityY(-300);
+    }
+  
+    if (this.input.keyboard.addKey('S').isDown){
+      this.player2.setVelocityY(300);
     }
   }
 
@@ -90,33 +122,41 @@ class GameScene extends Phaser.Scene {
     return platforms;
   }
 
-  createPlayer() {
-    const player = this.physics.add.sprite(100, 450, DUDE_KEY);
+  createPlayer(x, y, key) {
+    const player = this.physics.add.sprite(x, y, key);
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
-    /* The 'left' animation uses frames 0, 1, 2 and 3 and runs at 10 frames per second.
-    The 'repeat -1' value tells the animation to loop.
-    */
+  
     this.anims.create({
-      key: 'left',
-      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 0, end: 3 }),
+      // eslint-disable-next-line prefer-template
+      key: 'left-' + key,
+      frames: this.anims.generateFrameNumbers(key, { start: 0, end: 3 }),
       frameRate: 10,
       repeat: -1,
     });
-
+  
     this.anims.create({
-      key: 'turn',
-      frames: [{ key: DUDE_KEY, frame: 4 }],
+      // eslint-disable-next-line prefer-template
+      key: 'turn-' + key,
+      // eslint-disable-next-line object-shorthand
+      frames: [{ key: key, frame: 4 }],
       frameRate: 20,
     });
 
     this.anims.create({
-      key: 'right',
-      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 4, end: 7 }),
+      key: 'turn-rose-robot',
+      frames: [{ key: ROSE_ROBOT_KEY, frame: 3 }],
+      frameRate: 20,
+    });
+  
+    this.anims.create({
+      // eslint-disable-next-line prefer-template
+      key: 'right-' + key,
+      frames: this.anims.generateFrameNumbers(key, { start: 4, end: 7 }),
       frameRate: 10,
       repeat: -1,
     });
-
+  
     return player;
   }
 
