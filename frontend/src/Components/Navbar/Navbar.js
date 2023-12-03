@@ -67,8 +67,8 @@ function renderNavbar() {
             <li class="nav-item btn btn-warning mx-2 h-75 mt-3 fs-5" data-uri="/logout">
               <a class="nav-link text-black" href="#" data-uri="/logout">Log out</a>
             </li>
-            <li class="nav-item">
-            <a class="nav-link disabled" href="#">${authenticatedUser?.username}</a>
+            <li class="nav-item btn btn-warning mx-2 h-75 mt-3 fs-5">
+            <a class="nav-link disabled" href="#">BONJOUR ${authenticatedUser?.username} <3</a>
             </li>           
           </ul>
         </div>
