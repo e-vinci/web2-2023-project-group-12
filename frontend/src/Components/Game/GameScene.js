@@ -86,8 +86,8 @@ class GameScene extends Phaser.Scene {
     Note that we could call a callback in case of collision... */
 
     // Love bars
-    this.add.rectangle(10, 10, 800, 50, 0xFFFFFF);
-    this.add.rectangle(this.game.config.width - 10, 10, 800, 50, 0xFFFFFF);
+    this.add.rectangle(10, 10, 800, 50, 0xe1dbf7);
+    this.add.rectangle(this.game.config.width - 10, 10, 800, 50, 0xe1dbf7);
     this.player1Bar = this.add.rectangle(this.game.config.width - 10, 10, this.player1Love*8, 50, 0xD038AC);
     this.player2Bar = this.add.rectangle(10, 10, this.player2Love*8, 50, 0xD038AC);
 
