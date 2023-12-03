@@ -63,8 +63,8 @@ class GameScene extends Phaser.Scene {
     // Love bars
     this.add.rectangle(10, 10, 800, 50, 0xFFFFFF);
     this.add.rectangle(this.game.config.width - 10, 10, 800, 50, 0xFFFFFF);
-    this.player1Bar = this.add.rectangle(10, 10, this.player1Love*8, 50, 0xD038AC);
-    this.player2Bar = this.add.rectangle(this.game.config.width - 10, 10, this.player2Love*8, 50, 0xD038AC);
+    this.player1Bar = this.add.rectangle(this.game.config.width - 10, 10, this.player1Love*8, 50, 0xD038AC);
+    this.player2Bar = this.add.rectangle(10, 10, this.player2Love*8, 50, 0xD038AC);
   }
   
   update() {
@@ -180,17 +180,17 @@ class GameScene extends Phaser.Scene {
       this.gameOver = true;
     } else {
         if (this.input.keyboard.addKey('O').isDown) // player1
-          this.player1Love += 10;
-        else if(this.input.keyboard.addKey('V').isDown) // player2
           this.player2Love += 10;
+        else if(this.input.keyboard.addKey('V').isDown) // player2
+          this.player1Love += 10;
       this.updateBars();
     }
   }
 
   updateBars() {
     // Mise à jour de la largeur des barres de vie en fonction de la vie actuelle des joueurs
-    this.player1Bar = this.add.rectangle(10, 10, this.player1Love*8, 50, 0xD038AC);
-    this.player2Bar = this.add.rectangle(this.game.config.width - 10, 10, this.player2Love*8, 50, 0xD038AC);
+    this.player1Bar = this.add.rectangle(this.game.config.width - 10, 10, this.player1Love*8, 50, 0xD038AC);
+    this.player2Bar = this.add.rectangle(10, 10, this.player2Love*8, 50, 0xD038AC);
   }
 
 }
