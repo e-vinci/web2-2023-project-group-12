@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import { Modal } from 'bootstrap';
 import { clearPage } from '../../utils/render';
+import Navigate from '../Router/Navigate';
 import robotsHomepage from '../../img/robots-homepage.png';
 import rulesIcon from '../../img/rules-icon.png';
 import player1Controls from '../../img/player1-controls.png';
@@ -9,6 +10,7 @@ import player2Controls from '../../img/player2-controls.png';
 const HomePage = () => {
   clearPage();
   renderHomePage();
+  startGame();
   popUpRules();
 };
 
@@ -17,15 +19,18 @@ const HomePage = () => {
 function renderHomePage() {
   const main = document.querySelector('main');
   const homepage = `
-  <div class="d-flex flex-column align-items-center justify-content-center h-100">
-    <h3 class="text-lavender position-absolute bottom-50 start-50">Aimez-vous 💜</h3>
-    <button type="button" class="btn btn-warning position-absolute start-45 py-4 w-25 fs-3">
-      LANCER LA PARTIE
-    </button>
+  <div class="d-flex flex-column align-items-center justify-content-center">
   
-    <div class="d-flex align-items-end h-100 position-relative">
+    <di class="position-absolute position-love d-flex flex-column align-items-center col-6">
+      <h1 class="text-lavender pb-4">Let's LOVE each other ! 💜</h1>
+      <button type="button" class="btn btn-warning p-3 col-5 fs-1 start-game-btn">
+        START
+      </button>
+    </div>
+  
+    <div class="d-flex align-items-end h-100">
       <div class="col-1 position-absolute end-1 mb-5 d-flex justify-content-end">
-      <img id="rules-icon" class="col-7" role="button" data-bs-toggle="modal" data-bs-target="#rules" src="${rulesIcon}" alt="Règles du jeu">
+      <img id="rules-icon" class="col-7" role="button" data-bs-toggle="modal" data-bs-target="#rules" src="${rulesIcon}" alt="Game rules">
       </div>
       <img class="col-12" src="${robotsHomepage}" alt="robots">
     </div>
@@ -34,38 +39,36 @@ function renderHomePage() {
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h2 class="modal-title fw-bold" id="rulesLabel">Règles du jeu</h2>
+            <h2 class="modal-title fw-bold" id="rulesLabel">Game rules</h2>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <h5><b><u>Description du jeu</u> :</b></h5>
-            <p class="fs-5"> Space Lover est un jeu de "combat" 1v1 en 2D qui plonge les joueurs dans un univers spatial et futuriste.
-                Il se démarque des jeux de combat traditionnels.<br><br>
-                Au début de la partie, la jauge d'affection des joueurs est totalement vide.<br>
-                Les attaques consistent en câlins et bisous afin de remplir la jauge d'affection de l'adversaire.<br>
-                Enfin, le joueur perd la partie lorsque sa propre jauge atteint son maximum. 
+            <h5><b><u>Description</u> :</b></h5>
+            <p class="fs-5"> Space Lover is a 1vs1 2D "combat" game that immerses players in a futuristic space-themed universe. This game stands out from traditional combat games.<br><br>
+            At the start of the game, players' affection gauges are completely empty.<br>
+            Attacks involve hugs and smacks to fill the opponent's affection gauge.<br>
+            Finally, a player loses the game when their own gauge reaches its maximum.
             </p>
-            <h5><b><u>Commandes</u> :</b></h5>
+            <h5><b><u>Controls</u> :</b></h5>
             <div class="d-flex text-center pt-2">
               <div> 
-                <p> <b> JOUEUR 1</b></p>
+                <p> <b> PLAYER 1</b></p>
                 <img class="col-12 pt-0 p-4" src="${player1Controls}" 
-                  alt="Le joueur 1 jouera avec les flèches directionnelles gauche, droite et haut 
-                    afin de respectivement se déplacer à gauche, droite et sauter. 
-                    Il lancera ses attaques avec O (bisous) et P (câlin)">
+                  alt="The player 1 will use the left, right, and up arrow keys to respectively move to the left, right and jump.
+                   They will launch their attacks with O (smack) and P (hug)">
               </div>
               
               <div> 
-                <p> <b> JOUEUR 2</b></p>
+                <p> <b> PLAYER 2</b></p>
                 <img class="col-12 pt-0 p-4" src="${player2Controls}" 
-                  alt="Le joueur 2 jouera avec les touches Q (gauche), D (droite) et Z (saut).
-                    Il lancera ses attaques avec B (bisous) et V (câlin)">
+                  alt="Player 2 will use the keys Q (left), D (right), and Z (jump). 
+                  They will launch their attacks with B (smack) and V (hug)">
               </div>
               
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-warning" data-bs-dismiss="modal">Fermer</button>
+            <button class="btn btn-warning" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
@@ -82,5 +85,12 @@ function popUpRules () {
     myModal.show();
   });
 };
+
+function startGame () {
+  const btn = document.querySelector('.start-game-btn');
+  btn.addEventListener('click', () =>{
+    Navigate('/game');
+  });
+}
 
 export default HomePage;

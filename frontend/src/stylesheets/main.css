@@ -12,9 +12,10 @@ body {
 
 }
 
-/* position of the "LANCER LA PARTIE" btn */
-.start-45 {
-    left: 45%;
+/* position of "let's love each other !" and the START button*/
+.position-love {
+    top: 38%;
+    left: 30%;
 }
 
 /* position of the rules icon */
@@ -31,3 +32,9 @@ body {
 .bg-lavender {
     background-color: #e1dbf7;
 }
+
+.phaser-container {
+    border: 2px solid #000;
+    box-sizing: border-box; /* Ensure the border is included in the element's total width and height */
+    /* Add any other styles as needed */
+  }
