@@ -79,6 +79,7 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.player1, platform);
     this.physics.add.collider(this.player2, platform);
     this.cursors = this.input.keyboard.createCursorKeys();
+
     this.physics.add.collider(this.player1, this.player2, this.hugAttack, null, this);
 
     /* The Collider takes two objects and tests for collision and performs separation against them.
@@ -283,13 +284,28 @@ class GameScene extends Phaser.Scene {
     return player;
   }
 
-  hugAttack() {
-    if(!this.gameOver && (this.player2Love === 100 || this.player1Love === 100)) {
+  hugAttack(player1, player2) {
+    if(this.player2Love === 100 || this.player1Love === 100) {
+      this.physics.pause();
       this.gameOver = true;
-    } else if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('O'))) // player1
-          this.player2Love += 10;
-        else if(Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('V'))) // player2
+    } else if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('O'))) { // player1
+        this.player2Love += 10;
+        player2.setTint(0xD038AC);
+        player2.anims.play('turn-rose-robot');
+        // clear tint after 50 milliseconds
+        this.time.delayedCall(50, () => {
+            player2.clearTint();
+        }, [], this);
+      }
+        else if(Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('V'))) { // player2
           this.player1Love += 10;
+          player1.setTint(0xD038AC);
+          player1.anims.play('turn-blue-robot');
+          // clear tint after 50 milliseconds
+          this.time.delayedCall(50, () => {
+              player1.clearTint();
+          }, [], this);
+        }
   }
 
   createHeart(player, velocityX){
