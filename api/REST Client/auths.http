@@ -36,3 +36,12 @@ Content-Type: application/json
     "username":"manager",
     "password":"manager"
 }
+
+### Login the test2 user
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"test2",
+    "password":"test2"
+}
