@@ -81,7 +81,7 @@ async function onRegister(e) {
 
   setAuthenticatedUser(authenticatedUser);
 
-  Navigate('/');
+  Navigate('/login');
 
 }
 export default RegisterPage;
