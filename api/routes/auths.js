@@ -14,7 +14,9 @@ router.post('/register', async (req, res) => {
 
   if (!authenticatedUser) return res.sendStatus(409); // 409 Conflict
 
-  return res.json(authenticatedUser);
+  createCookieSessionData(req, authenticatedUser);
+
+  return res.json({ username: authenticatedUser.username });
 });
 
 /* Login a user */
@@ -28,7 +30,23 @@ router.post('/login', async (req, res) => {
 
   if (!authenticatedUser) return res.sendStatus(401); // 401 Unauthorized
 
-  return res.json(authenticatedUser);
+  createCookieSessionData(req, authenticatedUser);
+
+  return res.json({ username: authenticatedUser.username });
 });
+
+/* Logout a user */
+
+router.get('/logout', (req, res) => {
+  req.session = null;
+
+  return res.sendStatus();
+});
+
+function createCookieSessionData(req, authenticatedUser) {
+  req.session.username = authenticatedUser.username;
+
+  req.session.token = authenticatedUser.token;
+}
 
 module.exports = router;

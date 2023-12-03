@@ -2,6 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const cookieSession = require('cookie-session');
 
 const corsOptions = {
   origin: ['http://localhost:8080', 'https://e-baron.github.io'],
@@ -12,6 +13,17 @@ const pizzaRouter = require('./routes/pizzas');
 const authsRouter = require('./routes/auths');
 
 const app = express();
+
+const expiryDateIn3Months = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 3);
+const cookieSecreteKey = 'YouWouldnot!not!like!mypizza';
+app.use(
+  cookieSession({
+    name: 'user',
+    keys: [cookieSecreteKey],
+    httpOnly: true,
+    expires: expiryDateIn3Months,
+  }),
+);
 
 app.use(logger('dev'));
 app.use(express.json());
