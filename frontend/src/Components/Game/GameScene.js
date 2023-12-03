@@ -31,22 +31,22 @@ class GameScene extends Phaser.Scene {
     this.load.image('sky', skyAsset);
     this.load.image('ground', platformAsset);
     this.load.spritesheet(BLUE_ROBOT_KEY, blueRobotAsset, {
-      frameWidth: 91.55,
-      frameHeight: 90,
+      frameWidth: 100,
+      frameHeight: 98,
     });
     this.load.spritesheet(ROSE_ROBOT_KEY, roseRobotAsset, {
-      frameWidth: 93.25,
-      frameHeight: 90,
+      frameWidth: 100,
+      frameHeight: 102,
     });
 
     // HUG attack
     this.load.spritesheet(BLUE_HUG_KEY, blueHug, {
-      frameWidth: 92.89,
-      frameHeight: 90,
+      frameWidth: 100,
+      frameHeight: 99,
     });
     this.load.spritesheet(ROSE_HUG_KEY, roseHug, {
-      frameWidth: 96.26,
-      frameHeight: 90,
+      frameWidth: 100,
+      frameHeight: 99,
     });
 
     // KISS attack
@@ -155,6 +155,7 @@ class GameScene extends Phaser.Scene {
     const player = this.physics.add.sprite(x, y, key);
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
+    player.setSize(80,80);
   
     this.anims.create({
       // eslint-disable-next-line prefer-template
@@ -191,7 +192,7 @@ class GameScene extends Phaser.Scene {
     this.anims.create({
       // eslint-disable-next-line prefer-template
       key: 'right-' + hugKey,
-      frames: [{ key: hugKey, frame: 5 }],
+      frames: [{ key: hugKey, frame: 3 }],
     });
 
     this.anims.create({
@@ -206,9 +207,9 @@ class GameScene extends Phaser.Scene {
   hugAttack() {
     if(!this.gameOver && (this.player2Love === 100 || this.player1Love === 100)) {
       this.gameOver = true;
-    } else if (this.input.keyboard.addKey('O').isDown) // player1
+    } else if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('O'))) // player1
           this.player2Love += 10;
-        else if(this.input.keyboard.addKey('V').isDown) // player2
+        else if(Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('V'))) // player2
           this.player1Love += 10;
   }
 
