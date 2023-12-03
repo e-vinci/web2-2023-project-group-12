@@ -1,9 +1,14 @@
+import { setAuthenticatedUser } from '../../utils/auths';
 import { clearPage } from "../../utils/render";
 import Navigate from '../Router/Navigate';
 
 const RegisterPage = () => {
     clearPage();
     renderRegisterForm();
+
+    const form = document.querySelector('main');
+    form.addEventListener('submit', onRegister);
+    
 };
 
 function renderRegisterForm() {
@@ -23,13 +28,10 @@ function renderRegisterForm() {
           <label for="comfirm_password" class="form-label">Confirm password</label>
           <input class="bg-lavender form-control mb-2" type="password"  id="password" name="comfirm_password" required>
         </div>
-
         <button type="submit" class="btn btn-warning mt-3 col-8 rounded-5">Sign in</button>
       </form>
     </div>
     `;
-  const form = document.getElementById('registrationForm');
-  form.addEventListener('submit', onRegister);
 }
 
 async function onRegister(e) {
@@ -62,7 +64,6 @@ async function onRegister(e) {
       'Content-Type': 'application/json',
 
     },
-
   };
 
 
@@ -77,6 +78,8 @@ async function onRegister(e) {
 
   console.log('Newly registered & authenticated user : ', authenticatedUser);
 
+
+  setAuthenticatedUser(authenticatedUser);
 
   Navigate('/');
 
