@@ -3,11 +3,13 @@ import skyAsset from '../../assets/arena.png';
 import platformAsset from '../../assets/arena_platform.png';
 import blueRobotAsset from '../../assets/blue-robot.png';
 import roseRobotAsset from '../../assets/rose-robot.png';
-import heart from '../../assets/heart-rotation.png';
+import blueHug from '../../assets/blue-hug.png'
+import roseHug from '../../assets/rose-hug.png'
 
 const BLUE_ROBOT_KEY = 'blue-robot';
 const ROSE_ROBOT_KEY = 'rose-robot';
-const HEART = 'heart';
+const BLUE_HUG_KEY = 'blue-hug';
+const ROSE_HUG_KEY = 'rose-hug';
 
 class GameScene extends Phaser.Scene {
   constructor() {
@@ -15,7 +17,10 @@ class GameScene extends Phaser.Scene {
     this.player1 = undefined;
     this.player2 = undefined;
     this.cursors = undefined;
-    // this.scoreLabel = undefined;
+    this.player1Love = 0;
+    this.player2Love = 0;
+    this.player1Bar = null;
+    this.player2Bar = null;
     this.gameOver = false;
   }
 
@@ -30,9 +35,15 @@ class GameScene extends Phaser.Scene {
       frameWidth: 93.25,
       frameHeight: 90,
     });
-    this.load.spritesheet(HEART, heart, {
-      frameWidth: 35.25,
-      frameHeight: 30,
+
+    // HUG attack
+    this.load.spritesheet(BLUE_HUG_KEY, blueHug, {
+      frameWidth: 92.89,
+      frameHeight: 90,
+    });
+    this.load.spritesheet(ROSE_HUG_KEY, roseHug, {
+      frameWidth: 96.26,
+      frameHeight: 90,
     });
   }
 
@@ -43,14 +54,21 @@ class GameScene extends Phaser.Scene {
     this.player2 = this.createPlayer(100, 200, ROSE_ROBOT_KEY);
     this.physics.add.collider(this.player1, platform);
     this.physics.add.collider(this.player2, platform);
-    this.physics.add.collider(this.player1, this.player2);
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.physics.add.collider(this.player1, this.player2, this.hugAttack, null, this);
 
     /* The Collider takes two objects and tests for collision and performs separation against them.
     Note that we could call a callback in case of collision... */
+
+    // Love bars
+    this.add.rectangle(10, 10, 800, 50, 0xFFFFFF);
+    this.add.rectangle(this.game.config.width - 10, 10, 800, 50, 0xFFFFFF);
+    this.player1Bar = this.add.rectangle(10, 10, this.player1Love*8, 50, 0xD038AC);
+    this.player2Bar = this.add.rectangle(this.game.config.width - 10, 10, this.player2Love*8, 50, 0xD038AC);
   }
   
-  update() {  
+  update() {
+
     if (this.gameOver) {
       return;
     }
@@ -71,9 +89,14 @@ class GameScene extends Phaser.Scene {
       this.player1.setVelocityY(-500);
     }
 
-    if(this.input.keyboard.addKey('P').isDown){
-      this.throwHeart();
+    // HUG attack
+    if (this.cursors.right.isDown && this.input.keyboard.addKey('O').isDown) {
+      this.player1.anims.play('right-blue-hug', true);
     }
+    else if (this.input.keyboard.addKey('O').isDown) {
+      this.player1.anims.play('left-blue-hug', true);
+    }
+
     // player 2 controls
     if (this.input.keyboard.addKey('Q').isDown) {
       this.player2.setVelocityX(-250);
@@ -89,17 +112,26 @@ class GameScene extends Phaser.Scene {
     if (this.input.keyboard.addKey('Z').isDown && this.player2.body.touching.down) {
       this.player2.setVelocityY(-500);
     }
+
+    // HUG attack
+    if (this.input.keyboard.addKey('Q').isDown && this.input.keyboard.addKey('V').isDown) {
+      this.player2.anims.play('left-rose-hug', true);
+    }
+    else if (this.input.keyboard.addKey('V').isDown) {
+      this.player2.anims.play('right-rose-hug', true);
+    }
   }
 
   createPlayer(x, y, key) {
     const player = this.physics.add.sprite(x, y, key);
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
+    player.setSize(65, 10);
   
     this.anims.create({
       // eslint-disable-next-line prefer-template
       key: 'left-' + key,
-      frames: this.anims.generateFrameNumbers(key, { start: 0, end: 3 }),
+      frames: this.anims.generateFrameNumbers(key, { start: 3, end: 0 }),
       frameRate: 10,
       repeat: -1,
     });
@@ -123,9 +155,44 @@ class GameScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1,
     });
+
+    // HUG attack
+    let hugKey;
+    if(key === ROSE_ROBOT_KEY) hugKey = ROSE_HUG_KEY;
+    else hugKey = BLUE_HUG_KEY;
+    this.anims.create({
+      // eslint-disable-next-line prefer-template
+      key: 'right-' + hugKey,
+      frames: [{ key: hugKey, frame: 5 }],
+    });
+
+    this.anims.create({
+      // eslint-disable-next-line prefer-template
+      key: 'left-' + hugKey,
+      frames: [{ key: hugKey, frame: 0 }],
+    });
   
     return player;
   }
+
+  hugAttack() {
+    if(!this.gameOver && (this.player2Love === 100 || this.player1Love === 100)) {
+      this.gameOver = true;
+    } else {
+        if (this.input.keyboard.addKey('O').isDown) // player1
+          this.player1Love += 10;
+        else if(this.input.keyboard.addKey('V').isDown) // player2
+          this.player2Love += 10;
+      this.updateBars();
+    }
+  }
+
+  updateBars() {
+    // Mise à jour de la largeur des barres de vie en fonction de la vie actuelle des joueurs
+    this.player1Bar = this.add.rectangle(10, 10, this.player1Love*8, 50, 0xD038AC);
+    this.player2Bar = this.add.rectangle(this.game.config.width - 10, 10, this.player2Love*8, 50, 0xD038AC);
+  }
+
 }
 
 export default GameScene;
