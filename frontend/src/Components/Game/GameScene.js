@@ -6,12 +6,16 @@ import roseRobotAsset from '../../assets/rose-robot.png';
 import blueHug from '../../assets/blue-hug.png';
 import roseHug from '../../assets/rose-hug.png';
 import heart from '../../assets/heart-rotation.png';
+import blueKiss from '../../assets/blue-smack.png';
+import roseKiss from '../../assets/rose-smack.png';
 
 const BLUE_ROBOT_KEY = 'blue-robot';
 const ROSE_ROBOT_KEY = 'rose-robot';
 const BLUE_HUG_KEY = 'blue-hug';
 const ROSE_HUG_KEY = 'rose-hug';
 const HEART = 'heart';
+const BLUE_KISS_KEY = 'blue-kiss';
+const ROSE_KISS_KEY = 'rose-kiss';
 
 class GameScene extends Phaser.Scene {
   constructor() {
@@ -55,6 +59,15 @@ class GameScene extends Phaser.Scene {
     this.load.spritesheet(HEART, heart, {
       frameWidth: 35.25,
       frameHeight: 30,
+    });
+
+    this.load.spritesheet(BLUE_KISS_KEY, blueKiss, {
+      frameWidth: 96,
+      frameHeight: 99,
+    });
+    this.load.spritesheet(ROSE_KISS_KEY, roseKiss, {
+      frameWidth: 99,
+      frameHeight: 99,
     });
   }
 
@@ -117,6 +130,15 @@ class GameScene extends Phaser.Scene {
       this.player1.anims.play('left-blue-hug', true);
     }
 
+    // Smack animation
+    if (this.cursors.right.isDown && this.input.keyboard.addKey('P').isDown) {
+      this.player1.anims.play('right-blue-kiss', true);
+    }
+    else if (this.input.keyboard.addKey('P').isDown) {
+      this.player1.anims.play('left-blue-kiss', true);
+    }
+
+
     // player 2 controls
     if (this.input.keyboard.addKey('Q').isDown) {
       this.player2.setVelocityX(-250);
@@ -141,6 +163,14 @@ class GameScene extends Phaser.Scene {
       this.player2.anims.play('right-rose-hug', true);
     }
 
+    // Smack animation
+    if (this.input.keyboard.addKey('Q').isDown && this.input.keyboard.addKey('B').isDown) {
+      this.player2.anims.play('left-rose-kiss', true);
+    }
+    else if (this.input.keyboard.addKey('B').isDown) {
+      this.player2.anims.play('right-rose-kiss', true);
+    }
+
     // Kiss attack
     this.heartsPlayer1.getChildren().forEach((h) => {
       h.update(); 
@@ -159,7 +189,7 @@ class GameScene extends Phaser.Scene {
     });
 
     // Player 1 kiss attack
-    if( this.cursors.right.isDown && Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('P')) && !this.kissPlayer1){
+    if(this.cursors.right.isDown && Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('P')) && !this.kissPlayer1){
       this.createHeart(this.player1, 300);
       this.kissPlayer1 = true;
     }
@@ -213,10 +243,18 @@ class GameScene extends Phaser.Scene {
       repeat: -1,
     });
 
-    // HUG attack
     let hugKey;
-    if(key === ROSE_ROBOT_KEY) hugKey = ROSE_HUG_KEY;
-    else hugKey = BLUE_HUG_KEY;
+    let kissKey;
+    if(key === ROSE_ROBOT_KEY) {
+      hugKey = ROSE_HUG_KEY;
+      kissKey = ROSE_KISS_KEY;
+    }
+    else {
+      hugKey = BLUE_HUG_KEY;
+      kissKey = BLUE_KISS_KEY;
+    }
+    
+    // HUG attack
     this.anims.create({
       // eslint-disable-next-line prefer-template
       key: 'right-' + hugKey,
@@ -228,7 +266,20 @@ class GameScene extends Phaser.Scene {
       key: 'left-' + hugKey,
       frames: [{ key: hugKey, frame: 0 }],
     });
-  
+
+    // KISS attack
+    this.anims.create({
+      // eslint-disable-next-line prefer-template
+      key: 'right-' + kissKey,
+      frames: [{ key: kissKey, frame: 2 }],
+    });
+
+    this.anims.create({
+      // eslint-disable-next-line prefer-template
+      key: 'left-' + kissKey,
+      frames: [{ key: kissKey, frame: 1 }],
+    });
+
     return player;
   }
 
@@ -243,6 +294,15 @@ class GameScene extends Phaser.Scene {
 
   createHeart(player, velocityX){
     const heartAttack = this.physics.add.sprite(player.x,player.y, HEART);
+
+    heartAttack.anims.create({
+      key: HEART,
+      frames: this.anims.generateFrameNumbers(HEART, { start: 0, end: 11 }),
+      frameRate: 10,
+      repeat: -1,
+    });
+    heartAttack.anims.play(HEART);
+
     if(player === this.player1){
       this.heartsPlayer1.add(heartAttack);
     }
