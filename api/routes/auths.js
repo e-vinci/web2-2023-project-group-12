@@ -5,7 +5,7 @@ const router = express.Router();
 
 /* Register a user */
 router.post('/register', async (req, res) => {
-  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
+  const username = req?.body?.username?.trim() ? req.body.username : undefined;
   const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
 
   if (!username || !password) throw new Error('empty username or password');

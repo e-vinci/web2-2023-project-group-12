@@ -79,7 +79,7 @@ async function onRegister(e) {
   const response = await fetch('/api/auths/register', options);
 
    if (!response.ok) {
-     errorDiv.innerHTML='<p>username already taken</p>'
+     errorDiv.innerHTML='<p>username already taken or empty username</p>'
    }
 
    // if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
