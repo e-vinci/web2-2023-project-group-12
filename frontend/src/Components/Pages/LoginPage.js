@@ -8,7 +8,7 @@ const LoginPage = () => {
     clearPage();
     renderLoginForm();
 
-    const form = document.querySelector('main');
+    const form = document.querySelector('#loginForm');
     form.addEventListener('submit', onLogin);
   };
 
@@ -17,7 +17,7 @@ function renderLoginForm() {
 
     main.innerHTML = `
     <div class="container bg-black px-5 py-4 rounded-5 bg-opacity-50 col-3">
-      <form class="text-center text-light">
+      <form class="text-center text-light" id="loginForm">
         <div class="bg-warning p-2 rounded mt-2 mb-3 text-dark fs-2">Log in</div>
 
         <div class="d-flex flex-column form-group">

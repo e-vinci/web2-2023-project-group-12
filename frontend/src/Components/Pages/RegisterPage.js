@@ -1,23 +1,21 @@
 import { setAuthenticatedUser } from '../../utils/auths';
-import { clearPage } from "../../utils/render";
+import { clearPage } from '../../utils/render';
 import Navigate from '../Router/Navigate';
 
 const RegisterPage = () => {
-    clearPage();
-    renderRegisterForm();
+  clearPage();
+  renderRegisterForm();
 
-    const form = document.querySelector('main');
-    form.addEventListener('submit', onRegister);
-    
+  const form = document.querySelector('#registerForm');
+  form.addEventListener('submit', onRegister);
 };
 
 function renderRegisterForm() {
+  const main = document.querySelector('main');
 
-    const main = document.querySelector('main');
-
-    main.innerHTML = `
+  main.innerHTML = `
     <div class="container bg-black px-5 py-4 rounded-5 bg-opacity-50 col-3">
-      <form class="text-center text-light">
+      <form class="text-center text-light" id="registerForm">
         <div class="bg-warning p-2 rounded mt-2 mb-3 text-dark fs-2">Sign in</div>
 
         <div class="d-flex flex-column form-group">
@@ -41,53 +39,40 @@ function renderRegisterForm() {
 }
 
 async function onRegister(e) {
-
   e.preventDefault();
-
 
   const username = document.querySelector('#username').value;
 
   const password = document.querySelector('#password').value;
 
-  const confirmPassword = document.querySelector('#comfirm_password')
+  const confirmPassword = document.querySelector('#comfirm_password');
 
   const options = {
-
     method: 'POST',
 
     body: JSON.stringify({
-
       username,
 
       password,
 
       confirmPassword,
-
     }),
 
     headers: {
-
       'Content-Type': 'application/json',
-
     },
   };
 
-
   const response = await fetch('/api/auths/register', options);
-
 
   if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
 
-
   const authenticatedUser = await response.json();
 
-
   console.log('Newly registered & authenticated user : ', authenticatedUser);
-
 
   setAuthenticatedUser(authenticatedUser);
 
   Navigate('/login');
-
 }
 export default RegisterPage;
