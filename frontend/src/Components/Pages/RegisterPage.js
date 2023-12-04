@@ -57,7 +57,8 @@ async function onRegister(e) {
 
       confirmPassword,
     }),
-
+    mode:'cors',
+    credentials :'include',
     headers: {
       'Content-Type': 'application/json',
     },
