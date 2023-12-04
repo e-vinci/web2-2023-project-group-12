@@ -5,7 +5,7 @@ let game;
 
 const GamePage = () => {
   const phaserGame = `
-  <div class="d-flex justify-content-center h-sm-75">
+  <div class="d-flex justify-content-center">
     <div id="gameDiv" class="d-flex justify-content-center">
     </div>
   </div>
