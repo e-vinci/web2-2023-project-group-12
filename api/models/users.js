@@ -21,6 +21,14 @@ const defaultUsers = [
   },
 ];
 
+function validUsername(username) {
+  if (!username || typeof username !== 'string') throw new Error('Invalid username');
+}
+
+function validPassword(password) {
+  if (!password || typeof password !== 'string') throw new Error('Invalid password');
+}
+
 async function login(username, password) {
   const userFound = readOneUserFromUsername(username);
   if (!userFound) return undefined;
@@ -71,6 +79,8 @@ function readOneUserFromUsername(username) {
 }
 
 async function createOneUser(username, password) {
+  validUsername(username);
+  validPassword(password);
   const users = parse(jsonDbPath, defaultUsers);
 
   const hashedPassword = await bcrypt.hash(password, saltRounds);

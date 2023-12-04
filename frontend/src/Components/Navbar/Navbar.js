@@ -55,7 +55,9 @@ function renderNavbar() {
         <a href="#" ><img data-uri="/" class="logo col-10" src="${logo}" alt="SPACE LOVER"></a>
         <div>
           <ul class="navbar-nav justify-content-end">
-            
+            <li class="nav-item btn btn-warning mx-2 h-75 mt-3 fs-5">
+            <a class="nav-link text-black disabled" href="#">Welcome ${authenticatedUser?.username} ☺ ♥</a>
+            </li> 
             <li class="nav-item col-2">
               <a class="nav-link" href="#" ><img data-uri="/score" src="${scoreIcon}" alt="Scores"></a>
             </li>
@@ -67,9 +69,7 @@ function renderNavbar() {
             <li class="nav-item btn btn-warning mx-2 h-75 mt-3 fs-5" data-uri="/logout">
               <a class="nav-link text-black" href="#" data-uri="/logout">Log out</a>
             </li>
-            <li class="nav-item btn btn-warning mx-2 h-75 mt-3 fs-5">
-            <a class="nav-link disabled" href="#">BONJOUR ${authenticatedUser?.username} <3</a>
-            </li>           
+          
           </ul>
         </div>
       </div>
