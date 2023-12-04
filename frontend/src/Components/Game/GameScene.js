@@ -290,22 +290,25 @@ class GameScene extends Phaser.Scene {
       this.gameOver = true;
     } else if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('O'))) { // player1
         this.player2Love += 10;
-        player2.setTint(0xD038AC);
-        player2.anims.play('turn-rose-robot');
-        // clear tint after 50 milliseconds
-        this.time.delayedCall(50, () => {
-            player2.clearTint();
-        }, [], this);
+        this.setTintEffect(player2, 50);
       }
         else if(Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('V'))) { // player2
           this.player1Love += 10;
-          player1.setTint(0xD038AC);
-          player1.anims.play('turn-blue-robot');
-          // clear tint after 50 milliseconds
-          this.time.delayedCall(50, () => {
-              player1.clearTint();
-          }, [], this);
+          this.setTintEffect(player1, 50);
         }
+  }
+
+  setTintEffect(player, time){
+    player.setTint(0xD038AC);
+    let key;
+    if (player === this.player1)
+      key = 'turn-blue-robot';
+    else key = 'turn-rose-robot';
+    player.anims.play(key);
+    // clear tint after "time" milliseconds
+    this.time.delayedCall(time, () => {
+      player.clearTint();
+    }, [], this);
   }
 
   createHeart(player, velocityX){
