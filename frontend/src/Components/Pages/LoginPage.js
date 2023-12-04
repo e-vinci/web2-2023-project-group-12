@@ -26,7 +26,7 @@ function renderLoginForm() {
           <label for="password" class="form-label">Password</label>
           <input class="bg-lavender form-control mb-2" type="password"  id="password" name="password" required>
         </div>
-        <div class ="errorDiv input-container" id="errorLogin">
+        <div class ="errorDiv input-container text-danger" id="errorLogin">
         </div>
         <button type="submit" class="btn btn-warning mt-3 col-8 rounded-5">Log in</button>
       </form>

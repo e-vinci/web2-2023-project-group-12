@@ -31,7 +31,7 @@ function renderRegisterForm() {
                   Accept our policy
             </a>
           </div>
-          <div class ="errorDiv input-container" id="errorRegister">
+          <div class ="errorDiv input-container text-danger" id="errorRegister">
           </div>
         </div>
         <button type="submit" class="btn btn-warning mt-3 col-8 rounded-5">Sign in</button>
