@@ -17,24 +17,26 @@ function renderSecondPlayerPage() {
     const main = document.querySelector('main');
 
     main.innerHTML = `
-    <div class="container bg-black p-5 rounded-5 bg-opacity-50 col-4">
-     
-    <button type="button" class="btn btn-warning mt-3 col-12 rounded-5 start-game-btn">
-      Play with an anonymous player
-    </button>
-    <div class="text-center text-light m-3">
-    <b> OR</b>
-    </div>
-    
-    <form class="text-center text-light" id="secondPlayerForm">
-        <div class="d-flex flex-column form-group">
-          <label for="username" class="form-label">Username</label>
-          <input class="bg-lavender form-control mb-3" type="text"  id="username" name="username" required>
-          <label for="password" class="form-label">Password</label>
-          <input class="bg-lavender form-control mb-2" type="password"  id="password" name="password" required>
-        </div>
+    <div class="container bg-black px-5 py-4 rounded-5 bg-opacity-50 col-3">
+      <button class="btn btn-warning mt-2 col-12 py-2 rounded-5 start-game-btn">
+        Play with an anonymous player
+      </button>
 
-        <button type="submit" class="btn btn-warning mt-3 col-8 rounded-5">Play with a second player</button>
+      <div class="d-flex my-3 col-12 align-items-center">
+        <span class="bg-warning col h-4px"></span>
+        <b class="text-center text-light col-2 fs-5"> OR</b>
+        <span class="bg-warning col h-4px"></span>
+      </div>
+      
+      <form class="text-center text-light" id="secondPlayerForm">
+          <div class="d-flex flex-column form-group">
+            <label for="username" class="form-label">Username</label>
+            <input class="bg-lavender form-control mb-3" type="text"  id="username" name="username" required>
+            <label for="password" class="form-label">Password</label>
+            <input class="bg-lavender form-control mb-2" type="password"  id="password" name="password" required>
+          </div>
+
+          <button type="submit" class="btn btn-warning mt-3 col-10 rounded-5">Play with this second player</button>
       </form>
     </div>
     `;
