@@ -202,21 +202,21 @@ class GameScene extends Phaser.Scene {
 
     // Player 1 kiss attack
     if(this.cursors.right.isDown && Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('P')) && !this.kissPlayer1){
-      this.createHeart(this.player1, 300);
+      this.createHeart(this.player1, 600);
       this.kissPlayer1 = true;
     }
     else if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('P')) && !this.kissPlayer1){
-      this.createHeart(this.player1, -300);
+      this.createHeart(this.player1, -600);
       this.kissPlayer1 = true;
     }
 
     // Player 2 kiss attack
     if(this.input.keyboard.addKey('Q').isDown && Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('B')) && !this.kissPlayer2){
-      this.createHeart(this.player2, -300);
+      this.createHeart(this.player2, -600);
       this.kissPlayer2 = true;
     }
     else if(Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('B')) && !this.kissPlayer2){
-      this.createHeart(this.player2, 300);
+      this.createHeart(this.player2, 600);
       this.kissPlayer2 = true;
     }
   }
@@ -346,9 +346,11 @@ class GameScene extends Phaser.Scene {
     kiss.destroy();
     if (player === this.player1) {
       this.player1Love += 10;
+      this.setTintEffect(this.player1,100);
       this.kissPlayer2 = false;
     } else if (player === this.player2) {
       this.player2Love += 10;
+      this.setTintEffect(this.player2,100);
       this.kissPlayer1 = false;
     }
   }
