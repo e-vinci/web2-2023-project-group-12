@@ -296,15 +296,16 @@ class GameScene extends Phaser.Scene {
   }
 
   hugAttack(player1, player2) {
-    if(this.player2Love === 100 || this.player1Love === 100) {
-      this.physics.pause();
-      this.gameOver = true;
-    } else if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('O'))) { // player1
+    if(Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('O'))) { // player1
       this.player2Love += 10;
       this.setTintEffect(player2, 50);
     } else if(Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('V'))) { // player2
       this.player1Love += 10;
       this.setTintEffect(player1, 50);
+    }
+    if(this.player2Love === 100 || this.player1Love === 100) {
+      this.physics.pause();
+      this.gameOver = true;
     }
   }
 
@@ -353,6 +354,10 @@ class GameScene extends Phaser.Scene {
       this.setTintEffect(this.player2,100);
       this.kissPlayer1 = false;
     }
+    if(this.player1Love === 100 || this.player2Love === 100){
+      this.physics.pause();
+      this.gameOver = true;
+    }
   }
 
   updateBars() {
@@ -375,9 +380,9 @@ class GameScene extends Phaser.Scene {
     const popupTextStyle = { fontFamily: 'Bauhaus', fontSize: '50px', fill: '#341f8b'};
     let endGameText;
     if (this.player2Love === 100)
-       endGameText = this.add.text(centerX, centerY - 50, 'YOU WON', popupTextStyle);
+       endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 1 WON', popupTextStyle);
     else 
-      endGameText = this.add.text(centerX, centerY - 50, 'GAME OVER', popupTextStyle);
+      endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 2 WON', popupTextStyle);
     endGameText.setOrigin(0.5);
 
     const homeButton = this.add.image(centerX +70, centerY + 40, 'home').setScale(0.2);
