@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import Navigate from '../Router/Navigate';
+
 import skyAsset from '../../assets/arena.png';
 import platformAsset from '../../assets/arena_platform.png';
 import blueRobotAsset from '../../assets/blue-robot.png';
@@ -8,6 +10,9 @@ import roseHug from '../../assets/rose-hug.png';
 import heart from '../../assets/heart-rotation.png';
 import blueKiss from '../../assets/blue-smack.png';
 import roseKiss from '../../assets/rose-smack.png';
+
+import homeIcon from '../../assets/home-icon.png';
+import replayIcon from '../../assets/replay-icon.png'
 
 const BLUE_ROBOT_KEY = 'blue-robot';
 const ROSE_ROBOT_KEY = 'rose-robot';
@@ -34,8 +39,13 @@ class GameScene extends Phaser.Scene {
   }
 
   preload() {
+    // icons
+    this.load.image('home', homeIcon);
+    this.load.image('replay', replayIcon);
+
     this.load.image('sky', skyAsset);
     this.load.image('ground', platformAsset);
+
     this.load.spritesheet(BLUE_ROBOT_KEY, blueRobotAsset, {
       frameWidth: 100,
       frameHeight: 98,
@@ -104,6 +114,7 @@ class GameScene extends Phaser.Scene {
     this.updateBars();
 
     if (this.gameOver) {
+      this.endGamePopup();
       return;
     }
 
@@ -191,21 +202,21 @@ class GameScene extends Phaser.Scene {
 
     // Player 1 kiss attack
     if(this.cursors.right.isDown && Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('P')) && !this.kissPlayer1){
-      this.createHeart(this.player1, 300);
+      this.createHeart(this.player1, 600);
       this.kissPlayer1 = true;
     }
     else if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('P')) && !this.kissPlayer1){
-      this.createHeart(this.player1, -300);
+      this.createHeart(this.player1, -600);
       this.kissPlayer1 = true;
     }
 
     // Player 2 kiss attack
     if(this.input.keyboard.addKey('Q').isDown && Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('B')) && !this.kissPlayer2){
-      this.createHeart(this.player2, -300);
+      this.createHeart(this.player2, -600);
       this.kissPlayer2 = true;
     }
     else if(Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('B')) && !this.kissPlayer2){
-      this.createHeart(this.player2, 300);
+      this.createHeart(this.player2, 600);
       this.kissPlayer2 = true;
     }
   }
@@ -285,17 +296,17 @@ class GameScene extends Phaser.Scene {
   }
 
   hugAttack(player1, player2) {
+    if(Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('O'))) { // player1
+      this.player2Love += 10;
+      this.setTintEffect(player2, 50);
+    } else if(Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('V'))) { // player2
+      this.player1Love += 10;
+      this.setTintEffect(player1, 50);
+    }
     if(this.player2Love === 100 || this.player1Love === 100) {
       this.physics.pause();
       this.gameOver = true;
-    } else if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('O'))) { // player1
-        this.player2Love += 10;
-        this.setTintEffect(player2, 50);
-      }
-        else if(Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('V'))) { // player2
-          this.player1Love += 10;
-          this.setTintEffect(player1, 50);
-        }
+    }
   }
 
   setTintEffect(player, time){
@@ -336,10 +347,16 @@ class GameScene extends Phaser.Scene {
     kiss.destroy();
     if (player === this.player1) {
       this.player1Love += 10;
+      this.setTintEffect(this.player1,100);
       this.kissPlayer2 = false;
     } else if (player === this.player2) {
       this.player2Love += 10;
+      this.setTintEffect(this.player2,100);
       this.kissPlayer1 = false;
+    }
+    if(this.player1Love === 100 || this.player2Love === 100){
+      this.physics.pause();
+      this.gameOver = true;
     }
   }
 
@@ -348,6 +365,42 @@ class GameScene extends Phaser.Scene {
     this.player1Bar = this.add.rectangle(this.game.config.width - 10, 10, this.player1Love*8, 50, 0xD038AC);
     this.player2Bar = this.add.rectangle(10, 10, this.player2Love*8, 50, 0xD038AC);
   }
+
+  endGamePopup() {
+   
+    const {centerX} = this.cameras.main;
+    const {centerY} = this.cameras.main;
+    const popupWidth = 350;
+    const popupHeight = 250;
+
+    const popupBackground = this.add.graphics();
+    popupBackground.fillStyle(0xe1dbf7);
+    popupBackground.fillRoundedRect(centerX - popupWidth / 2, centerY - popupHeight / 2, popupWidth, popupHeight);
+
+    const popupTextStyle = { fontFamily: 'Bauhaus', fontSize: '50px', fill: '#341f8b'};
+    let endGameText;
+    if (this.player2Love === 100)
+       endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 1 WON', popupTextStyle);
+    else 
+      endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 2 WON', popupTextStyle);
+    endGameText.setOrigin(0.5);
+
+    const homeButton = this.add.image(centerX +70, centerY + 40, 'home').setScale(0.2);
+    homeButton.setOrigin(0.5);
+    homeButton.setInteractive();
+    const replayButton = this.add.image(centerX -70, centerY + 40, 'replay').setScale(0.2);
+    replayButton.setOrigin(0.5);
+    replayButton.setInteractive();
+    
+    homeButton.on('pointerdown', () => {
+      Navigate('/');
+      window.location.reload();
+    });
+
+    replayButton.on('pointerdown', () => {
+      window.location.reload();
+    });
+}
 
 }
 
