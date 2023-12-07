@@ -1,5 +1,5 @@
 const express = require('express');
-const { register, login } = require('../models/users');
+const { register, login, readAllRanking } = require('../models/users');
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router.post('/register', async (req, res) => {
 
   createCookieSessionData(req, authenticatedUser);
 
-  return res.json({ username: authenticatedUser.username });
+  return res.json(authenticatedUser.username);
 });
 
 /* Login a user */
@@ -27,12 +27,13 @@ router.post('/login', async (req, res) => {
   if (!username || !password) return res.sendStatus(400); // 400 Bad Reques
 
   const authenticatedUser = await login(username, password);
+  console.log(authenticatedUser.username);
 
   if (!authenticatedUser) return res.sendStatus(401); // 401 Unauthorized
 
   createCookieSessionData(req, authenticatedUser);
 
-  return res.json({ username: authenticatedUser.username });
+  return res.json(authenticatedUser.username);
 });
 
 /* Login second user */
@@ -43,12 +44,14 @@ router.post('/loginSecondPlayer', async (req, res) => {
   if (!username || !password) return res.sendStatus(400); // 400 Bad Reques
 
   const authenticatedUser2 = await login(username, password);
+  console.log(authenticatedUser2.username);
 
   if (!authenticatedUser2) return res.sendStatus(401); // 401 Unauthorized
 
   createCookieSessionData2(req, authenticatedUser2);
+  console.log(req.session.username);
 
-  return res.json({ username2: authenticatedUser2.username });
+  return res.json(authenticatedUser2.username);
 });
 
 /* Logout a user */
@@ -57,6 +60,15 @@ router.get('/logout', (req, res) => {
   req.session = null;
 
   return res.sendStatus();
+});
+
+// rank page
+
+router.get('/rank', (req, res) => {
+  const ranking = readAllRanking();
+  console.log(ranking[1].username);
+
+  return res.json(ranking);
 });
 
 function createCookieSessionData(req, authenticatedUser) {

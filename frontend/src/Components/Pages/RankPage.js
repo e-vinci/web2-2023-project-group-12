@@ -1,12 +1,21 @@
 import { clearPage } from '../../utils/render';
 
-const RankPage = () => {
+const RankPage = async () => {
   clearPage();
-  renderRankPage();
+  const rankingData = await rank();
+  renderRankPage(rankingData);
 };
 
-function renderRankPage() {
+function renderRankPage(rankingData) {
   const main = document.querySelector('main');
+
+  const ranking = rankingData.map((user) => `
+    <div class="d-flex justify-content-between">
+    <p class="bg-lavender col-sm-7 py-1 rounded-3"> ${user.username}</p>
+    <p class="bg-lavender col-4 py-1"> ${user.gamesWon}</p>
+  </div>
+  `,
+  );
 
   main.innerHTML = `
     <div class="container col-3 bg-black px-5 pt-4 pb-5 rounded-5 bg-opacity-50 text-center justify-content-center">
@@ -16,24 +25,17 @@ function renderRankPage() {
                 <p class="col-7 ">Username</p>
                 <p class="col-4">Games won</p>
             </div>
-            <div class="d-flex justify-content-between">
-                <p class="bg-lavender col-sm-7 py-1 rounded-3">ChatGPT</p>
-                <p class="bg-lavender col-4 py-1">101</p>
-            </div>
-            <div class="d-flex justify-content-between">
-                <p class="bg-lavender col-7 py-1 rounded-3">Youssef</p>
-                <p class="bg-lavender col-4 py-1">100</p>
-            </div>
-            <div class="d-flex justify-content-between">
-                <p class="bg-lavender col-7 py-1 rounded-3">Le daron à nour</p>
-                <p class="bg-lavender col-4 py-1">76</p>
-            </div>
-            <div class="d-flex justify-content-between">
-                <p class="bg-lavender col-7 py-1 rounded-3">Nour</p>
-                <p class="bg-lavender col-4 py-1">2</p>
-            </div>
+            ${ranking}
         </div>
     </div>`;
+}
+
+async function rank() {
+  const response = await fetch('/api/auths/rank');
+  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+  const ranking = await response.json();
+
+  return ranking;
 }
 
 export default RankPage;
