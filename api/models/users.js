@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const path = require('node:path');
 const { parse, serialize } = require('../utils/json');
 
-const jwtSecret = 'ilovemypizza!';
+const jwtSecret = 'spacelover!';
 const lifetimeJwt = 24 * 60 * 60 * 1000; // in ms : 24 * 60 * 60 * 1000 = 24h
 
 const saltRounds = 10;
@@ -15,8 +15,19 @@ const defaultUsers = [
     id: 1,
     username: 'admin',
     password: bcrypt.hashSync('admin', saltRounds),
+    gamesPlayed: 100,
+    gamesWon: 51,
+    gamesLost: 49,
   },
 ];
+
+function validUsername(username) {
+  if (!username || typeof username !== 'string') throw new Error('Invalid username');
+}
+
+function validPassword(password) {
+  if (!password || typeof password !== 'string') throw new Error('Invalid password');
+}
 
 async function login(username, password) {
   const userFound = readOneUserFromUsername(username);
@@ -68,6 +79,8 @@ function readOneUserFromUsername(username) {
 }
 
 async function createOneUser(username, password) {
+  validUsername(username);
+  validPassword(password);
   const users = parse(jsonDbPath, defaultUsers);
 
   const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -76,6 +89,9 @@ async function createOneUser(username, password) {
     id: getNextId(),
     username,
     password: hashedPassword,
+    gamesPlayed: 0,
+    gamesWon: 0,
+    gamesLost: 0,
   };
 
   users.push(createdUser);

@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
 const { readOneUserFromUsername } = require('../models/users');
 
-const jwtSecret = 'ilovemypizza!';
+const jwtSecret = 'spacelover!';
 
 const authorize = (req, res, next) => {
-  const token = req.get('authorization');
+  const { token } = req.session;
   if (!token) return res.sendStatus(401);
 
   try {
