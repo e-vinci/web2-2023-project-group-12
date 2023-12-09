@@ -104,7 +104,7 @@ async function createOneUser(username, password) {
 function readAllRanking() {
   const players = parse(jsonDbPath, defaultUsers);
 
-  const ranking = [...players].sort(function(a, b){return b.gamesWon - a.gamesWon});
+  const ranking = [...players].sort((a, b) => b.gamesWon - a.gamesWon);
 
   return ranking;
 }
