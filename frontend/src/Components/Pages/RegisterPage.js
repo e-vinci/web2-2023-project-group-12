@@ -78,6 +78,7 @@ async function onRegister(e) {
 
   const response = await fetch('/api/auths/register', options);
 
+
    if (!response.ok) {
      errorDiv.innerHTML='<p>username already taken or empty username</p>'
    }
@@ -87,13 +88,11 @@ async function onRegister(e) {
   const authenticatedUser = await response.json();
 
   errorDiv.style.display="none";
-
+    
   console.log('Newly registered & authenticated user : ', authenticatedUser);
 
   setAuthenticatedUser(authenticatedUser);
 
   Navigate('/login');
 }
-}
-
 export default RegisterPage;

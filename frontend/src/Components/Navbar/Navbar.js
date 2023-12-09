@@ -29,7 +29,7 @@ function renderNavbar() {
           <ul class="navbar-nav justify-content-end">
 
             <li class="nav-item col-2">
-              <a class="nav-link" href="#" ><img data-uri="/rank" class="col-12" src="${rankIcon}" alt="Ranking"></a>
+              <a class="nav-link" href="#" id="rank" ><img data-uri="/rank" class="col-12" src="${rankIcon}" alt="Ranking"></a>
             </li>
             
             <li class="nav-item btn btn-warning mx-2 h-75 mt-3 fs-5" data-uri="/login">
@@ -59,19 +59,19 @@ function renderNavbar() {
             </li>
 
             <li class="nav-item col-2">
-              <a class="nav-link" href="#" ><img data-uri="/rank" class="col-12" src="${rankIcon}" alt="Ranking"></a>
+              <a class="nav-link" href="#" id="rank" ><img data-uri="/rank" class="col-12" src="${rankIcon}" alt="Ranking"></a>
             </li>
             
             <li class="nav-item btn btn-warning mx-2 fs-5" data-uri="/logout">
               <a class="nav-link text-black" href="#" data-uri="/logout">Log out</a>
             </li>
-          
           </ul>
         </div>
       </div>
     </nav>
 `;
-navbarWrapper.innerHTML = isAuthenticated() ? authenticatedNavbar : anonymousNavbar;
+
+  navbarWrapper.innerHTML = isAuthenticated() ? authenticatedNavbar : anonymousNavbar;
 }
 
 export default Navbar;

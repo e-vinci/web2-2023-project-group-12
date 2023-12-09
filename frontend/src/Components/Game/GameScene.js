@@ -14,6 +14,9 @@ import roseKiss from '../../assets/rose-smack.png';
 import homeIcon from '../../assets/home-icon.png';
 import replayIcon from '../../assets/replay-icon.png'
 
+import { getAuthenticatedUser, isAuthenticated, getAuthenticatedUser2, isAuthenticated2 } from '../../utils/auths';
+
+
 const BLUE_ROBOT_KEY = 'blue-robot';
 const ROSE_ROBOT_KEY = 'rose-robot';
 const BLUE_HUG_KEY = 'blue-hug';
@@ -379,11 +382,29 @@ class GameScene extends Phaser.Scene {
 
     const popupTextStyle = { fontFamily: 'Bauhaus', fontSize: '50px', fill: '#341f8b'};
     let endGameText;
-    if (this.player2Love === 100)
-       endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 1 WON', popupTextStyle);
+
+    if(isAuthenticated() && isAuthenticated2()){
+      if (this.player2Love === 100)
+       endGameText = this.add.text(centerX, centerY - 50, `${getAuthenticatedUser()} WON`  , popupTextStyle);  // player 1 won
     else 
-      endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 2 WON', popupTextStyle);
+      endGameText = this.add.text(centerX, centerY - 50, `${getAuthenticatedUser2()} WON`, popupTextStyle); // player 2 won
     endGameText.setOrigin(0.5);
+    }
+    else if (isAuthenticated()){
+      if (this.player2Love === 100)
+      endGameText = this.add.text(centerX, centerY - 50, `${getAuthenticatedUser()} WON`, popupTextStyle); // player 1 won
+   else 
+     endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 2 WON', popupTextStyle); // player 2 won
+   endGameText.setOrigin(0.5);
+    }
+    else {
+      if (this.player2Love === 100)
+      endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 1 WON', popupTextStyle);
+   else 
+     endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 2 WON', popupTextStyle);
+   endGameText.setOrigin(0.5);
+    }
+
 
     const homeButton = this.add.image(centerX +70, centerY + 40, 'home').setScale(0.2);
     homeButton.setOrigin(0.5);

@@ -7,6 +7,8 @@ import rulesIcon from '../../img/rules-icon.png';
 import player1Controls from '../../img/player1-controls.png';
 import player2Controls from '../../img/player2-controls.png';
 
+import { isAuthenticated } from '../../utils/auths';
+
 const HomePage = () => {
   clearPage();
   renderHomePage();
@@ -14,8 +16,11 @@ const HomePage = () => {
   popUpRules();
 };
 
+
+
 function renderHomePage() {
   const main = document.querySelector('main');
+
   const homepage = `
   <div class="d-flex flex-column align-items-center justify-content-center">
   
@@ -87,7 +92,12 @@ function popUpRules () {
 function startGame () {
   const btn = document.querySelector('.start-game-btn');
   btn.addEventListener('click', () =>{
-    Navigate('/game');
+    if(isAuthenticated()){
+      Navigate('/secondPlayer');
+    }
+    else{
+      Navigate('/game');
+    }
   });
 }
 

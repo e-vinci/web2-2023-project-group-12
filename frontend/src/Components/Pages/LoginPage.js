@@ -32,8 +32,8 @@ function renderLoginForm() {
       </form>
     </div>
     `;
-
 }
+
 
 async function onLogin(e) {
 

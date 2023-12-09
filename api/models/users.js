@@ -101,6 +101,14 @@ async function createOneUser(username, password) {
   return createdUser;
 }
 
+function readAllRanking() {
+  const players = parse(jsonDbPath, defaultUsers);
+
+  const ranking = [...players].sort(function(a, b){return b.gamesWon - a.gamesWon});
+
+  return ranking;
+}
+
 function getNextId() {
   const users = parse(jsonDbPath, defaultUsers);
   const lastItemIndex = users?.length !== 0 ? users.length - 1 : undefined;
@@ -114,4 +122,5 @@ module.exports = {
   login,
   register,
   readOneUserFromUsername,
+  readAllRanking,
 };

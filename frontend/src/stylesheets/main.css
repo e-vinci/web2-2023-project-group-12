@@ -33,8 +33,7 @@ body {
     background-color: #e1dbf7;
 }
 
-.phaser-container {
-    border: 2px solid #000;
-    box-sizing: border-box; /* Ensure the border is included in the element's total width and height */
-    /* Add any other styles as needed */
-  }
+/* Height for the span balise around "OR" in the SecondPlayerPage */
+.h-4px {
+    height: 4px;
+}
