@@ -19,7 +19,7 @@ const Navbar = () => {
 
 function renderNavbar() {
   const navbarWrapper = document.querySelector('#navbarWrapper');
-  const authenticatedUser = getAuthenticatedUser();
+  const authenticatedUser = getAuthenticatedUser()?.user;
 
   const anonymousNavbar = `
   <nav class="navbar navbar-expand navbar-light">

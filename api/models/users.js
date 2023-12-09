@@ -10,17 +10,6 @@ const saltRounds = 10;
 
 const jsonDbPath = path.join(__dirname, '/../data/users.json');
 
-const defaultUsers = [
-  {
-    id: 1,
-    username: 'admin',
-    password: bcrypt.hashSync('admin', saltRounds),
-    gamesPlayed: 100,
-    gamesWon: 51,
-    gamesLost: 49,
-  },
-];
-
 function validUsername(username) {
   if (!username || typeof username !== 'string') throw new Error('Invalid username');
 }
@@ -37,13 +26,13 @@ async function login(username, password) {
   if (!passwordMatch) return undefined;
 
   const token = jwt.sign(
-    { username }, // session data added to the payload (payload : part 2 of a JWT)
+    { userFound }, // session data added to the payload (payload : part 2 of a JWT)
     jwtSecret, // secret used for the signature (signature part 3 of a JWT)
     { expiresIn: lifetimeJwt }, // lifetime of the JWT (added to the JWT payload)
   );
 
   const authenticatedUser = {
-    username,
+    user: userFound,
     token,
   };
 
@@ -57,13 +46,13 @@ async function register(username, password) {
   await createOneUser(username, password);
 
   const token = jwt.sign(
-    { username }, // session data added to the payload (payload : part 2 of a JWT)
+    { userFound }, // session data added to the payload (payload : part 2 of a JWT)
     jwtSecret, // secret used for the signature (signature part 3 of a JWT)
     { expiresIn: lifetimeJwt }, // lifetime of the JWT (added to the JWT payload)
   );
 
   const authenticatedUser = {
-    username,
+    user: userFound,
     token,
   };
 
@@ -71,7 +60,7 @@ async function register(username, password) {
 }
 
 function readOneUserFromUsername(username) {
-  const users = parse(jsonDbPath, defaultUsers);
+  const users = parse(jsonDbPath);
   const indexOfUserFound = users.findIndex((user) => user.username === username);
   if (indexOfUserFound < 0) return undefined;
 
@@ -81,7 +70,7 @@ function readOneUserFromUsername(username) {
 async function createOneUser(username, password) {
   validUsername(username);
   validPassword(password);
-  const users = parse(jsonDbPath, defaultUsers);
+  const users = parse(jsonDbPath);
 
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
@@ -102,7 +91,7 @@ async function createOneUser(username, password) {
 }
 
 function readAllRanking() {
-  const players = parse(jsonDbPath, defaultUsers);
+  const players = parse(jsonDbPath);
 
   const ranking = [...players].sort((a, b) => b.gamesWon - a.gamesWon);
 
@@ -110,7 +99,7 @@ function readAllRanking() {
 }
 
 function getNextId() {
-  const users = parse(jsonDbPath, defaultUsers);
+  const users = parse(jsonDbPath);
   const lastItemIndex = users?.length !== 0 ? users.length - 1 : undefined;
   if (lastItemIndex === undefined) return 1;
   const lastId = users[lastItemIndex]?.id;
