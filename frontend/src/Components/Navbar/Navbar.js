@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-import { Navbar as BootstrapNavbar } from 'bootstrap';
 import logo from '../../img/logo.svg';
 import rankIcon from '../../img/rank-icon.svg';
 import scoreIcon from '../../img/score-icon.svg';
