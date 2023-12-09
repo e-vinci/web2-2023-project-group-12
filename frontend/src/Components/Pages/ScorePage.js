@@ -1,9 +1,10 @@
 import { clearPage } from '../../utils/render';
 
-import { getAuthenticatedUser} from '../../utils/auths';
+import { getAuthenticatedUser, clearAuthenticatedUser2, isAuthenticated2 } from '../../utils/auths';
 
 
 const ScorePage = () => {
+    if (isAuthenticated2()) clearAuthenticatedUser2();
     clearPage();
     renderScoreForm();
   };

@@ -1,6 +1,8 @@
 import { clearPage } from '../../utils/render';
+import { clearAuthenticatedUser2, isAuthenticated2 } from '../../utils/auths';
 
 const RankPage = async () => {
+  if (isAuthenticated2()) clearAuthenticatedUser2();
   clearPage();
   const rankingData = await rank();
   renderRankPage(rankingData.slice(0,4));

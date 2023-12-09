@@ -14,7 +14,7 @@ import roseKiss from '../../assets/rose-smack.png';
 import homeIcon from '../../assets/home-icon.png';
 import replayIcon from '../../assets/replay-icon.png'
 
-import { getAuthenticatedUser, isAuthenticated, getAuthenticatedUser2, isAuthenticated2, clearAuthenticatedUser2 } from '../../utils/auths';
+import { getAuthenticatedUser, isAuthenticated, getAuthenticatedUser2, isAuthenticated2 } from '../../utils/auths';
 
 const BLUE_ROBOT_KEY = 'blue-robot';
 const ROSE_ROBOT_KEY = 'rose-robot';
@@ -407,7 +407,6 @@ class GameScene extends Phaser.Scene {
     replayButton.setInteractive();
     
     homeButton.on('pointerdown', () => {
-      clearAuthenticatedUser2();
       Navigate('/');
       window.location.reload();
     });

@@ -7,9 +7,10 @@ import rulesIcon from '../../img/rules-icon.png';
 import player1Controls from '../../img/player1-controls.png';
 import player2Controls from '../../img/player2-controls.png';
 
-import { isAuthenticated } from '../../utils/auths';
+import { isAuthenticated, clearAuthenticatedUser2, isAuthenticated2 } from '../../utils/auths';
 
 const HomePage = () => {
+  if (isAuthenticated2()) clearAuthenticatedUser2();
   clearPage();
   renderHomePage();
   startGame();
