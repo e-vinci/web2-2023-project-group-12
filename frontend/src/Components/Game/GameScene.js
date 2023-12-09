@@ -381,16 +381,16 @@ class GameScene extends Phaser.Scene {
     const popupTextStyle = { fontFamily: 'Bauhaus', fontSize: '50px', fill: '#341f8b'};
     let endGameText;
 
-    const user1 = getAuthenticatedUser()?.username;
-    const user2 = getAuthenticatedUser2()?.username;
+    const user1 = getAuthenticatedUser()?.user;
+    const user2 = getAuthenticatedUser2()?.user;
 
     if(isAuthenticated()){
       if (this.player2Love === 100)
-        endGameText = this.add.text(centerX, centerY - 50, `${user1} WON`  , popupTextStyle);  // player 1 won
+        endGameText = this.add.text(centerX, centerY - 50, `${user1.username} WON`  , popupTextStyle);  // player 1 won
       else if (isAuthenticated2())
-        endGameText = this.add.text(centerX, centerY - 50, `${user2} WON`, popupTextStyle); // player 2 won
+        endGameText = this.add.text(centerX, centerY - 50, `${user2.username} WON`, popupTextStyle); // player 2 won
       else 
-        endGameText = this.add.text(centerX, centerY - 50, `${user1} LOST`, popupTextStyle); // player 2 won
+        endGameText = this.add.text(centerX, centerY - 50, `${user1.username} LOST`, popupTextStyle); // player 2 won
     }
     else if (this.player2Love === 100)
         endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 1 WON', popupTextStyle);

@@ -15,7 +15,7 @@ router.post('/register', async (req, res) => {
   if (!authenticatedUser) throw new Error('username already taken');
 
   createCookieSessionData(req, authenticatedUser);
-  return res.json({ username: authenticatedUser.username });
+  return res.json({ user: authenticatedUser.user });
 });
 
 /* Login a user */
@@ -26,12 +26,11 @@ router.post('/login', async (req, res) => {
   if (!username || !password) throw new Error('empty username or password');
 
   const authenticatedUser = await login(username, password);
-  console.log(authenticatedUser.username);
 
   if (!authenticatedUser) throw new Error('invalid username or password');
 
   createCookieSessionData(req, authenticatedUser);
-  return res.json({ username: authenticatedUser.username });
+  return res.json({ user: authenticatedUser.user });
 });
 
 /* Login second user */
@@ -42,14 +41,12 @@ router.post('/loginSecondPlayer', async (req, res) => {
   if (!username || !password) return res.sendStatus(400); // 400 Bad Reques
 
   const authenticatedUser2 = await login(username, password);
-  console.log(authenticatedUser2.username);
 
   if (!authenticatedUser2) return res.sendStatus(401); // 401 Unauthorized
 
   createCookieSessionData2(req, authenticatedUser2);
-  console.log(req.session.username);
 
-  return res.json({ username: authenticatedUser2.username });
+  return res.json({ user: authenticatedUser2.user });
 });
 
 /* Logout a user */
@@ -63,18 +60,17 @@ router.get('/logout', (req, res) => {
 // rank page
 router.get('/rank', (req, res) => {
   const ranking = readAllRanking();
-  console.log(ranking[1].username);
 
   return res.json(ranking);
 });
 
 function createCookieSessionData(req, authenticatedUser) {
-  req.session.username = authenticatedUser.username;
+  req.session.user = authenticatedUser.user;
   req.session.token = authenticatedUser.token;
 }
 
 function createCookieSessionData2(req, authenticatedUser2) {
-  req.session.username2 = authenticatedUser2.username;
+  req.session.user = authenticatedUser2.user;
   req.session.token2 = authenticatedUser2.token;
 }
 

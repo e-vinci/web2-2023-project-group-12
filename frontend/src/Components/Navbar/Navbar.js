@@ -19,7 +19,7 @@ const Navbar = () => {
 
 function renderNavbar() {
   const navbarWrapper = document.querySelector('#navbarWrapper');
-  const authenticatedUser = getAuthenticatedUser();
+  const authenticatedUser = getAuthenticatedUser()?.user;
 
   const anonymousNavbar = `
   <nav class="navbar navbar-expand navbar-light">
@@ -52,7 +52,7 @@ function renderNavbar() {
         <div>
           <ul class="navbar-nav justify-content-end align-items-center">
             <li class="nav-item">
-            <p class="text-lavender m-0 fs-4 col-12" href="#">WELCOME ${authenticatedUser?.username} ! </p>
+            <p class="text-lavender m-0 fs-4 col-12" href="#">WELCOME ${authenticatedUser.username} ! </p>
             </li> 
             <li class="nav-item col-2">
               <a class="nav-link" href="#" ><img data-uri="/score" class="ml-2" src="${scoreIcon}" alt="Scores"></a>
