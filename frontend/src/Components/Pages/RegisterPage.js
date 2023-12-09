@@ -51,48 +51,44 @@ async function onRegister(e) {
 
   const errorDiv = document.querySelector("#errorRegister");
 
-  if (password.length<5) {
+  if (password.length<5)
     errorDiv.innerHTML='<p>your password should be at least 5 characters</p>'
-  }
-
-  else if (password !== confirmPassword) {
+  else if (password !== confirmPassword)
     errorDiv.innerHTML='<p>already forget your password ?</p>'
-  } else {
+  else {
+    const options = {
+      method: 'POST',
 
-  const options = {
-    method: 'POST',
+      body: JSON.stringify({
+        username,
 
-    body: JSON.stringify({
-      username,
+        password,
 
-      password,
+        confirmPassword,
+      }),
+      mode:'cors',
+      credentials :'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    const response = await fetch('/api/auths/register', options);
 
-      confirmPassword,
-    }),
-    mode:'cors',
-    credentials :'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
+    if (!response.ok)
+      errorDiv.innerHTML='<p>username already taken or empty username</p>'
 
-  const response = await fetch('/api/auths/register', options);
+    // if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
 
+    const authenticatedUser = await response.json();
 
-   if (!response.ok) {
-     errorDiv.innerHTML='<p>username already taken or empty username</p>'
-   }
+    errorDiv.style.display="none";
+      
+    console.log('Newly registered & authenticated user : ', authenticatedUser);
 
-   // if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+    setAuthenticatedUser(authenticatedUser);
 
-  const authenticatedUser = await response.json();
-
-  errorDiv.style.display="none";
-    
-  console.log('Newly registered & authenticated user : ', authenticatedUser);
-
-  setAuthenticatedUser(authenticatedUser);
-
-  Navigate('/login');
+    Navigate('/login');
+  }
 }
+
 export default RegisterPage;
