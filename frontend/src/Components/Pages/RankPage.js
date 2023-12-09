@@ -3,7 +3,7 @@ import { clearPage } from '../../utils/render';
 const RankPage = async () => {
   clearPage();
   const rankingData = await rank();
-  renderRankPage(rankingData);
+  renderRankPage(rankingData.slice(0,4));
 };
 
 function renderRankPage(rankingData) {
