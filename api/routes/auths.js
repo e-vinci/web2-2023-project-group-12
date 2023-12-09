@@ -49,7 +49,7 @@ router.post('/loginSecondPlayer', async (req, res) => {
   createCookieSessionData2(req, authenticatedUser2);
   console.log(req.session.username);
 
-  return res.json(authenticatedUser2.username);
+  return res.json({ username: authenticatedUser2.username });
 });
 
 /* Logout a user */

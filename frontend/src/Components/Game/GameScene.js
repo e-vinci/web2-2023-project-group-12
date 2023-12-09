@@ -14,8 +14,7 @@ import roseKiss from '../../assets/rose-smack.png';
 import homeIcon from '../../assets/home-icon.png';
 import replayIcon from '../../assets/replay-icon.png'
 
-import { getAuthenticatedUser, isAuthenticated, getAuthenticatedUser2, isAuthenticated2 } from '../../utils/auths';
-
+import { getAuthenticatedUser, isAuthenticated, getAuthenticatedUser2, isAuthenticated2, clearAuthenticatedUser2 } from '../../utils/auths';
 
 const BLUE_ROBOT_KEY = 'blue-robot';
 const ROSE_ROBOT_KEY = 'rose-robot';
@@ -370,7 +369,6 @@ class GameScene extends Phaser.Scene {
   }
 
   endGamePopup() {
-   
     const {centerX} = this.cameras.main;
     const {centerY} = this.cameras.main;
     const popupWidth = 350;
@@ -383,27 +381,22 @@ class GameScene extends Phaser.Scene {
     const popupTextStyle = { fontFamily: 'Bauhaus', fontSize: '50px', fill: '#341f8b'};
     let endGameText;
 
-    if(isAuthenticated() && isAuthenticated2()){
+    const user1 = getAuthenticatedUser()?.username;
+    const user2 = getAuthenticatedUser2()?.username;
+
+    if(isAuthenticated()){
       if (this.player2Love === 100)
-       endGameText = this.add.text(centerX, centerY - 50, `${getAuthenticatedUser()} WON`  , popupTextStyle);  // player 1 won
-    else 
-      endGameText = this.add.text(centerX, centerY - 50, `${getAuthenticatedUser2()} WON`, popupTextStyle); // player 2 won
+        endGameText = this.add.text(centerX, centerY - 50, `${user1} WON`  , popupTextStyle);  // player 1 won
+      else if (isAuthenticated2())
+        endGameText = this.add.text(centerX, centerY - 50, `${user2} WON`, popupTextStyle); // player 2 won
+      else 
+        endGameText = this.add.text(centerX, centerY - 50, `${user1} LOST`, popupTextStyle); // player 2 won
+    }
+    else if (this.player2Love === 100)
+        endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 1 WON', popupTextStyle);
+      else 
+        endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 2 WON', popupTextStyle);
     endGameText.setOrigin(0.5);
-    }
-    else if (isAuthenticated()){
-      if (this.player2Love === 100)
-      endGameText = this.add.text(centerX, centerY - 50, `${getAuthenticatedUser()} WON`, popupTextStyle); // player 1 won
-   else 
-     endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 2 WON', popupTextStyle); // player 2 won
-   endGameText.setOrigin(0.5);
-    }
-    else {
-      if (this.player2Love === 100)
-      endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 1 WON', popupTextStyle);
-   else 
-     endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 2 WON', popupTextStyle);
-   endGameText.setOrigin(0.5);
-    }
 
 
     const homeButton = this.add.image(centerX +70, centerY + 40, 'home').setScale(0.2);
@@ -414,6 +407,7 @@ class GameScene extends Phaser.Scene {
     replayButton.setInteractive();
     
     homeButton.on('pointerdown', () => {
+      clearAuthenticatedUser2();
       Navigate('/');
       window.location.reload();
     });
