@@ -386,11 +386,11 @@ class GameScene extends Phaser.Scene {
 
     if(isAuthenticated()){
       if (this.player2Love === 100)
-        endGameText = this.add.text(centerX, centerY - 50, `${user1.username} WON`  , popupTextStyle);  // player 1 won
+        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} WON`  , popupTextStyle);  // player 1 won
       else if (isAuthenticated2())
-        endGameText = this.add.text(centerX, centerY - 50, `${user2.username} WON`, popupTextStyle); // player 2 won
+        endGameText = this.add.text(centerX, centerY - 50, `${user2?.username} WON`, popupTextStyle); // player 2 won
       else 
-        endGameText = this.add.text(centerX, centerY - 50, `${user1.username} LOST`, popupTextStyle); // player 2 won
+        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} LOST`, popupTextStyle); // player 2 won
     }
     else if (this.player2Love === 100)
         endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 1 WON', popupTextStyle);
