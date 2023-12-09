@@ -1,13 +1,16 @@
-import { setAuthenticatedUser } from '../../utils/auths';
+import { setAuthenticatedUser, isAuthenticated } from '../../utils/auths';
 import { clearPage } from '../../utils/render';
 import Navigate from '../Router/Navigate';
 
 const RegisterPage = () => {
-  clearPage();
-  renderRegisterForm();
+  if (!isAuthenticated()) {
+    clearPage();
+    renderRegisterForm();
 
-  const form = document.querySelector('#registerForm');
-  form.addEventListener('submit', onRegister);
+    const form = document.querySelector('#registerForm');
+    form.addEventListener('submit', onRegister);
+  }
+  else Navigate('/');
 };
 
 function renderRegisterForm() {

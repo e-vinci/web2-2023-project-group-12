@@ -1,12 +1,16 @@
 import { clearPage } from '../../utils/render';
 
-import { getAuthenticatedUser, clearAuthenticatedUser2, isAuthenticated2 } from '../../utils/auths';
+import { isAuthenticated, getAuthenticatedUser, clearAuthenticatedUser2, isAuthenticated2 } from '../../utils/auths';
+import Navigate from '../Router/Navigate';
 
 
 const ScorePage = () => {
-    if (isAuthenticated2()) clearAuthenticatedUser2();
-    clearPage();
-    renderScoreForm();
+    if (!isAuthenticated()) Navigate('/');
+    else {
+        if (isAuthenticated2()) clearAuthenticatedUser2();
+        clearPage();
+        renderScoreForm();
+    }
   };
 
 function renderScoreForm() {

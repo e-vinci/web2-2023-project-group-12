@@ -1,16 +1,19 @@
-import { setAuthenticatedUser } from '../../utils/auths';
+import { setAuthenticatedUser, isAuthenticated } from '../../utils/auths';
 import { clearPage } from '../../utils/render';
 import Navbar from '../Navbar/Navbar';
 import Navigate from '../Router/Navigate';
 
 
 const LoginPage = () => {
+  if (!isAuthenticated()) {
     clearPage();
     renderLoginForm();
 
     const form = document.querySelector('#loginForm');
     form.addEventListener('submit', onLogin);
-  };
+  }
+  else Navigate('/');
+};
 
 function renderLoginForm() {
     const main = document.querySelector('main');
