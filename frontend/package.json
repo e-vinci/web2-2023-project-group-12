@@ -36,6 +36,7 @@
     "gh-pages": "^4.0.0",
     "phaser": "^3.55.2",
     "terser-webpack-plugin": "^5.3.6",
+    "validator": "^13.11.0",
     "webpack-merge": "^5.8.0"
   }
 }

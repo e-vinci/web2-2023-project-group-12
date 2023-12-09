@@ -26,13 +26,14 @@ function renderLoginForm() {
           <label for="password" class="form-label">Password</label>
           <input class="bg-lavender form-control mb-2" type="password"  id="password" name="password" required>
         </div>
-
+        <div class ="errorDiv input-container text-danger" id="errorLogin">
+        </div>
         <button type="submit" class="btn btn-warning mt-3 col-8 rounded-5">Log in</button>
       </form>
     </div>
     `;
-
 }
+
 
 async function onLogin(e) {
 
@@ -43,6 +44,7 @@ async function onLogin(e) {
 
   const password = document.querySelector('#password').value;
 
+  const errorDiv = document.querySelector("#errorLogin");
 
   const options = {
 
@@ -67,23 +69,35 @@ async function onLogin(e) {
 
 
   const response = await fetch('/api/auths/login', options);
+  errorDiv.style.display="";
 
+  if (!response.ok) {
+    errorDiv.innerHTML="<p>password or username wrong</p>"
+    refreshLoginForm()
+  }
 
-  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+  // if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
 
 
   const authenticatedUser = await response.json();
 
+  errorDiv.style.display="none";
 
   console.log('Authenticated user : ', authenticatedUser);
 
 
   setAuthenticatedUser(authenticatedUser);
-
-  Navbar()
   
-  Navigate('/');
-
+    Navbar()
+  
+    Navigate('/');
 }
+
+
+ function refreshLoginForm() {
+   // Réinitialiser les champs du formulaire
+  document.querySelector('#username').value = '';
+  document.querySelector('#password').value = '';
+ }
 
 export default LoginPage;

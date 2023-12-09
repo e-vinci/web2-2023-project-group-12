@@ -23,13 +23,15 @@ function renderRegisterForm() {
           <input class="bg-lavender form-control mb-3" type="text"  id="username" name="username" required>
           <label for="password" class="form-label">Password</label>
           <input class="bg-lavender form-control mb-3" type="password"  id="password" name="password" required>
-          <label for="comfirm_password" class="form-label">Confirm password</label>
-          <input class="bg-lavender form-control mb-2" type="password"  id="password" name="comfirm_password" required>
+          <label for="confirmPassword" class="form-label">Confirm password</label>
+          <input class="bg-lavender form-control mb-2" type="password"  id="confirmPassword" name="confirmPassword" required>
           <div>
             <input required="" type="checkbox" class="form-check-input">
             <a href="https://policies.google.com/privacy?hl=en-US" class="link-warning link-underline-opacity-0 link-underline-opacity-100-hover text-white">
                   Accept our policy
             </a>
+          </div>
+          <div class ="errorDiv input-container text-danger" id="errorRegister">
           </div>
         </div>
         <button type="submit" class="btn btn-warning mt-3 col-8 rounded-5">Sign in</button>
@@ -45,7 +47,17 @@ async function onRegister(e) {
 
   const password = document.querySelector('#password').value;
 
-  const confirmPassword = document.querySelector('#comfirm_password');
+  const confirmPassword = document.querySelector('#confirmPassword').value;
+
+  const errorDiv = document.querySelector("#errorRegister");
+
+  if (password.length<5) {
+    errorDiv.innerHTML='<p>your password should be at least 5 characters</p>'
+  }
+
+  else if (password !== confirmPassword) {
+    errorDiv.innerHTML='<p>already forget your password ?</p>'
+  } else {
 
   const options = {
     method: 'POST',
@@ -66,10 +78,17 @@ async function onRegister(e) {
 
   const response = await fetch('/api/auths/register', options);
 
-  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+
+   if (!response.ok) {
+     errorDiv.innerHTML='<p>username already taken or empty username</p>'
+   }
+
+   // if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
 
   const authenticatedUser = await response.json();
 
+  errorDiv.style.display="none";
+    
   console.log('Newly registered & authenticated user : ', authenticatedUser);
 
   setAuthenticatedUser(authenticatedUser);

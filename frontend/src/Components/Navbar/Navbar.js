@@ -15,12 +15,11 @@ import { getAuthenticatedUser, isAuthenticated } from '../../utils/auths';
 
 const Navbar = () => {
   renderNavbar();
-
 }
 
 function renderNavbar() {
   const navbarWrapper = document.querySelector('#navbarWrapper');
-
+  const authenticatedUser = getAuthenticatedUser();
 
   const anonymousNavbar = `
   <nav class="navbar navbar-expand navbar-light">
@@ -51,29 +50,28 @@ function renderNavbar() {
       <div class="container-fluid p-0">
         <a href="#" ><img data-uri="/" class="logo col-10" src="${logo}" alt="SPACE LOVER"></a>
         <div>
-          <ul class="navbar-nav justify-content-end">
-            
+          <ul class="navbar-nav justify-content-end align-items-center">
+            <li class="nav-item">
+            <p class="text-lavender m-0 fs-4 col-12" href="#">WELCOME ${authenticatedUser?.username} ! </p>
+            </li> 
             <li class="nav-item col-2">
-              <a class="nav-link" href="#" ><img data-uri="/score" src="${scoreIcon}" alt="Scores"></a>
+              <a class="nav-link" href="#" ><img data-uri="/score" class="ml-2" src="${scoreIcon}" alt="Scores"></a>
             </li>
 
             <li class="nav-item col-2">
-              <a class="nav-link" href="#" ><img data-uri="/rank" class="col-12" src="${rankIcon}" alt="Ranking"></a>
+              <a class="nav-link" href="#" id="rank" ><img data-uri="/rank" class="col-12" src="${rankIcon}" alt="Ranking"></a>
             </li>
             
-            <li class="nav-item btn btn-warning mx-2 h-75 mt-3 fs-5" data-uri="/logout">
+            <li class="nav-item btn btn-warning mx-2 fs-5" data-uri="/logout">
               <a class="nav-link text-black" href="#" data-uri="/logout">Log out</a>
             </li>
-            <li class="nav-item btn btn-warning mx-2 h-75 mt-3 fs-5">
-            <a class="nav-link disabled" href="#">HELLO ${getAuthenticatedUser()}<3</a>
-            </li>           
           </ul>
         </div>
       </div>
     </nav>
 `;
-navbarWrapper.innerHTML = isAuthenticated() ? authenticatedNavbar : anonymousNavbar;
-}
 
+  navbarWrapper.innerHTML = isAuthenticated() ? authenticatedNavbar : anonymousNavbar;
+}
 
 export default Navbar;
