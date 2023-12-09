@@ -3,6 +3,7 @@ import rankIcon from '../../img/rank-icon.svg';
 import scoreIcon from '../../img/score-icon.svg';
 
 import { getAuthenticatedUser, isAuthenticated } from '../../utils/auths';
+import Navigate from '../Router/Navigate';
 
 /**
  * Render the Navbar which is styled by using Bootstrap
@@ -13,6 +14,7 @@ import { getAuthenticatedUser, isAuthenticated } from '../../utils/auths';
 
 const Navbar = () => {
   renderNavbar();
+  logoutBtn();
 }
 
 function renderNavbar() {
@@ -60,8 +62,8 @@ function renderNavbar() {
               <a class="nav-link" href="#" id="rank" ><img data-uri="/rank" class="col-12" src="${rankIcon}" alt="Ranking"></a>
             </li>
             
-            <li class="nav-item btn btn-warning mx-2 fs-5" data-uri="/logout">
-              <a class="nav-link text-black" href="#" data-uri="/logout">Log out</a>
+            <li class="nav-item btn btn-warning mx-2 fs-5" id="logout">
+              <a class="nav-link text-black" href="#">Log out</a>
             </li>
           </ul>
         </div>
@@ -70,6 +72,13 @@ function renderNavbar() {
 `;
 
   navbarWrapper.innerHTML = isAuthenticated() ? authenticatedNavbar : anonymousNavbar;
+}
+
+function logoutBtn () {
+  const btn = document.querySelector('#logout');
+  btn?.addEventListener('click', () => {
+      Navigate('/logout');
+  });
 }
 
 export default Navbar;
