@@ -1,4 +1,4 @@
-import { setAuthenticatedUser, isAuthenticated } from '../../utils/auths';
+import { isAuthenticated } from '../../utils/auths';
 import { clearPage } from '../../utils/render';
 import Navigate from '../Router/Navigate';
 
@@ -87,8 +87,6 @@ async function onRegister(e) {
     errorDiv.style.display="none";
       
     console.log('Newly registered & authenticated user : ', authenticatedUser);
-
-    setAuthenticatedUser(authenticatedUser);
 
     Navigate('/login');
   }
