@@ -5,7 +5,7 @@ const cors = require('cors');
 const cookieSession = require('cookie-session');
 
 const corsOptions = {
-  origin: ['http://localhost:8080', 'https://e-baron.github.io'],
+  origin: ['http://localhost:8080', 'https://e-vinci.github.io/SpaceLover'],
 };
 
 const usersRouter = require('./routes/users');
