@@ -5,7 +5,7 @@ const cors = require('cors');
 const cookieSession = require('cookie-session');
 
 const corsOptions = {
-  origin: ['http://localhost:8080', 'https://youssef-ouftallah-vinci.github.io/SpaceLover'],
+  origin: ['http://localhost:8080', 'https://youssef-ouftallah-vinci.github.io'],
 };
 
 const usersRouter = require('./routes/users');
