@@ -1,25 +1,16 @@
 const express = require('express');
 
-const { readOneUserFromUsername } = require('../models/users');
+const { updateUser } = require('../models/users');
 
 const router = express.Router();
 
-/* GET users listing. */
-router.get('/', (req, res) => {
-  res.json({ users: [{ name: 'e-baron' }] });
-});
-
 // PATCH update score win
-router.patch('/:username', (req, res) => {
-  const user = req.params.username;
-  //  const gamesPlayed = req?.body?.gamesPlayedUpdate;
-  //  const gamesWon = req?.body?.gamesWonUpdate;
-  const player = readOneUserFromUsername(user);
+router.patch('/:id', (req, res) => {
+  const updatedUser = updateUser(req?.params?.id, req?.body);
 
-  const updatePlayer = { ...player, ...req.body };
+  if (!updatedUser) return res.sendStatus(404);
 
-  return res.json(updatePlayer);
-  // faur faire un if en fonction si il y a un games won ou pas donc =>>> des conditions!!
+  return res.json(updatedUser);
 });
 
 module.exports = router;
