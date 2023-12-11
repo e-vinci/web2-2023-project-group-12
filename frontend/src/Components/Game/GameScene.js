@@ -24,6 +24,10 @@ const HEART = 'heart';
 const BLUE_KISS_KEY = 'blue-kiss';
 const ROSE_KISS_KEY = 'rose-kiss';
 
+
+const user1 = getAuthenticatedUser()?.user;
+const user2 = getAuthenticatedUser2()?.user;
+
 class GameScene extends Phaser.Scene {
   constructor() {
     super('game-scene');
@@ -39,6 +43,8 @@ class GameScene extends Phaser.Scene {
     this.kissPlayer1 = false;
     this.kissPlayer2 = false;
   }
+
+
 
   preload() {
     // icons
@@ -385,12 +391,21 @@ class GameScene extends Phaser.Scene {
     const user2 = getAuthenticatedUser2()?.user;
 
     if(isAuthenticated()){
+      // player 1 won
       if (this.player2Love === 100)
-        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} WON`  , popupTextStyle);  // player 1 won
+        userOneWins();
+      userTwoLooses();
+        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} WON`  , popupTextStyle);  
       else if (isAuthenticated2())
-        endGameText = this.add.text(centerX, centerY - 50, `${user2?.username} WON`, popupTextStyle); // player 2 won
+      // player 2 won
+        userTwoWins();
+        userOneLooses();
+        endGameText = this.add.text(centerX, centerY - 50, `${user2?.username} WON`, popupTextStyle); 
       else 
-        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} LOST`, popupTextStyle); // player 2 won
+      // player 2 won
+        userTwoWins();
+        userOneLooses();
+        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} LOST`, popupTextStyle); 
     }
     else if (this.player2Love === 100)
         endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 1 WON', popupTextStyle);
@@ -418,4 +433,144 @@ class GameScene extends Phaser.Scene {
 
 }
 
+async function userOneWins(){
+
+  const gamesPlayed = user1?.gamesPlayed + 1;
+  const gamesWon = user1?.gamesWon + 1; 
+
+  const options = {
+
+    method: 'PATCH',
+
+    body: JSON.stringify({
+
+      gamesPlayed,
+      gamesWon,
+
+
+    }),
+    mode:'cors',
+    credentials :'include',
+    headers: {
+
+      'Content-Type': 'application/json',
+
+    },
+
+  };
+
+  const response = await fetch(`/api/users/${user1?.username}`, options);
+  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+  const update = await response.json();
+
+  return update;
+
+
+}
+
+
+async function userTwoWins(){
+
+  const gamesPlayed = user2?.gamesPlayed + 1;
+  const gamesWon = user2?.gamesWon + 1; 
+
+  const options = {
+
+    method: 'PATCH',
+
+    body: JSON.stringify({
+
+      gamesPlayed,
+      gamesWon,
+
+    }),
+    mode:'cors',
+    credentials :'include',
+    headers: {
+
+      'Content-Type': 'application/json',
+
+    },
+
+  };
+
+  const response = await fetch(`/api/users/${user2?.username}`, options);
+  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+  const update = await response.json();
+
+  return update;
+
+
+}
+
+
+async function userOneLooses(){
+
+  const gamesPlayed = user1?.gamesPlayed + 1;
+  const gamesLost = user1?.gamesLost + 1; 
+
+  const options = {
+
+    method: 'PATCH',
+
+    body: JSON.stringify({
+
+      gamesPlayed,
+      gamesLost,
+
+
+    }),
+    mode:'cors',
+    credentials :'include',
+    headers: {
+
+      'Content-Type': 'application/json',
+
+    },
+
+  };
+
+  const response = await fetch(`/api/users/${user1?.username}`, options);
+  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+  const update = await response.json();
+
+  return update;
+
+
+}
+
+
+async function userTwoLooses(){
+
+  const gamesPlayed = user2?.gamesPlayed + 1;
+  const gamesLost = user2?.gamesLost + 1; 
+
+  const options = {
+
+    method: 'PATCH',
+
+    body: JSON.stringify({
+
+      gamesPlayed,
+      gamesLost,
+
+
+    }),
+    mode:'cors',
+    credentials :'include',
+    headers: {
+
+      'Content-Type': 'application/json',
+
+    },
+
+  };
+
+  const response = await fetch(`/api/users/${user1?.username}`, options);
+  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+  const update = await response.json();
+
+  return update;
+
+}
 export default GameScene;
