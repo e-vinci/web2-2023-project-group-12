@@ -90,7 +90,7 @@ async function createOneUser(username, password) {
   return createdUser;
 }
 
-async function updateUser(id, propertiesToUpdate) {
+function updateUser(id, propertiesToUpdate) {
   const userId = Number(id);
   const users = parse(jsonDbPath);
   const foundIndex = users.findIndex((user) => user.id === userId);
