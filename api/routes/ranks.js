@@ -6,7 +6,6 @@ const router = express.Router();
 
 // rank page
 router.get('/', (req, res) => {
-  console.log("hhaha");
   const ranking = readAllRanking();
   return res.json(ranking);
 });
