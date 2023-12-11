@@ -24,10 +24,6 @@ const HEART = 'heart';
 const BLUE_KISS_KEY = 'blue-kiss';
 const ROSE_KISS_KEY = 'rose-kiss';
 
-
-const user1 = getAuthenticatedUser()?.user;
-const user2 = getAuthenticatedUser2()?.user;
-
 class GameScene extends Phaser.Scene {
   constructor() {
     super('game-scene');
@@ -392,20 +388,23 @@ class GameScene extends Phaser.Scene {
 
     if(isAuthenticated()){
       // player 1 won
-      if (this.player2Love === 100)
-        userOneWins();
-      userTwoLooses();
-        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} WON`  , popupTextStyle);  
-      else if (isAuthenticated2())
-      // player 2 won
+      if (this.player2Love === 100){
+          userOneWins();
+       userTwoLooses();
+        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} WON`  , popupTextStyle); 
+      }
+      else if (isAuthenticated2()){
+        // player 2 won
         userTwoWins();
         userOneLooses();
         endGameText = this.add.text(centerX, centerY - 50, `${user2?.username} WON`, popupTextStyle); 
-      else 
-      // player 2 won
+      }
+      else {
+        // player 2 won
         userTwoWins();
         userOneLooses();
         endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} LOST`, popupTextStyle); 
+      }
     }
     else if (this.player2Love === 100)
         endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 1 WON', popupTextStyle);
@@ -433,10 +432,13 @@ class GameScene extends Phaser.Scene {
 
 }
 
+
 async function userOneWins(){
 
-  const gamesPlayed = user1?.gamesPlayed + 1;
-  const gamesWon = user1?.gamesWon + 1; 
+  const user1 = getAuthenticatedUser()?.user;
+
+  const gamesPlayed = user1.gamesPlayed + 1;
+  const gamesWon = user1.gamesWon + 1; 
 
   const options = {
 
@@ -444,8 +446,8 @@ async function userOneWins(){
 
     body: JSON.stringify({
 
-      gamesPlayed,
-      gamesWon,
+      "gamesPlayed": gamesPlayed,
+      "gamesWon": gamesWon,
 
 
     }),
@@ -471,8 +473,10 @@ async function userOneWins(){
 
 async function userTwoWins(){
 
-  const gamesPlayed = user2?.gamesPlayed + 1;
-  const gamesWon = user2?.gamesWon + 1; 
+  const user2 = getAuthenticatedUser2()?.user;
+
+  const gamesPlayed = user2.gamesPlayed + 1;
+  const gamesWon = user2.gamesWon + 1; 
 
   const options = {
 
@@ -480,8 +484,8 @@ async function userTwoWins(){
 
     body: JSON.stringify({
 
-      gamesPlayed,
-      gamesWon,
+      "gamesPlayed": gamesPlayed,
+      "gamesWon": gamesWon,
 
     }),
     mode:'cors',
@@ -506,8 +510,10 @@ async function userTwoWins(){
 
 async function userOneLooses(){
 
-  const gamesPlayed = user1?.gamesPlayed + 1;
-  const gamesLost = user1?.gamesLost + 1; 
+  const user1 = getAuthenticatedUser()?.user;
+
+  const gamesPlayed = user1.gamesPlayed + 1;
+  const gamesLost = user1.gamesLost + 1; 
 
   const options = {
 
@@ -515,8 +521,8 @@ async function userOneLooses(){
 
     body: JSON.stringify({
 
-      gamesPlayed,
-      gamesLost,
+      "gamesPlayed": gamesPlayed,
+      "gamesLost": gamesLost,
 
 
     }),
@@ -542,8 +548,10 @@ async function userOneLooses(){
 
 async function userTwoLooses(){
 
-  const gamesPlayed = user2?.gamesPlayed + 1;
-  const gamesLost = user2?.gamesLost + 1; 
+  const user2 = getAuthenticatedUser2()?.user;
+
+  const gamesPlayed = user2.gamesPlayed + 1;
+  const gamesLost = user2.gamesLost + 1; 
 
   const options = {
 
@@ -551,8 +559,8 @@ async function userTwoLooses(){
 
     body: JSON.stringify({
 
-      gamesPlayed,
-      gamesLost,
+      "gamesPlayed": gamesPlayed,
+      "gamesLost": gamesLost,
 
 
     }),
@@ -566,7 +574,7 @@ async function userTwoLooses(){
 
   };
 
-  const response = await fetch(`/api/users/${user1?.username}`, options);
+  const response = await fetch(`/api/users/${user2?.username}`, options);
   if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
   const update = await response.json();
 
