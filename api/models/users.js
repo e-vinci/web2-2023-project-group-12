@@ -90,6 +90,21 @@ async function createOneUser(username, password) {
   return createdUser;
 }
 
+async function updateUser(id, propertiesToUpdate) {
+  const userId = Number(id);
+  const users = parse(jsonDbPath);
+  const foundIndex = users.findIndex((user) => user.id === userId);
+  if (foundIndex < 0) return undefined;
+
+  const updatedUser = { ...users[foundIndex], ...propertiesToUpdate };
+
+  users[foundIndex] = updatedUser;
+
+  serialize(jsonDbPath, users);
+
+  return updatedUser;
+}
+
 function readAllRanking() {
   const players = parse(jsonDbPath);
 
@@ -112,4 +127,5 @@ module.exports = {
   register,
   readOneUserFromUsername,
   readAllRanking,
+  updateUser,
 };
