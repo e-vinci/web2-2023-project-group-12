@@ -33,7 +33,7 @@ function renderRankPage(rankingData) {
 }
 
 async function rank() {
-  const response = await fetch('/api/auths/rank');
+  const response = await fetch('/api/ranks');
   if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
   const ranking = await response.json();
 

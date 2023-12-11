@@ -1,5 +1,5 @@
 const express = require('express');
-const { register, login, readAllRanking } = require('../models/users');
+const { register, login } = require('../models/users');
 
 const router = express.Router();
 
@@ -55,13 +55,6 @@ router.get('/logout', (req, res) => {
   req.session = null;
 
   return res.sendStatus();
-});
-
-// rank page
-router.get('/rank', (req, res) => {
-  const ranking = readAllRanking();
-
-  return res.json(ranking);
 });
 
 function createCookieSessionData(req, authenticatedUser) {
