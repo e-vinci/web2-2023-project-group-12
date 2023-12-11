@@ -428,6 +428,7 @@ class GameScene extends Phaser.Scene {
 
 }
 
+
 async function userOneWins(){
   
   const user1 = getAuthenticatedUser()?.user;
