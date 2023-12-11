@@ -24,10 +24,6 @@ const HEART = 'heart';
 const BLUE_KISS_KEY = 'blue-kiss';
 const ROSE_KISS_KEY = 'rose-kiss';
 
-
-const user1 = getAuthenticatedUser()?.user;
-const user2 = getAuthenticatedUser2()?.user;
-
 class GameScene extends Phaser.Scene {
   constructor() {
     super('game-scene');
@@ -390,22 +386,21 @@ class GameScene extends Phaser.Scene {
     const user1 = getAuthenticatedUser()?.user;
     const user2 = getAuthenticatedUser2()?.user;
 
-    if(isAuthenticated()){
-      // player 1 won
-      if (this.player2Love === 100)
+    if(isAuthenticated()) { // player 1 won
+      if (this.player2Love === 100) {
         userOneWins();
-      userTwoLooses();
-        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} WON`  , popupTextStyle);  
-      else if (isAuthenticated2())
-      // player 2 won
+        userTwoLooses();
+        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} WON`  , popupTextStyle);
+      } 
+      else if (isAuthenticated2()) { // player 2 won
         userTwoWins();
         userOneLooses();
-        endGameText = this.add.text(centerX, centerY - 50, `${user2?.username} WON`, popupTextStyle); 
-      else 
-      // player 2 won
-        userTwoWins();
+        endGameText = this.add.text(centerX, centerY - 50, `${user2?.username} WON`, popupTextStyle);
+      }
+      else { // player 2 won
         userOneLooses();
-        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} LOST`, popupTextStyle); 
+        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} LOST`, popupTextStyle);
+      }
     }
     else if (this.player2Love === 100)
         endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 1 WON', popupTextStyle);
@@ -434,9 +429,11 @@ class GameScene extends Phaser.Scene {
 }
 
 async function userOneWins(){
+  
+  const user1 = getAuthenticatedUser()?.user;
 
-  const gamesPlayed = user1?.gamesPlayed + 1;
-  const gamesWon = user1?.gamesWon + 1; 
+  const gamesPlayed = user1?.gamesPlayed;
+  const gamesWon = user1?.gamesWon; 
 
   const options = {
 
@@ -444,8 +441,8 @@ async function userOneWins(){
 
     body: JSON.stringify({
 
-      gamesPlayed,
-      gamesWon,
+      gamesPlayed: gamesPlayed + 1,
+      gamesWon: gamesWon + 1,
 
 
     }),
@@ -459,20 +456,20 @@ async function userOneWins(){
 
   };
 
-  const response = await fetch(`/api/users/${user1?.username}`, options);
+  const response = await fetch(`/api/users/${user1?.id}`, options);
   if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
   const update = await response.json();
 
   return update;
-
-
 }
 
 
 async function userTwoWins(){
+  
+  const user2 = getAuthenticatedUser2()?.user;
 
-  const gamesPlayed = user2?.gamesPlayed + 1;
-  const gamesWon = user2?.gamesWon + 1; 
+  const gamesPlayed = user2?.gamesPlayed;
+  const gamesWon = user2?.gamesWon; 
 
   const options = {
 
@@ -480,8 +477,8 @@ async function userTwoWins(){
 
     body: JSON.stringify({
 
-      gamesPlayed,
-      gamesWon,
+      gamesPlayed: gamesPlayed + 1,
+      gamesWon: gamesWon + 1,
 
     }),
     mode:'cors',
@@ -494,20 +491,20 @@ async function userTwoWins(){
 
   };
 
-  const response = await fetch(`/api/users/${user2?.username}`, options);
+  const response = await fetch(`/api/users/${user2?.id}`, options);
   if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
   const update = await response.json();
 
   return update;
-
-
 }
 
 
 async function userOneLooses(){
 
-  const gamesPlayed = user1?.gamesPlayed + 1;
-  const gamesLost = user1?.gamesLost + 1; 
+  const user1 = getAuthenticatedUser()?.user;
+
+  const gamesPlayed = user1?.gamesPlayed;
+  const gamesLost = user1?.gamesLost; 
 
   const options = {
 
@@ -515,8 +512,8 @@ async function userOneLooses(){
 
     body: JSON.stringify({
 
-      gamesPlayed,
-      gamesLost,
+      gamesPlayed: gamesPlayed + 1,
+      gamesLost: gamesLost + 1,
 
 
     }),
@@ -530,20 +527,20 @@ async function userOneLooses(){
 
   };
 
-  const response = await fetch(`/api/users/${user1?.username}`, options);
+  const response = await fetch(`/api/users/${user1?.id}`, options);
   if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
   const update = await response.json();
 
   return update;
-
-
 }
 
 
 async function userTwoLooses(){
+  
+  const user2 = getAuthenticatedUser2()?.user;
 
-  const gamesPlayed = user2?.gamesPlayed + 1;
-  const gamesLost = user2?.gamesLost + 1; 
+  const gamesPlayed = user2?.gamesPlayed;
+  const gamesLost = user2?.gamesLost; 
 
   const options = {
 
@@ -551,8 +548,8 @@ async function userTwoLooses(){
 
     body: JSON.stringify({
 
-      gamesPlayed,
-      gamesLost,
+      gamesPlayed: gamesPlayed + 1,
+      gamesLost: gamesLost + 1,
 
 
     }),
@@ -566,11 +563,10 @@ async function userTwoLooses(){
 
   };
 
-  const response = await fetch(`/api/users/${user1?.username}`, options);
+  const response = await fetch(`/api/users/${user2?.id}`, options);
   if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
   const update = await response.json();
 
   return update;
-
 }
 export default GameScene;
