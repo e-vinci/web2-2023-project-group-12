@@ -392,12 +392,12 @@ class GameScene extends Phaser.Scene {
       if (this.player2Love === 100) {
 
         if (!this.user1Updated) {
-          userOneWins();
+          handleWinner(user1?.username);
           this.user1Updated = true;
         }
 
         if (isAuthenticated2() && !this.user2Updated) {
-          userTwoLooses();
+          handleLoser(user2?.username);
           this.user2Updated = true;
         }
 
@@ -406,12 +406,12 @@ class GameScene extends Phaser.Scene {
       else if (isAuthenticated2()) { // player 2 won
 
         if (!this.user1Updated) {
-          userOneLooses();
+          handleLoser(user1?.username);
           this.user1Updated = true;
         }
 
         if (!this.user2Updated) {
-          userTwoWins();
+          handleWinner(user2?.username);
           this.user2Updated = true;
         }
 
@@ -419,11 +419,11 @@ class GameScene extends Phaser.Scene {
       }
       else { // player 2 won
         if (this.player2Love === 100 && !this.user1Updated) {
-          userOneWins();
+          handleWinner(user1?.username);
           this.user1Updated = true;
         }
         if (!this.user1Updated) {
-          userOneLooses();
+          handleLoser(user1?.username);
           this.user1Updated = true;
         }
         endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} LOST`, popupTextStyle);
@@ -455,151 +455,36 @@ class GameScene extends Phaser.Scene {
 
 }
 
-
-async function userOneWins(){
-  
-  const user = getAuthenticatedUser()?.user;
-  const user1 = await getUser(user?.username);
-
-  const gamesPlayed = user1?.gamesPlayed;
-  const gamesWon = user1?.gamesWon; 
+async function updateUserScore(username, gamesPlayed, gamesWon = 0, gamesLost = 0) {
+  const user = await getUser(username);
 
   const options = {
-
     method: 'PATCH',
-
     body: JSON.stringify({
-
-      gamesPlayed: gamesPlayed + 1,
-      gamesWon: gamesWon + 1,
-
-
+      gamesPlayed: user.gamesPlayed + gamesPlayed,
+      gamesWon: user.gamesWon + gamesWon,
+      gamesLost: user.gamesLost + gamesLost,
     }),
-    mode:'cors',
-    credentials :'include',
+    mode: 'cors',
+    credentials: 'include',
     headers: {
-
       'Content-Type': 'application/json',
-
     },
-
   };
 
-  const response = await fetch(`/api/users/${user1?.id}`, options);
+  const response = await fetch(`/api/users/${user?.id}`, options);
   if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
   const update = await response.json();
 
   return update;
 }
 
-
-async function userTwoWins(){
-  
-  const user = getAuthenticatedUser2()?.user;
-  const user2 = await getUser(user?.username);
-
-  const gamesPlayed = user2?.gamesPlayed;
-  const gamesWon = user2?.gamesWon; 
-
-  const options = {
-
-    method: 'PATCH',
-
-    body: JSON.stringify({
-
-      gamesPlayed: gamesPlayed + 1,
-      gamesWon: gamesWon + 1,
-
-    }),
-    mode:'cors',
-    credentials :'include',
-    headers: {
-
-      'Content-Type': 'application/json',
-
-    },
-
-  };
-
-  const response = await fetch(`/api/users/${user2?.id}`, options);
-  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
-  const update = await response.json();
-
-  return update;
+async function handleWinner(username) {
+  await updateUserScore(username, 1, 1); // GamesPlayed +1, GamesWon +1
 }
 
-
-async function userOneLooses(){
-
-  const user = getAuthenticatedUser()?.user;
-  const user1 = await getUser(user?.username);
-
-  const gamesPlayed = user1?.gamesPlayed;
-  const gamesLost = user1?.gamesLost; 
-
-  const options = {
-
-    method: 'PATCH',
-
-    body: JSON.stringify({
-
-      gamesPlayed: gamesPlayed + 1,
-      gamesLost: gamesLost + 1,
-
-
-    }),
-    mode:'cors',
-    credentials :'include',
-    headers: {
-
-      'Content-Type': 'application/json',
-
-    },
-
-  };
-
-  const response = await fetch(`/api/users/${user1?.id}`, options);
-  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
-  const update = await response.json();
-
-  return update;
-}
-
-
-async function userTwoLooses(){
-  
-  const user = getAuthenticatedUser2()?.user;
-  const user2 = await getUser(user?.username);
-
-  const gamesPlayed = user2?.gamesPlayed;
-  const gamesLost = user2?.gamesLost; 
-
-  const options = {
-
-    method: 'PATCH',
-
-    body: JSON.stringify({
-
-      gamesPlayed: gamesPlayed + 1,
-      gamesLost: gamesLost + 1,
-
-
-    }),
-    mode:'cors',
-    credentials :'include',
-    headers: {
-
-      'Content-Type': 'application/json',
-
-    },
-
-  };
-
-  const response = await fetch(`/api/users/${user2?.id}`, options);
-  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
-  const update = await response.json();
-
-  return update;
+async function handleLoser(username) {
+  await updateUserScore(username, 1, 0, 1); // GamesPlayed +1, GamesLost +1
 }
 
 async function getUser(username){
