@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 import Navigate from '../Router/Navigate';
 
-import skyAsset from '../../assets/arena.png';
-import platformAsset from '../../assets/arena_platform.png';
+import skyAsset from '../../assets/arena.jpg';
+import platformAsset from '../../assets/arena-platform.jpg';
 import blueRobotAsset from '../../assets/blue-robot.png';
 import roseRobotAsset from '../../assets/rose-robot.png';
 import blueHug from '../../assets/blue-hug.png';
@@ -88,8 +88,8 @@ class GameScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(401, 350, 'sky').setScale(0.4).setY(225).setX(600);
-    const platform = this.physics.add.staticGroup().create(600, 350, 'ground').setScale(0.4).setY(460).refreshBody();
+    this.add.image(401, 350, 'sky').setScale(0.7).setY(225).setX(600);
+    const platform = this.physics.add.staticGroup().create(600, 350, 'ground').setScale(0.7).setY(470).refreshBody();
     this.player1 = this.createPlayer(1100, 200, BLUE_ROBOT_KEY);
     this.player2 = this.createPlayer(100, 200, ROSE_ROBOT_KEY);
     this.physics.add.collider(this.player1, platform);
@@ -113,6 +113,22 @@ class GameScene extends Phaser.Scene {
     
     this.physics.add.collider(this.player1,this.heartsPlayer2 ,this.handleKissCollision, null, this);
     this.physics.add.collider(this.player2,this.heartsPlayer1 ,this.handleKissCollision, null, this);
+
+    // Player username display
+      const user1 = getAuthenticatedUser()?.user?.username;
+      const user2 = getAuthenticatedUser2()?.user?.username;
+      this.add.rectangle(75, 70, 150, 40, 0xffc107);
+      this.add.rectangle(this.game.config.width - 75, 70, 150, 40, 0xffc107);
+      const style = { fontFamily: 'Bauhaus', fontSize: '20px', fill: '#000', resolution: 3};
+      const username2 = this.add.text(70, 70, 'Player 2', style);
+      const username1 = this.add.text(this.game.config.width - 70, 70, 'Player 1', style);
+      if (isAuthenticated()) {
+        if (isAuthenticated2()) username2.setText(user2).setStyle(style);
+        else username2.setText('Player 2').setStyle(style);
+        username1.setText(user1).setStyle(style);
+      }
+      username1.setOrigin(0.5);
+      username2.setOrigin(0.5);
   }
   
   update() {
@@ -382,7 +398,7 @@ class GameScene extends Phaser.Scene {
     popupBackground.fillStyle(0xe1dbf7);
     popupBackground.fillRoundedRect(centerX - popupWidth / 2, centerY - popupHeight / 2, popupWidth, popupHeight);
 
-    const popupTextStyle = { fontFamily: 'Bauhaus', fontSize: '50px', fill: '#341f8b'};
+    const popupTextStyle = { fontFamily: 'Bauhaus', fontSize: '50px', fill: '#341f8b', resolution: 2};
     let endGameText;
 
     const user1 = getAuthenticatedUser()?.user;
@@ -445,7 +461,6 @@ class GameScene extends Phaser.Scene {
     
     homeButton.on('pointerdown', () => {
       Navigate('/');
-      window.location.reload();
     });
 
     replayButton.on('pointerdown', () => {

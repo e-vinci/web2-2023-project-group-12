@@ -5,11 +5,12 @@ const cors = require('cors');
 const cookieSession = require('cookie-session');
 
 const corsOptions = {
-  origin: ['http://localhost:8080', 'https://e-vinci.github.io/SpaceLover'],
+  origin: ['http://localhost:8080', 'https://youssef-ouftallah-vinci.github.io'],
 };
 
 const usersRouter = require('./routes/users');
 const authsRouter = require('./routes/auths');
+const ranksRouter = require('./routes/ranks');
 
 const app = express();
 
@@ -33,5 +34,6 @@ app.use(cors(corsOptions));
 
 app.use('/users', usersRouter);
 app.use('/auths', authsRouter);
+app.use('/ranks', ranksRouter);
 
 module.exports = app;
