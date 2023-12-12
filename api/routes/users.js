@@ -1,8 +1,17 @@
 const express = require('express');
 
-const { updateUser } = require('../models/users');
+const { updateUser, readOneUserFromUsername } = require('../models/users');
 
 const router = express.Router();
+
+// Read a user from its username
+router.get('/:username', (req, res) => {
+  const foundUser = readOneUserFromUsername(req?.params?.username);
+
+  if (!foundUser) return res.sendStatus(404);
+
+  return res.json(foundUser);
+});
 
 // PATCH update score win
 router.patch('/:id', (req, res) => {
