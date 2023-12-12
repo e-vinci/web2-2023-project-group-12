@@ -38,7 +38,11 @@ class GameScene extends Phaser.Scene {
     this.hearts = undefined;
     this.kissPlayer1 = false;
     this.kissPlayer2 = false;
+    this.user1Updated = false;
+    this.user2Updated = false;
   }
+
+
 
   preload() {
     // icons
@@ -400,13 +404,46 @@ class GameScene extends Phaser.Scene {
     const user1 = getAuthenticatedUser()?.user;
     const user2 = getAuthenticatedUser2()?.user;
 
-    if(isAuthenticated()){
-      if (this.player2Love === 100)
-        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} WON`  , popupTextStyle);  // player 1 won
-      else if (isAuthenticated2())
-        endGameText = this.add.text(centerX, centerY - 50, `${user2?.username} WON`, popupTextStyle); // player 2 won
-      else 
-        endGameText = this.add.text(centerX, centerY - 50, `Player 2 WON`, popupTextStyle); // player 2 won
+    if(isAuthenticated()) { // player 1 won
+      if (this.player2Love === 100) {
+
+        if (!this.user1Updated) {
+          handleWinner(user1?.username);
+          this.user1Updated = true;
+        }
+
+        if (isAuthenticated2() && !this.user2Updated) {
+          handleLoser(user2?.username);
+          this.user2Updated = true;
+        }
+
+        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} WON`  , popupTextStyle);
+      } 
+      else if (isAuthenticated2()) { // player 2 won
+
+        if (!this.user1Updated) {
+          handleLoser(user1?.username);
+          this.user1Updated = true;
+        }
+
+        if (!this.user2Updated) {
+          handleWinner(user2?.username);
+          this.user2Updated = true;
+        }
+
+        endGameText = this.add.text(centerX, centerY - 50, `${user2?.username} WON`, popupTextStyle);
+      }
+      else { // player 2 won
+        if (this.player2Love === 100 && !this.user1Updated) {
+          handleWinner(user1?.username);
+          this.user1Updated = true;
+        }
+        if (!this.user1Updated) {
+          handleLoser(user1?.username);
+          this.user1Updated = true;
+        }
+        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} LOST`, popupTextStyle);
+      }
     }
     else if (this.player2Love === 100)
         endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 1 WON', popupTextStyle);
@@ -429,8 +466,56 @@ class GameScene extends Phaser.Scene {
     replayButton.on('pointerdown', () => {
       window.location.reload();
     });
+  }
+
 }
 
+async function updateUserScore(username, gamesPlayed, gamesWon = 0, gamesLost = 0) {
+  const user = await getUser(username);
+
+  const options = {
+    method: 'PATCH',
+    body: JSON.stringify({
+      gamesPlayed: user.gamesPlayed + gamesPlayed,
+      gamesWon: user.gamesWon + gamesWon,
+      gamesLost: user.gamesLost + gamesLost,
+    }),
+    mode: 'cors',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const response = await fetch(`/api/users/${user?.id}`, options);
+  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+  const update = await response.json();
+
+  return update;
+}
+
+async function handleWinner(username) {
+  await updateUserScore(username, 1, 1); // GamesPlayed +1, GamesWon +1
+}
+
+async function handleLoser(username) {
+  await updateUserScore(username, 1, 0, 1); // GamesPlayed +1, GamesLost +1
+}
+
+async function getUser(username){
+
+  const options = {
+
+    method: 'GET',
+    mode:'cors',
+    credentials :'include',
+  };
+
+  const response = await fetch(`/api/users/${username}`, options);
+  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+  const update = await response.json();
+
+  return update;
 }
 
 export default GameScene;

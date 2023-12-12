@@ -1,10 +1,25 @@
 const express = require('express');
 
+const { updateUser, readOneUserFromUsername } = require('../models/users');
+
 const router = express.Router();
 
-/* GET users listing. */
-router.get('/', (req, res) => {
-  res.json({ users: [{ name: 'e-baron' }] });
+// Read a user from its username
+router.get('/:username', (req, res) => {
+  const foundUser = readOneUserFromUsername(req?.params?.username);
+
+  if (!foundUser) return res.sendStatus(404);
+
+  return res.json(foundUser);
+});
+
+// PATCH update score win
+router.patch('/:id', (req, res) => {
+  const updatedUser = updateUser(req?.params?.id, req?.body);
+
+  if (!updatedUser) return res.sendStatus(404);
+
+  return res.json(updatedUser);
 });
 
 module.exports = router;

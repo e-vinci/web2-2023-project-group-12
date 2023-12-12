@@ -30,6 +30,7 @@ router.post('/login', async (req, res) => {
   if (!authenticatedUser) throw new Error('invalid username or password');
 
   createCookieSessionData(req, authenticatedUser);
+
   return res.json({ user: authenticatedUser.user });
 });
 
