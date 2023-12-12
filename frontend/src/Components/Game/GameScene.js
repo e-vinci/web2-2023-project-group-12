@@ -38,6 +38,8 @@ class GameScene extends Phaser.Scene {
     this.hearts = undefined;
     this.kissPlayer1 = false;
     this.kissPlayer2 = false;
+    this.user1Updated = false;
+    this.user2Updated = false;
   }
 
 
@@ -388,17 +390,42 @@ class GameScene extends Phaser.Scene {
 
     if(isAuthenticated()) { // player 1 won
       if (this.player2Love === 100) {
-        userOneWins();
-        userTwoLooses();
+
+        if (!this.user1Updated) {
+          userOneWins();
+          this.user1Updated = true;
+        }
+
+        if (isAuthenticated2() && !this.user2Updated) {
+          userTwoLooses();
+          this.user2Updated = true;
+        }
+
         endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} WON`  , popupTextStyle);
       } 
       else if (isAuthenticated2()) { // player 2 won
-        userTwoWins();
-        userOneLooses();
+
+        if (!this.user1Updated) {
+          userOneLooses();
+          this.user1Updated = true;
+        }
+
+        if (!this.user2Updated) {
+          userTwoWins();
+          this.user2Updated = true;
+        }
+
         endGameText = this.add.text(centerX, centerY - 50, `${user2?.username} WON`, popupTextStyle);
       }
       else { // player 2 won
-        userOneLooses();
+        if (this.player2Love === 100 && !this.user1Updated) {
+          userOneWins();
+          this.user1Updated = true;
+        }
+        if (!this.user1Updated) {
+          userOneLooses();
+          this.user1Updated = true;
+        }
         endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} LOST`, popupTextStyle);
       }
     }
@@ -424,14 +451,15 @@ class GameScene extends Phaser.Scene {
     replayButton.on('pointerdown', () => {
       window.location.reload();
     });
-}
+  }
 
 }
 
 
 async function userOneWins(){
   
-  const user1 = getAuthenticatedUser()?.user;
+  const user = getAuthenticatedUser()?.user;
+  const user1 = await getUser(user?.username);
 
   const gamesPlayed = user1?.gamesPlayed;
   const gamesWon = user1?.gamesWon; 
@@ -467,7 +495,8 @@ async function userOneWins(){
 
 async function userTwoWins(){
   
-  const user2 = getAuthenticatedUser2()?.user;
+  const user = getAuthenticatedUser2()?.user;
+  const user2 = await getUser(user?.username);
 
   const gamesPlayed = user2?.gamesPlayed;
   const gamesWon = user2?.gamesWon; 
@@ -502,7 +531,8 @@ async function userTwoWins(){
 
 async function userOneLooses(){
 
-  const user1 = getAuthenticatedUser()?.user;
+  const user = getAuthenticatedUser()?.user;
+  const user1 = await getUser(user?.username);
 
   const gamesPlayed = user1?.gamesPlayed;
   const gamesLost = user1?.gamesLost; 
@@ -538,7 +568,8 @@ async function userOneLooses(){
 
 async function userTwoLooses(){
   
-  const user2 = getAuthenticatedUser2()?.user;
+  const user = getAuthenticatedUser2()?.user;
+  const user2 = await getUser(user?.username);
 
   const gamesPlayed = user2?.gamesPlayed;
   const gamesLost = user2?.gamesLost; 
@@ -570,4 +601,21 @@ async function userTwoLooses(){
 
   return update;
 }
+
+async function getUser(username){
+
+  const options = {
+
+    method: 'GET',
+    mode:'cors',
+    credentials :'include',
+  };
+
+  const response = await fetch(`/api/users/${username}`, options);
+  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+  const update = await response.json();
+
+  return update;
+}
+
 export default GameScene;
