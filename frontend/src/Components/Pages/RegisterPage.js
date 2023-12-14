@@ -1,11 +1,13 @@
 import { isAuthenticated } from '../../utils/auths';
 import { clearPage } from '../../utils/render';
 import Navigate from '../Router/Navigate';
+import buttonSFX from '../../sounds/button-sfx.mp3';
 
 const RegisterPage = () => {
   if (!isAuthenticated()) {
     clearPage();
     renderRegisterForm();
+    sfxbtn();
 
     const form = document.querySelector('#registerForm');
     form.addEventListener('submit', onRegister);
@@ -91,5 +93,15 @@ async function onRegister(e) {
     Navigate('/login');
   }
 }
+
+function sfxbtn () {
+  const sfx = document.querySelector('button');
+  sfx?.addEventListener("click", () =>{
+    const audio = new Audio(buttonSFX);
+    audio.volume = 0.1;
+    audio.play();
+  });
+}
+
 
 export default RegisterPage;

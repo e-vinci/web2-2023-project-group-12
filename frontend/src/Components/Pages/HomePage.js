@@ -6,6 +6,7 @@ import robotsHomepage from '../../img/robots-homepage.png';
 import rulesIcon from '../../img/rules-icon.png';
 import player1Controls from '../../img/player1-controls.png';
 import player2Controls from '../../img/player2-controls.png';
+import buttonSFX from '../../sounds/button-sfx.mp3';
 
 import { isAuthenticated, clearAuthenticatedUser2, isAuthenticated2 } from '../../utils/auths';
 
@@ -15,9 +16,8 @@ const HomePage = () => {
   renderHomePage();
   startGame();
   popUpRules();
+  sfxbtn();
 };
-
-
 
 function renderHomePage() {
   const main = document.querySelector('main');
@@ -72,7 +72,7 @@ function renderHomePage() {
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+            <button id="sfx" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
@@ -82,10 +82,14 @@ function renderHomePage() {
   main.innerHTML = homepage;
 };
 
+const audio = new Audio(buttonSFX);
+audio.volume = 0.1;
+
 function popUpRules () {
   const myModal = new Modal(document.querySelector('#rules'));
   const rulesBtn = document.querySelector('#rules-icon');
   rulesBtn.addEventListener('click', () => {
+    audio.play();
     myModal.show();
   });
 };
@@ -94,12 +98,23 @@ function startGame () {
   const btn = document.querySelector('.start-game-btn');
   btn.addEventListener('click', () =>{
     if(isAuthenticated()){
+      audio.play();
       Navigate('/secondPlayer');
     }
     else{
+      audio.play();
       Navigate('/game');
     }
   });
 }
+
+function sfxbtn () {
+  const sfx = document.querySelector('#sfx');
+  sfx?.addEventListener("click", () =>{
+    audio.volume = 0.1;
+    audio.play();
+  });
+}
+
 
 export default HomePage;
