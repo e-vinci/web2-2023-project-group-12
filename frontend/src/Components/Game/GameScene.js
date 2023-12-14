@@ -11,6 +11,9 @@ import heart from '../../assets/heart-rotation.png';
 import blueKiss from '../../assets/blue-smack.png';
 import roseKiss from '../../assets/rose-smack.png';
 
+import kissSFX from '../../sounds/kiss2-sfx.mp3';
+import buttonSFX from '../../sounds/button-sfx.mp3';
+
 import homeIcon from '../../assets/home-icon.png';
 import replayIcon from '../../assets/replay-icon.png'
 
@@ -201,7 +204,7 @@ class GameScene extends Phaser.Scene {
     if (this.input.keyboard.addKey('Q').isDown && this.input.keyboard.addKey('B').isDown) {
       this.player2.anims.play('left-rose-kiss', true);
     }
-    else if (this.input.keyboard.addKey('B').isDown) {
+    else if (this.input.keyboard.addKey('B').isDown) {   
       this.player2.anims.play('right-rose-kiss', true);
     }
 
@@ -222,24 +225,32 @@ class GameScene extends Phaser.Scene {
       }
     });
 
+    // kiss SFX 
+    const kissySound = new Audio(kissSFX);
+    kissySound.volume = 0.3;
+
     // Player 1 kiss attack
     if(this.cursors.right.isDown && Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('P')) && !this.kissPlayer1){
       this.createHeart(this.player1, 600);
       this.kissPlayer1 = true;
+      kissySound.play();
     }
     else if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('P')) && !this.kissPlayer1){
       this.createHeart(this.player1, -600);
       this.kissPlayer1 = true;
+      kissySound.play();
     }
 
     // Player 2 kiss attack
     if(this.input.keyboard.addKey('Q').isDown && Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('B')) && !this.kissPlayer2){
       this.createHeart(this.player2, -600);
       this.kissPlayer2 = true;
+      kissySound.play();
     }
     else if(Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('B')) && !this.kissPlayer2){
       this.createHeart(this.player2, 600);
       this.kissPlayer2 = true;
+      kissySound.play();
     }
   }
 
@@ -458,12 +469,19 @@ class GameScene extends Phaser.Scene {
     const replayButton = this.add.image(centerX -70, centerY + 40, 'replay').setScale(0.2);
     replayButton.setOrigin(0.5);
     replayButton.setInteractive();
+
+    // btn SFX
+    const btnSFX = new Audio(buttonSFX);
     
     homeButton.on('pointerdown', () => {
+      btnSFX.volume = 0.1;
+      btnSFX.play();
       Navigate('/');
     });
 
     replayButton.on('pointerdown', () => {
+      btnSFX.volume = 0.
+      btnSFX.play();
       window.location.reload();
     });
   }
