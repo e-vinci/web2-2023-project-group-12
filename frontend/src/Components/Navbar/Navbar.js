@@ -24,6 +24,9 @@ const Navbar = () => {
   startOrStopMusic();
 };
 
+const audio = new Audio(backgroundMusic);
+audio.pause();
+
 function renderNavbar() {
   const navbarWrapper = document.querySelector('#navbarWrapper');
   const authenticatedUser = getAuthenticatedUser()?.user;
@@ -64,12 +67,12 @@ function renderNavbar() {
         <div>
           <ul class="navbar-nav justify-content-end align-items-center"> 
 
-            <li class="nav-item col-4">
-            <p class="text-lavender m-0 fs-3 col-12" href="#">WELCOME ${authenticatedUser?.username} ! </p>
+            <li class="nav-item col-5">
+            <p class="text-lavender m-0 fs-3 col-12 text-center" href="#">WELCOME ${authenticatedUser?.username} ! </p>
             </li>
 
             <li class="nav-item col-1">
-            <a class="nav-link col-12" href="#"><img id="btn" class="img-fluid sound-icon" src="${muteOnIcon}" alt="Sound Icon"></a>
+            <a class="nav-link col-12" href="#"><img id="btn" class="img-fluid sound-icon" src="${audio.paused ? muteOnIcon : muteOffIcon}" alt="Sound Icon"></a>
             </li>
 
             <li class="nav-item col-2">
@@ -94,7 +97,6 @@ function renderNavbar() {
 
 }
 function startOrStopMusic() {
-  const audio = new Audio(backgroundMusic);
   const muteBtn = document.querySelector('.sound-icon');
 
   muteBtn?.addEventListener('click', () => {
