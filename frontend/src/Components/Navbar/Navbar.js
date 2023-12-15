@@ -33,23 +33,24 @@ function renderNavbar() {
       <div class="container-fluid p-0" >
         <a href="#" ><img data-uri="/" id="btn" class="logo col-10" src="${logo}" alt="SPACE LOVER"></a>
         <div>
-          <ul class="navbar-nav justify-content-end">
+          <ul class="navbar-nav justify-content-end align-items-center">
+
+            <li class="nav-item col-1">
+            <a class="nav-link col-12" href="#"><img id="btn" class="img-fluid sound-icon" src="${muteOnIcon}" alt="Sound Icon"></a>
+            </li>
 
             <li class="nav-item col-2">
-              <a class="nav-link" href="#" ><img id="btn" class="col-12 sound-icon" src="${muteOnIcon}" alt="Sound Icon"></a>
+              <a class="nav-link" href="#" id="rank"><img data-uri="/rank"  id="btn" class="img-fluid" src="${rankIcon}" alt="Ranking"></a>
+            </li>
+            
+            <li class="nav-item btn btn-warning mx-2 fs-5 col-2" data-uri="/login">
+              <a class="nav-link text-black" href="#" data-uri="/login" id="btn">Login</a>
+            </li>
+            
+            <li class="nav-item btn btn-warning mx-2 fs-5 col-3" data-uri="/register">
+              <a class="nav-link text-black" href="#" data-uri="/register" id="btn">Register</a> 
             </li>
 
-            <li class="nav-item col-2">
-              <a class="nav-link" href="#" id="rank" ><img data-uri="/rank"  id="btn"  class="col-12" src="${rankIcon}" alt="Ranking"></a>
-            </li>
-            
-            <li class="nav-item btn btn-warning mx-2 h-75 mt-3 fs-5" data-uri="/login">
-              <a class="nav-link text-black" href="#" data-uri="/login" id="btn">Log in</a>
-            </li>
-            
-            <li class="nav-item btn btn-warning mx-2 h-75 mt-3 fs-5" data-uri="/register">
-              <a class="nav-link text-black" href="#" data-uri="/register" id="btn">Sign in</a> 
-            </li>
           </ul>
         </div>
       </div>
@@ -61,24 +62,28 @@ function renderNavbar() {
       <div class="container-fluid p-0" >
         <a href="#" ><img data-uri="/" id="btn" class="logo col-10" src="${logo}" alt="SPACE LOVER"></a>
         <div>
-          <ul class="navbar-nav justify-content-end align-items-center">
-            <li class="nav-item">
-            <p class="text-lavender m-0 fs-4 col-12" href="#">WELCOME ${authenticatedUser?.username} ! </p>
-            </li> 
-            <li class="nav-item col-2">
-            <a class="nav-link" href="#"><img id="btn" class="col-12 sound-icon" src="${muteOnIcon}" alt="Sound Icon"></a>
+          <ul class="navbar-nav justify-content-end align-items-center"> 
+
+            <li class="nav-item col-4">
+            <p class="text-lavender m-0 fs-3 col-12" href="#">WELCOME ${authenticatedUser?.username} ! </p>
             </li>
-            <li class="nav-item col-2">
-              <a class="nav-link" href="#" ><img data-uri="/score"  id="btn" class="ml-2" src="${scoreIcon}" alt="Scores"></a>
+
+            <li class="nav-item col-1">
+            <a class="nav-link col-12" href="#"><img id="btn" class="img-fluid sound-icon" src="${muteOnIcon}" alt="Sound Icon"></a>
             </li>
 
             <li class="nav-item col-2">
-              <a class="nav-link" href="#" id="rank" ><img data-uri="/rank"  id="btn" class="col-12" src="${rankIcon}" alt="Ranking"></a>
+              <a class="nav-link" href="#"><img data-uri="/score"  id="btn" class="img-fluid" src="${scoreIcon}" alt="Scores"></a>
+            </li>
+
+            <li class="nav-item col-2">
+              <a class="nav-link" href="#" id="rank"><img data-uri="/rank"  id="btn" class="img-fluid" src="${rankIcon}" alt="Ranking"></a>
             </li>
             
-            <li class="nav-item btn btn-warning mx-2 fs-5" id="logout">
-              <a class="nav-link text-black"  id="btn" href="#">Log out</a>
+            <li class="nav-item btn btn-warning mx-2 fs-5 col-2" id="logout">
+              <a class="nav-link text-black"  id="btn" href="#">Logout</a>
             </li>
+
           </ul>
         </div>
       </div>
@@ -91,7 +96,7 @@ function renderNavbar() {
 function startOrStopMusic() {
   const audio = new Audio(backgroundMusic);
   const muteBtn = document.querySelector('.sound-icon');
-  
+
   muteBtn?.addEventListener('click', () => {
     if (audio.paused) {
       audio.loop = true;
