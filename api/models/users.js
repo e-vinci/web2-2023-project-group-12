@@ -31,8 +31,16 @@ async function login(username, password) {
     { expiresIn: lifetimeJwt }, // lifetime of the JWT (added to the JWT payload)
   );
 
+  const user = {
+    id: userFound.id,
+    username: userFound.username,
+    gamesWon: userFound.gamesWon,
+    gamesLost: userFound.gamesLost,
+    gamesPlayed: userFound.gamesPlayed,
+  };
+
   const authenticatedUser = {
-    user: userFound,
+    user,
     token,
   };
 
@@ -51,8 +59,16 @@ async function register(username, password) {
     { expiresIn: lifetimeJwt }, // lifetime of the JWT (added to the JWT payload)
   );
 
+  const user = {
+    id: userFound.id,
+    username: userFound.username,
+    gamesWon: userFound.gamesWon,
+    gamesLost: userFound.gamesLost,
+    gamesPlayed: userFound.gamesPlayed,
+  };
+
   const authenticatedUser = {
-    user: userFound,
+    user,
     token,
   };
 
