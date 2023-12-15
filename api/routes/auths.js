@@ -14,7 +14,7 @@ router.post('/register', async (req, res) => {
 
   if (!authenticatedUser) throw new Error('username already taken');
 
-  return res.json();
+  return res.json(authenticatedUser.username);
 });
 
 /* Login a user */
