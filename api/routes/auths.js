@@ -14,8 +14,7 @@ router.post('/register', async (req, res) => {
 
   if (!authenticatedUser) throw new Error('username already taken');
 
-  createCookieSessionData(req, authenticatedUser);
-  return res.json({ user: authenticatedUser.user });
+  return res.json();
 });
 
 /* Login a user */
