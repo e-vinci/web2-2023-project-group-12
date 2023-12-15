@@ -116,9 +116,17 @@ function updateUser(id, propertiesToUpdate) {
 
   users[foundIndex] = updatedUser;
 
+  const user = {
+    id: updatedUser.id,
+    username: updatedUser.username,
+    gamesPlayed: updatedUser.gamesPlayed,
+    gamesLost: updatedUser.gamesLost,
+    gamesWon: updatedUser.gamesWon,
+  };
+
   serialize(jsonDbPath, users);
 
-  return updatedUser;
+  return user;
 }
 
 function readAllRanking() {
@@ -128,6 +136,7 @@ function readAllRanking() {
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < players.length; i++) {
     const player = {
+      id: players[i].id,
       username: players[i].username,
       gamesWon: players[i].gamesWon,
     };

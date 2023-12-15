@@ -10,6 +10,7 @@ router.get('/:username', (req, res) => {
   if (!foundUser) return res.sendStatus(404);
 
   const user = {
+    id: foundUser.id,
     username: foundUser.username,
     gamesWon: foundUser.gamesWon,
     gamesLost: foundUser.gamesLost,
