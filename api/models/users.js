@@ -51,24 +51,24 @@ async function register(username, password) {
   const userFound = readOneUserFromUsername(username);
   if (userFound) return undefined;
 
-  await createOneUser(username, password);
+  const user = await createOneUser(username, password);
 
   const token = jwt.sign(
-    { userFound }, // session data added to the payload (payload : part 2 of a JWT)
+    { user }, // session data added to the payload (payload : part 2 of a JWT)
     jwtSecret, // secret used for the signature (signature part 3 of a JWT)
     { expiresIn: lifetimeJwt }, // lifetime of the JWT (added to the JWT payload)
   );
 
-  const user = {
-    id: userFound.id,
-    username: userFound.username,
-    gamesWon: userFound.gamesWon,
-    gamesLost: userFound.gamesLost,
-    gamesPlayed: userFound.gamesPlayed,
+  const newUser = {
+    id: user.id,
+    username: user.username,
+    gamesPlayed: user.gamesPlayed,
+    gamesLost: user.gamesLost,
+    gamesWon: user.gamesWon,
   };
 
   const authenticatedUser = {
-    user,
+    user: newUser,
     token,
   };
 
