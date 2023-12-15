@@ -13,7 +13,6 @@ import roseKiss from '../../assets/rose-smack.png';
 
 import kissSFX from '../../sounds/kiss2-sfx.mp3';
 import buttonSFX from '../../sounds/button-sfx.mp3';
-import backgroundMusic from '../../sounds/gameplay-sfx.mp3';
 
 import homeIcon from '../../assets/home-icon.png';
 import replayIcon from '../../assets/replay-icon.png'
@@ -90,10 +89,6 @@ class GameScene extends Phaser.Scene {
       frameHeight: 99,
     });
 
-    // background music
-    this.load.audio('theme', [
-      backgroundMusic
-    ]);
     this.load.audio('button', [
       buttonSFX
     ])
@@ -142,13 +137,6 @@ class GameScene extends Phaser.Scene {
       username1.setOrigin(0.5);
       username2.setOrigin(0.5);
 
-    // play music
-    this.music = this.sound.add('theme', {
-      volume: 0.4,
-      loop: true
-    });
-    this.music.play();
-
     // button sfx
     this.sfx = this.sound.add('button', {
       volume: 0.1,
@@ -161,7 +149,6 @@ class GameScene extends Phaser.Scene {
     this.updateBars();
 
     if (this.gameOver) {
-      this.music.stop();
       this.endGamePopup();
       return;
     }
