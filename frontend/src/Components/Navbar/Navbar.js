@@ -3,7 +3,7 @@ import logo from '../../img/logo.svg';
 import rankIcon from '../../img/rank-icon.svg';
 import scoreIcon from '../../img/score-icon.svg';
 import muteOnIcon from '../../img/sound-off.png';
- import muteOffIcon from '../../img/sound-on.png';
+import muteOffIcon from '../../img/sound-on.png';
 import buttonSFX from '../../sounds/button-sfx.mp3';
 import backgroundMusic from '../../sounds/background3-sfx.mp3';
 
@@ -21,11 +21,8 @@ const Navbar = () => {
   renderNavbar();
   logoutBtn();
   sfxbtn();
-  musicStart();
-  musicStop();
+  startOrStopMusic();
 };
-
-const audio = new Audio(backgroundMusic);
 
 function renderNavbar() {
   const navbarWrapper = document.querySelector('#navbarWrapper');
@@ -39,7 +36,7 @@ function renderNavbar() {
           <ul class="navbar-nav justify-content-end">
 
             <li class="nav-item col-2">
-              <a class="nav-link" href="#" ><img id="btn" class="col-12 ${audio.paused ? 'muteOn' : 'muteOff' }"" src="${audio.paused ? muteOnIcon : muteOffIcon}" alt="muteIcon"></a>
+              <a class="nav-link" href="#" ><img id="btn" class="col-12 sound-icon" src="${muteOnIcon}" alt="Sound Icon"></a>
             </li>
 
             <li class="nav-item col-2">
@@ -69,7 +66,7 @@ function renderNavbar() {
             <p class="text-lavender m-0 fs-4 col-12" href="#">WELCOME ${authenticatedUser?.username} ! </p>
             </li> 
             <li class="nav-item col-2">
-            <a class="nav-link" href="#" id="rank" ><img id="btn"  class="col-12 ${audio.paused ? 'muteOn' : 'muteOff' }"" src="${audio.paused ? muteOnIcon : muteOffIcon}" alt="muteIcon"></a>
+            <a class="nav-link" href="#"><img id="btn" class="col-12 sound-icon" src="${muteOnIcon}" alt="Sound Icon"></a>
             </li>
             <li class="nav-item col-2">
               <a class="nav-link" href="#" ><img data-uri="/score"  id="btn" class="ml-2" src="${scoreIcon}" alt="Scores"></a>
@@ -91,29 +88,21 @@ function renderNavbar() {
   navbarWrapper.innerHTML = isAuthenticated() ? authenticatedNavbar : anonymousNavbar;
 
 }
-
-function musicStart() {
-  const start = document.querySelector('.muteOn');
-  start?.addEventListener('click', () => {
-    audio.loop = true;
-    audio.volume = 0.3;
-    audio.play();
-    start.src = muteOffIcon;
-    start.classList.remove('muteOn');
-    start.classList.add('muteOff');
+function startOrStopMusic() {
+  const audio = new Audio(backgroundMusic);
+  const muteBtn = document.querySelector('.sound-icon');
+  
+  muteBtn?.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.loop = true;
+      audio.volume = 0.3;
+      audio.play();
+      muteBtn.src = muteOffIcon;
+    } else {
+      audio.pause();
+      muteBtn.src = muteOnIcon;
+    }
   });
-
-}
-
-function musicStop() {
-  const stop =  document.querySelector('.muteOff');
-  stop?.addEventListener('click', () => {
-    audio.pause();
-    stop.src = muteOnIcon;
-    stop.classList.remove('muteOff');
-    stop.classList.add("muteOn");
-  });
-;
 }
 
 function logoutBtn() {
