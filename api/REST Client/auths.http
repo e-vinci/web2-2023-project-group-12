@@ -9,6 +9,11 @@ Content-Type: application/json
     "password":"admin"
 }
 
+### RANKING
+GET {{baseUrl}}/ranks
+Content-Type: application/json
+
+
 ### Login the default admin
 POST {{baseUrl}}/auths/login
 Content-Type: application/json

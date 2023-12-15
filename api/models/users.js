@@ -123,8 +123,19 @@ function updateUser(id, propertiesToUpdate) {
 
 function readAllRanking() {
   const players = parse(jsonDbPath);
+  const users = [];
 
-  const ranking = [...players].sort((a, b) => b.gamesWon - a.gamesWon);
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < players.length; i++) {
+    const player = {
+      username: players[i].username,
+      gamesWon: players[i].gamesWon,
+    };
+
+    users.push(player);
+  }
+
+  const ranking = [...users].sort((a, b) => b.gamesWon - a.gamesWon);
 
   return ranking;
 }
