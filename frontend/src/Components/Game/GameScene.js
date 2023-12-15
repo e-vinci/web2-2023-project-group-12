@@ -13,6 +13,7 @@ import roseKiss from '../../assets/rose-smack.png';
 
 import kissSFX from '../../sounds/kiss2-sfx.mp3';
 import buttonSFX from '../../sounds/button-sfx.mp3';
+import backgroundMusic from '../../sounds/gameplay-sfx.mp3';
 
 import homeIcon from '../../assets/home-icon.png';
 import replayIcon from '../../assets/replay-icon.png'
@@ -88,6 +89,14 @@ class GameScene extends Phaser.Scene {
       frameWidth: 99,
       frameHeight: 99,
     });
+
+    // background music
+    this.load.audio('theme', [
+      backgroundMusic
+    ]);
+    this.load.audio('button', [
+      buttonSFX
+    ])
   }
 
   create() {
@@ -132,6 +141,19 @@ class GameScene extends Phaser.Scene {
       }
       username1.setOrigin(0.5);
       username2.setOrigin(0.5);
+
+    // play music
+    this.music = this.sound.add('theme', {
+      volume: 0.4,
+      loop: true
+    });
+    this.music.play();
+
+    // button sfx
+    this.sfx = this.sound.add('button', {
+      volume: 0.1,
+    });
+
   }
   
   update() {
@@ -139,6 +161,7 @@ class GameScene extends Phaser.Scene {
     this.updateBars();
 
     if (this.gameOver) {
+      this.music.stop();
       this.endGamePopup();
       return;
     }
@@ -405,6 +428,7 @@ class GameScene extends Phaser.Scene {
     const popupWidth = 350;
     const popupHeight = 250;
 
+
     const popupBackground = this.add.graphics();
     popupBackground.fillStyle(0xe1dbf7);
     popupBackground.fillRoundedRect(centerX - popupWidth / 2, centerY - popupHeight / 2, popupWidth, popupHeight);
@@ -471,17 +495,14 @@ class GameScene extends Phaser.Scene {
     replayButton.setInteractive();
 
     // btn SFX
-    const btnSFX = new Audio(buttonSFX);
     
     homeButton.on('pointerdown', () => {
-      btnSFX.volume = 0.1;
-      btnSFX.play();
+      this.sfx.play();
       Navigate('/');
     });
 
     replayButton.on('pointerdown', () => {
-      btnSFX.volume = 0.
-      btnSFX.play();
+      this.sfx.play();
       window.location.reload();
     });
   }
