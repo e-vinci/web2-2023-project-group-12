@@ -1,8 +1,10 @@
+/* eslint-disable no-plusplus */
 
 import { setAuthenticatedUser2 } from '../../utils/auths';
 import { clearPage } from '../../utils/render';
 import Navbar from '../Navbar/Navbar';
 import Navigate from '../Router/Navigate';
+import buttonSFX from '../../sounds/button-sfx.mp3';
 
 
 const SecondPlayerPage = () => {
@@ -11,6 +13,7 @@ const SecondPlayerPage = () => {
     const form = document.querySelector('#secondPlayerForm');
     form.addEventListener('submit', onLogin); 
     startGame();
+    sfxbtn();
   };
 
 function renderSecondPlayerPage() {
@@ -36,12 +39,15 @@ function renderSecondPlayerPage() {
             <input class="bg-lavender form-control mb-2" type="password"  id="password" name="password" required>
           </div>
 
-          <button type="submit" class="btn btn-warning mt-3 col-10 rounded-5">Play with this second player</button>
+          <button id="sfx" type="submit" class="btn btn-warning mt-3 col-10 rounded-5">Play with this second player</button>
       </form>
     </div>
     `;
 
 }
+
+const audio = new Audio(buttonSFX);
+audio.volume = 0.1;
 
 
 async function onLogin(e) {
@@ -97,9 +103,20 @@ async function onLogin(e) {
 function startGame() {
   const btn = document.querySelector('.start-game-btn');
   btn.addEventListener('click', () =>{
+    audio.play();
     Navigate('/game');
   });
   
 }
+
+function sfxbtn () {
+  const sfx = document.querySelectorAll('#sfx');
+  for(let i = 0; i<sfx.length; i++){
+    sfx[i]?.addEventListener("click", () =>{
+      audio.play();
+    })
+  }
+}
+
 
 export default SecondPlayerPage;

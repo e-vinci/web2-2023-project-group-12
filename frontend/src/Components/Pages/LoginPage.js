@@ -2,12 +2,14 @@ import { setAuthenticatedUser, isAuthenticated } from '../../utils/auths';
 import { clearPage } from '../../utils/render';
 import Navbar from '../Navbar/Navbar';
 import Navigate from '../Router/Navigate';
+import buttonSFX from '../../sounds/button-sfx.mp3';
 
 
 const LoginPage = () => {
   if (!isAuthenticated()) {
     clearPage();
     renderLoginForm();
+    sfxbtn();
 
     const form = document.querySelector('#loginForm');
     form.addEventListener('submit', onLogin);
@@ -102,5 +104,14 @@ async function onLogin(e) {
   document.querySelector('#username').value = '';
   document.querySelector('#password').value = '';
  }
+
+ function sfxbtn () {
+  const sfx = document.querySelector('button');
+  sfx?.addEventListener("click", () =>{
+    const audio = new Audio(buttonSFX);
+    audio.volume = 0.1;
+    audio.play();
+  });
+}
 
 export default LoginPage;

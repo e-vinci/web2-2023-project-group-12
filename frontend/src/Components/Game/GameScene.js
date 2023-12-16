@@ -11,6 +11,8 @@ import heart from '../../assets/heart-rotation.png';
 import blueKiss from '../../assets/blue-smack.png';
 import roseKiss from '../../assets/rose-smack.png';
 
+import buttonSFX from '../../sounds/button-sfx.mp3';
+
 import homeIcon from '../../assets/home-icon.png';
 import replayIcon from '../../assets/replay-icon.png'
 
@@ -85,6 +87,10 @@ class GameScene extends Phaser.Scene {
       frameWidth: 99,
       frameHeight: 99,
     });
+
+    this.load.audio('button', [
+      buttonSFX
+    ])
   }
 
   create() {
@@ -129,6 +135,12 @@ class GameScene extends Phaser.Scene {
       }
       username1.setOrigin(0.5);
       username2.setOrigin(0.5);
+
+    // button sfx
+    this.sfx = this.sound.add('button', {
+      volume: 0.1,
+    });
+
   }
   
   update() {
@@ -201,7 +213,7 @@ class GameScene extends Phaser.Scene {
     if (this.input.keyboard.addKey('Q').isDown && this.input.keyboard.addKey('B').isDown) {
       this.player2.anims.play('left-rose-kiss', true);
     }
-    else if (this.input.keyboard.addKey('B').isDown) {
+    else if (this.input.keyboard.addKey('B').isDown) {   
       this.player2.anims.play('right-rose-kiss', true);
     }
 
@@ -394,6 +406,7 @@ class GameScene extends Phaser.Scene {
     const popupWidth = 350;
     const popupHeight = 250;
 
+
     const popupBackground = this.add.graphics();
     popupBackground.fillStyle(0xe1dbf7);
     popupBackground.fillRoundedRect(centerX - popupWidth / 2, centerY - popupHeight / 2, popupWidth, popupHeight);
@@ -458,12 +471,16 @@ class GameScene extends Phaser.Scene {
     const replayButton = this.add.image(centerX -70, centerY + 40, 'replay').setScale(0.2);
     replayButton.setOrigin(0.5);
     replayButton.setInteractive();
+
+    // btn SFX
     
     homeButton.on('pointerdown', () => {
+      this.sfx.play();
       Navigate('/');
     });
 
     replayButton.on('pointerdown', () => {
+      this.sfx.play();
       window.location.reload();
     });
   }
