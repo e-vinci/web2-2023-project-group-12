@@ -97,7 +97,7 @@ async function onLogin(e) {
 
 
  function refreshLoginForm() {
-   // Réinitialiser les champs du formulaire
+   // reset form
   document.querySelector('#username').value = '';
   document.querySelector('#password').value = '';
  }
