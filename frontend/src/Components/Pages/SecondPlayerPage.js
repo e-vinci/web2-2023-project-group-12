@@ -1,6 +1,4 @@
-/* eslint-disable no-plusplus */
-
-import { setAuthenticatedUser2 } from '../../utils/auths';
+import { setAuthenticatedUser2, getAuthenticatedUser } from '../../utils/auths';
 import { clearPage } from '../../utils/render';
 import Navbar from '../Navbar/Navbar';
 import Navigate from '../Router/Navigate';
@@ -38,17 +36,14 @@ function renderSecondPlayerPage() {
             <label for="password" class="form-label">Password</label>
             <input class="bg-lavender form-control mb-2" type="password"  id="password" name="password" required>
           </div>
+          <div class="errorDiv input-container text-danger" id="errorLogin2"></div>
 
-          <button id="sfx" type="submit" class="btn btn-warning mt-3 col-10 rounded-5">Play with this second player</button>
+          <button type="submit" class="btn btn-warning mt-3 col-10 rounded-5">Play with this second player</button>
       </form>
     </div>
     `;
 
 }
-
-const audio = new Audio(buttonSFX);
-audio.volume = 0.1;
-
 
 async function onLogin(e) {
 
@@ -59,58 +54,64 @@ async function onLogin(e) {
 
   const password = document.querySelector('#password').value;
 
+  const player1 = getAuthenticatedUser()?.user;
 
-  const options = {
+  const errorDiv = document.querySelector('#errorLogin2');
 
-    method: 'POST',
+  if (username === player1.username) {
+    errorDiv.innerHTML = `<p>You can't play with yourself</p>`
+  }
+  else{
+    const options = {
 
-    body: JSON.stringify({
-
-      username,
-
-      password,
-
-    }),
-
-    headers: {
-
-      'Content-Type': 'application/json',
-
-    },
-
-  };
-
-
-  const response = await fetch('/api/auths/loginSecondPlayer', options);
-
-
-  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
-
-
-  const authenticatedUser2 = await response.json();
-
-
- // console.log('Authenticated user : ', authenticatedUser);
-
-
-  setAuthenticatedUser2(authenticatedUser2);
-
-  Navbar()
+      method: 'POST',
   
-  Navigate('/game');
+      body: JSON.stringify({
+  
+        username,
+  
+        password,
+  
+      }),
+  
+      headers: {
+  
+        'Content-Type': 'application/json',
+  
+      },
+  
+    };
+  
+  
+    const response = await fetch('/api/auths/loginSecondPlayer', options);
+  
+  
+    if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+  
+  
+    const authenticatedUser2 = await response.json();
+  
+    setAuthenticatedUser2(authenticatedUser2);
+  
+    Navbar()
+    
+    Navigate('/game');
+  }
 }
 
 function startGame() {
   const btn = document.querySelector('.start-game-btn');
   btn.addEventListener('click', () =>{
-    audio.play();
     Navigate('/game');
   });
   
 }
 
 function sfxbtn () {
-  const sfx = document.querySelectorAll('#sfx');
+  const sfx = document.querySelectorAll('button');
+  const audio = new Audio(buttonSFX);
+  audio.volume = 0.1;
+  // eslint-disable-next-line no-plusplus
   for(let i = 0; i<sfx.length; i++){
     sfx[i]?.addEventListener("click", () =>{
       audio.play();
