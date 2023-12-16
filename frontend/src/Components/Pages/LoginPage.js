@@ -88,9 +88,6 @@ async function onLogin(e) {
 
   errorDiv.style.display="none";
 
-  console.log('Authenticated user : ', authenticatedUser);
-
-
   setAuthenticatedUser(authenticatedUser);
   
     Navbar()

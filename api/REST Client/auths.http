@@ -9,6 +9,11 @@ Content-Type: application/json
     "password":"admin"
 }
 
+### RANKING
+GET {{baseUrl}}/ranks
+Content-Type: application/json
+
+
 ### Login the default admin
 POST {{baseUrl}}/auths/login
 Content-Type: application/json
@@ -44,4 +49,14 @@ Content-Type: application/json
 {
     "username":"test2",
     "password":"test2"
+}
+
+### PATCH
+PATCH {{baseUrl}}/users/1
+Content-Type: application/json
+
+{
+    "gamesPlayed": 2,
+    "gamesLost": 2,
+    "gamesWon": 0
 }
