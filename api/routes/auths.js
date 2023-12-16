@@ -14,8 +14,7 @@ router.post('/register', async (req, res) => {
 
   if (!authenticatedUser) throw new Error('username already taken');
 
-  createCookieSessionData(req, authenticatedUser);
-  return res.json({ user: authenticatedUser.user });
+  return res.json(authenticatedUser.username);
 });
 
 /* Login a user */
@@ -28,6 +27,7 @@ router.post('/login', async (req, res) => {
   const authenticatedUser = await login(username, password);
 
   if (!authenticatedUser) throw new Error('invalid username or password');
+  // console.log(authenticatedUser);
 
   createCookieSessionData(req, authenticatedUser);
 

@@ -84,11 +84,9 @@ async function onRegister(e) {
 
     // if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
 
-    const authenticatedUser = await response.json();
+    await response.json();
 
     errorDiv.style.display="none";
-      
-    console.log('Newly registered & authenticated user : ', authenticatedUser);
 
     Navigate('/login');
   }
