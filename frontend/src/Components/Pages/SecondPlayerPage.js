@@ -83,7 +83,7 @@ async function onLogin(e) {
     };
   
   
-    const response = await fetch('/api/auths/loginSecondPlayer', options);
+    const response = await fetch(`${process.env.API_BASE_URL}/auths/loginSecondPlayer`, options);
     errorDiv.style.display="";
 
     if (!response.ok) {

@@ -137,7 +137,7 @@ async function updateUserScore(username, gamesPlayed, gamesWon = 0, gamesLost = 
     },
   };
 
-  const response = await fetch(`/api/users/${user?.id}`, options);
+  const response = await fetch(`${process.env.API_BASE_URL}/users/${user?.id}`, options);
   if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
   const update = await response.json();
 
@@ -159,7 +159,7 @@ async function getUser(username) {
     credentials: 'include',
   };
 
-  const response = await fetch(`/api/users/${username}`, options);
+  const response = await fetch(`${process.env.API_BASE_URL}/users/${username}`, options);
   if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
   const update = await response.json();
 
