@@ -84,10 +84,12 @@ async function onLogin(e) {
   
   
     const response = await fetch('/api/auths/loginSecondPlayer', options);
-  
-  
-    if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
-  
+    errorDiv.style.display="";
+
+    if (!response.ok) {
+      errorDiv.innerHTML="<p>Wrong username or password or this player doesn't exist</p>"
+      refreshLoginForm()
+    }
   
     const authenticatedUser2 = await response.json();
   
@@ -117,6 +119,13 @@ function sfxbtn () {
       audio.play();
     })
   }
+}
+
+
+function refreshLoginForm() {
+  // reset form
+ document.querySelector('#username').value = '';
+ document.querySelector('#password').value = '';
 }
 
 
