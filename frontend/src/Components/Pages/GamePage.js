@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import GameScene from '../Game/GameScene';
+import EndGameScene from '../Game/EndGameScene';
 
 let game;
 
@@ -27,7 +28,7 @@ const GamePage = () => {
     },
     canvasStyle: 'border: 7px solid #ffc107; box-sizing: border-box; border-radius: 10px;', // Add any other styles as needed
 
-    scene: [GameScene],
+    scene: [GameScene, EndGameScene],
     //  parent DOM element into which the canvas created by the renderer will be injected.
     parent: 'gameDiv',
   };

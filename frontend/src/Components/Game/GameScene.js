@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import Navigate from '../Router/Navigate';
 
 import skyAsset from '../../assets/arena.jpg';
 import platformAsset from '../../assets/arena-platform.jpg';
@@ -10,11 +9,6 @@ import roseHug from '../../assets/rose-hug.png';
 import heart from '../../assets/heart-rotation.png';
 import blueKiss from '../../assets/blue-smack.png';
 import roseKiss from '../../assets/rose-smack.png';
-
-import buttonSFX from '../../sounds/button-sfx.mp3';
-
-import homeIcon from '../../assets/home-icon.png';
-import replayIcon from '../../assets/replay-icon.png'
 
 import { getAuthenticatedUser, isAuthenticated, getAuthenticatedUser2, isAuthenticated2 } from '../../utils/auths';
 
@@ -37,20 +31,11 @@ class GameScene extends Phaser.Scene {
     this.player1Bar = null;
     this.player2Bar = null;
     this.gameOver = false;
-    this.hearts = undefined;
     this.kissPlayer1 = false;
     this.kissPlayer2 = false;
-    this.user1Updated = false;
-    this.user2Updated = false;
   }
 
-
-
   preload() {
-    // icons
-    this.load.image('home', homeIcon);
-    this.load.image('replay', replayIcon);
-
     this.load.image('sky', skyAsset);
     this.load.image('ground', platformAsset);
 
@@ -87,10 +72,6 @@ class GameScene extends Phaser.Scene {
       frameWidth: 99,
       frameHeight: 99,
     });
-
-    this.load.audio('button', [
-      buttonSFX
-    ])
   }
 
   create() {
@@ -135,12 +116,6 @@ class GameScene extends Phaser.Scene {
       }
       username1.setOrigin(0.5);
       username2.setOrigin(0.5);
-
-    // button sfx
-    this.sfx = this.sound.add('button', {
-      volume: 0.1,
-    });
-
   }
   
   update() {
@@ -148,8 +123,15 @@ class GameScene extends Phaser.Scene {
     this.updateBars();
 
     if (this.gameOver) {
-      this.endGamePopup();
-      return;
+      this.physics.pause();
+      this.endGame();
+      this.player1Love = 0;
+      this.player2Love = 0;
+      this.player1Bar = null;
+      this.player2Bar = null;
+      this.gameOver = false;
+      this.kissPlayer1 = false;
+      this.kissPlayer2 = false;
     }
 
     // player 1 controls
@@ -338,7 +320,6 @@ class GameScene extends Phaser.Scene {
       this.setTintEffect(player1, 50);
     }
     if(this.player2Love === 100 || this.player1Love === 100) {
-      this.physics.pause();
       this.gameOver = true;
     }
   }
@@ -389,150 +370,22 @@ class GameScene extends Phaser.Scene {
       this.kissPlayer1 = false;
     }
     if(this.player1Love === 100 || this.player2Love === 100){
-      this.physics.pause();
       this.gameOver = true;
     }
   }
 
-  updateBars() {
-    // Mise à jour de la largeur des barres de vie en fonction de la vie actuelle des joueurs
+  updateBars() { // update players love bar
     this.player1Bar = this.add.rectangle(this.game.config.width - 10, 10, this.player1Love*8, 50, 0xD038AC);
     this.player2Bar = this.add.rectangle(10, 10, this.player2Love*8, 50, 0xD038AC);
   }
 
-  endGamePopup() {
-    const {centerX} = this.cameras.main;
-    const {centerY} = this.cameras.main;
-    const popupWidth = 350;
-    const popupHeight = 250;
-
-
-    const popupBackground = this.add.graphics();
-    popupBackground.fillStyle(0xe1dbf7);
-    popupBackground.fillRoundedRect(centerX - popupWidth / 2, centerY - popupHeight / 2, popupWidth, popupHeight);
-
-    const popupTextStyle = { fontFamily: 'Bauhaus', fontSize: '50px', fill: '#341f8b', resolution: 2};
-    let endGameText;
-
-    const user1 = getAuthenticatedUser()?.user;
-    const user2 = getAuthenticatedUser2()?.user;
-
-    if(isAuthenticated()) { // player 1 won
-      if (this.player2Love === 100) {
-
-        if (!this.user1Updated) {
-          handleWinner(user1?.username);
-          this.user1Updated = true;
-        }
-
-        if (isAuthenticated2() && !this.user2Updated) {
-          handleLoser(user2?.username);
-          this.user2Updated = true;
-        }
-
-        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} WON`  , popupTextStyle);
-      } 
-      else if (isAuthenticated2()) { // player 2 won
-
-        if (!this.user1Updated) {
-          handleLoser(user1?.username);
-          this.user1Updated = true;
-        }
-
-        if (!this.user2Updated) {
-          handleWinner(user2?.username);
-          this.user2Updated = true;
-        }
-
-        endGameText = this.add.text(centerX, centerY - 50, `${user2?.username} WON`, popupTextStyle);
-      }
-      else { // player 2 won
-        if (this.player2Love === 100 && !this.user1Updated) {
-          handleWinner(user1?.username);
-          this.user1Updated = true;
-        }
-        if (!this.user1Updated) {
-          handleLoser(user1?.username);
-          this.user1Updated = true;
-        }
-        endGameText = this.add.text(centerX, centerY - 50, `${user1?.username} LOST`, popupTextStyle);
-      }
-    }
-    else if (this.player2Love === 100)
-        endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 1 WON', popupTextStyle);
-      else 
-        endGameText = this.add.text(centerX, centerY - 50, 'PLAYER 2 WON', popupTextStyle);
-    endGameText.setOrigin(0.5);
-
-
-    const homeButton = this.add.image(centerX +70, centerY + 40, 'home').setScale(0.2);
-    homeButton.setOrigin(0.5);
-    homeButton.setInteractive();
-    const replayButton = this.add.image(centerX -70, centerY + 40, 'replay').setScale(0.2);
-    replayButton.setOrigin(0.5);
-    replayButton.setInteractive();
-
-    // btn SFX
-    
-    homeButton.on('pointerdown', () => {
-      this.sfx.play();
-      Navigate('/');
-    });
-
-    replayButton.on('pointerdown', () => {
-      this.sfx.play();
-      window.location.reload();
-    });
+  endGame() {
+    this.sys.game.global = {winner: this.player2Love === 100 ? 'player1' : 'player2', loser: this.player2Love === 100 ? 'player2' : 'player1'};
+    this.scene.launch('end-game-scene');
+    this.scene.pause();
+    this.sound.pauseAll();
   }
 
-}
-
-async function updateUserScore(username, gamesPlayed, gamesWon = 0, gamesLost = 0) {
-  const user = await getUser(username);
-
-  const options = {
-    method: 'PATCH',
-    body: JSON.stringify({
-      gamesPlayed: user.gamesPlayed + gamesPlayed,
-      gamesWon: user.gamesWon + gamesWon,
-      gamesLost: user.gamesLost + gamesLost,
-    }),
-    mode: 'cors',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
-
-  const response = await fetch(`/api/users/${user?.id}`, options);
-  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
-  const update = await response.json();
-
-  return update;
-}
-
-async function handleWinner(username) {
-  await updateUserScore(username, 1, 1); // GamesPlayed +1, GamesWon +1
-}
-
-async function handleLoser(username) {
-  await updateUserScore(username, 1, 0, 1); // GamesPlayed +1, GamesLost +1
-}
-
-async function getUser(username){
-
-  const options = {
-
-    method: 'GET',
-    mode:'cors',
-    credentials :'include',
-  };
-
-  const response = await fetch(`/api/users/${username}`, options);
-  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
-  const update = await response.json();
-
-  return update;
 }
 
 export default GameScene;
