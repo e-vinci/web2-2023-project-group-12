@@ -17,8 +17,6 @@ router.get('/:username', (req, res) => {
     gamesPlayed: foundUser.gamesPlayed,
   };
 
-  console.log(user);
-
   return res.json(user);
 });
 
