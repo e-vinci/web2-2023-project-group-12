@@ -73,7 +73,7 @@ async function onLogin(e) {
   };
 
 
-  const response = await fetch('/api/auths/login', options);
+  const response = await fetch(`${process.env.API_BASE_URL}/auths/login`, options);
   errorDiv.style.display="";
 
   if (!response.ok) {
@@ -97,7 +97,7 @@ async function onLogin(e) {
 
 
  function refreshLoginForm() {
-   // Réinitialiser les champs du formulaire
+   // reset form
   document.querySelector('#username').value = '';
   document.querySelector('#password').value = '';
  }

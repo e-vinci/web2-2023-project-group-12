@@ -55,7 +55,7 @@ async function getUser(username){
       credentials :'include',
     };
   
-    const response = await fetch(`/api/users/${username}`, options);
+    const response = await fetch(`${process.env.API_BASE_URL}/users/${username}`, options);
     if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
     const update = await response.json();
   

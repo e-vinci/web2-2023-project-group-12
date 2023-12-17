@@ -6,6 +6,7 @@ const cookieSession = require('cookie-session');
 
 const corsOptions = {
   origin: ['http://localhost:8080', 'https://youssef-ouftallah-vinci.github.io'],
+  credentials: true,
 };
 
 const usersRouter = require('./routes/users');
