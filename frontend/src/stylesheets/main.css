@@ -1,0 +1,39 @@
+@font-face {
+    font-family: 'Bauhaus';
+    src: url('../fonts/BauhausRegular.woff');
+    font-weight: normal;
+    font-style: normal;
+}
+body {
+    background-image: url(../img/background.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: 'Bauhaus';
+
+}
+
+/* position of "let's love each other !" and the START button*/
+.position-love {
+    top: 38%;
+    left: 30%;
+}
+
+/* position of the rules icon */
+.end-1 {
+    right: 1%;
+}
+
+/* position of "Aimez-vous" */
+.text-lavender {
+    color: #e9d4fa;
+}
+
+/* Background color */
+.bg-lavender {
+    background-color: #e1dbf7;
+}
+
+/* Height for the span balise around "OR" in the SecondPlayerPage */
+.h-4px {
+    height: 4px;
+}

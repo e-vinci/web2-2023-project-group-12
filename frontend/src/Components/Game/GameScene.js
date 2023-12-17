@@ -1,170 +1,391 @@
 import Phaser from 'phaser';
-import ScoreLabel from './ScoreLabel';
-import BombSpawner from './BombSpawner';
-import skyAsset from '../../assets/sky.png';
-import platformAsset from '../../assets/platform.png';
-import starAsset from '../../assets/star.png';
-import bombAsset from '../../assets/bomb.png';
-import dudeAsset from '../../assets/dude.png';
 
-const GROUND_KEY = 'ground';
-const DUDE_KEY = 'dude';
-const STAR_KEY = 'star';
-const BOMB_KEY = 'bomb';
+import skyAsset from '../../assets/arena.jpg';
+import platformAsset from '../../assets/arena-platform.jpg';
+import blueRobotAsset from '../../assets/blue-robot.png';
+import roseRobotAsset from '../../assets/rose-robot.png';
+import blueHug from '../../assets/blue-hug.png';
+import roseHug from '../../assets/rose-hug.png';
+import heart from '../../assets/heart-rotation.png';
+import blueKiss from '../../assets/blue-smack.png';
+import roseKiss from '../../assets/rose-smack.png';
+
+import { getAuthenticatedUser, isAuthenticated, getAuthenticatedUser2, isAuthenticated2 } from '../../utils/auths';
+
+const BLUE_ROBOT_KEY = 'blue-robot';
+const ROSE_ROBOT_KEY = 'rose-robot';
+const BLUE_HUG_KEY = 'blue-hug';
+const ROSE_HUG_KEY = 'rose-hug';
+const HEART = 'heart';
+const BLUE_KISS_KEY = 'blue-kiss';
+const ROSE_KISS_KEY = 'rose-kiss';
 
 class GameScene extends Phaser.Scene {
   constructor() {
     super('game-scene');
-    this.player = undefined;
+    this.player1 = undefined;
+    this.player2 = undefined;
     this.cursors = undefined;
-    this.scoreLabel = undefined;
-    this.stars = undefined;
-    this.bombSpawner = undefined;
+    this.player1Love = 0;
+    this.player2Love = 0;
+    this.player1Bar = null;
+    this.player2Bar = null;
     this.gameOver = false;
+    this.kissPlayer1 = false;
+    this.kissPlayer2 = false;
   }
 
   preload() {
     this.load.image('sky', skyAsset);
-    this.load.image(GROUND_KEY, platformAsset);
-    this.load.image(STAR_KEY, starAsset);
-    this.load.image(BOMB_KEY, bombAsset);
+    this.load.image('ground', platformAsset);
 
-    this.load.spritesheet(DUDE_KEY, dudeAsset, {
-      frameWidth: 32,
-      frameHeight: 48,
+    this.load.spritesheet(BLUE_ROBOT_KEY, blueRobotAsset, {
+      frameWidth: 100,
+      frameHeight: 98,
+    });
+    this.load.spritesheet(ROSE_ROBOT_KEY, roseRobotAsset, {
+      frameWidth: 100,
+      frameHeight: 102,
+    });
+
+    // HUG attack
+    this.load.spritesheet(BLUE_HUG_KEY, blueHug, {
+      frameWidth: 100,
+      frameHeight: 99,
+    });
+    this.load.spritesheet(ROSE_HUG_KEY, roseHug, {
+      frameWidth: 100,
+      frameHeight: 99,
+    });
+
+    // KISS attack
+    this.load.spritesheet(HEART, heart, {
+      frameWidth: 35.25,
+      frameHeight: 30,
+    });
+
+    this.load.spritesheet(BLUE_KISS_KEY, blueKiss, {
+      frameWidth: 96,
+      frameHeight: 99,
+    });
+    this.load.spritesheet(ROSE_KISS_KEY, roseKiss, {
+      frameWidth: 99,
+      frameHeight: 99,
     });
   }
 
   create() {
-    this.add.image(400, 300, 'sky');
-    const platforms = this.createPlatforms();
-    this.player = this.createPlayer();
-    this.stars = this.createStars();
-    this.scoreLabel = this.createScoreLabel(16, 16, 0);
-    this.bombSpawner = new BombSpawner(this, BOMB_KEY);
-    const bombsGroup = this.bombSpawner.group;
-    this.physics.add.collider(this.stars, platforms);
-    this.physics.add.collider(this.player, platforms);
-    this.physics.add.collider(bombsGroup, platforms);
-    this.physics.add.collider(this.player, bombsGroup, this.hitBomb, null, this);
-    this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
+    this.add.image(401, 350, 'sky').setScale(0.7).setY(225).setX(600);
+    const platform = this.physics.add.staticGroup().create(600, 350, 'ground').setScale(0.7).setY(470).refreshBody();
+    this.player1 = this.createPlayer(1100, 200, BLUE_ROBOT_KEY);
+    this.player2 = this.createPlayer(100, 200, ROSE_ROBOT_KEY);
+    this.physics.add.collider(this.player1, platform);
+    this.physics.add.collider(this.player2, platform);
     this.cursors = this.input.keyboard.createCursorKeys();
+
+    this.physics.add.collider(this.player1, this.player2, this.hugAttack, null, this);
 
     /* The Collider takes two objects and tests for collision and performs separation against them.
     Note that we could call a callback in case of collision... */
-  }
 
+    // Love bars
+    this.add.rectangle(10, 10, 800, 50, 0xe1dbf7);
+    this.add.rectangle(this.game.config.width - 10, 10, 800, 50, 0xe1dbf7);
+    this.player1Bar = this.add.rectangle(this.game.config.width - 10, 10, this.player1Love*8, 50, 0xD038AC);
+    this.player2Bar = this.add.rectangle(10, 10, this.player2Love*8, 50, 0xD038AC);
+
+    // kiss
+    this.heartsPlayer1 = this.physics.add.group();
+    this.heartsPlayer2 = this.physics.add.group();
+    
+    this.physics.add.collider(this.player1,this.heartsPlayer2 ,this.handleKissCollision, null, this);
+    this.physics.add.collider(this.player2,this.heartsPlayer1 ,this.handleKissCollision, null, this);
+
+    // Player username display
+      const user1 = getAuthenticatedUser()?.user?.username;
+      const user2 = getAuthenticatedUser2()?.user?.username;
+      this.add.rectangle(75, 70, 150, 40, 0xffc107);
+      this.add.rectangle(this.game.config.width - 75, 70, 150, 40, 0xffc107);
+      const style = { fontFamily: 'Bauhaus', fontSize: '20px', fill: '#000', resolution: 3};
+      const username2 = this.add.text(70, 70, 'Player 2', style);
+      const username1 = this.add.text(this.game.config.width - 70, 70, 'Player 1', style);
+      if (isAuthenticated()) {
+        if (isAuthenticated2()) username2.setText(user2).setStyle(style);
+        else username2.setText('Player 2').setStyle(style);
+        username1.setText(user1).setStyle(style);
+      }
+      username1.setOrigin(0.5);
+      username2.setOrigin(0.5);
+  }
+  
   update() {
+
+    this.updateBars();
+
     if (this.gameOver) {
-      return;
+      this.physics.pause();
+      this.endGame();
+      this.player1Love = 0;
+      this.player2Love = 0;
+      this.player1Bar = null;
+      this.player2Bar = null;
+      this.gameOver = false;
+      this.kissPlayer1 = false;
+      this.kissPlayer2 = false;
     }
 
+    // player 1 controls
     if (this.cursors.left.isDown) {
-      this.player.setVelocityX(-160);
-      this.player.anims.play('left', true);
+      this.player1.setVelocityX(-250);
+      this.player1.anims.play('left-blue-robot', true);
     } else if (this.cursors.right.isDown) {
-      this.player.setVelocityX(160);
-      this.player.anims.play('right', true);
+      this.player1.setVelocityX(250);
+      this.player1.anims.play('right-blue-robot', true);
     } else {
-      this.player.setVelocityX(0);
-      this.player.anims.play('turn');
+      this.player1.setVelocityX(0);
+      this.player1.anims.play('turn-blue-robot');
+    }
+  
+    if (this.cursors.up.isDown && this.player1.body.touching.down) {
+      this.player1.setVelocityY(-500);
     }
 
-    if (this.cursors.up.isDown && this.player.body.touching.down) {
-      this.player.setVelocityY(-330);
+    // HUG attack
+    if (this.cursors.right.isDown && this.input.keyboard.addKey('O').isDown) {
+      this.player1.anims.play('right-blue-hug', true);
+    }
+    else if (this.input.keyboard.addKey('O').isDown) {
+      this.player1.anims.play('left-blue-hug', true);
+    }
+
+    // Smack animation
+    if (this.cursors.right.isDown && this.input.keyboard.addKey('P').isDown) {
+      this.player1.anims.play('right-blue-kiss', true);
+    }
+    else if (this.input.keyboard.addKey('P').isDown) {
+      this.player1.anims.play('left-blue-kiss', true);
+    }
+
+
+    // player 2 controls
+    if (this.input.keyboard.addKey('Q').isDown) {
+      this.player2.setVelocityX(-250);
+      this.player2.anims.play('left-rose-robot', true);
+    } else if (this.input.keyboard.addKey('D').isDown) {
+      this.player2.setVelocityX(250);
+      this.player2.anims.play('right-rose-robot', true);
+    } else {
+      this.player2.setVelocityX(0);
+      this.player2.anims.play('turn-rose-robot');
+    }
+  
+    if (this.input.keyboard.addKey('Z').isDown && this.player2.body.touching.down) {
+      this.player2.setVelocityY(-500);
+    }
+
+    // HUG attack
+    if (this.input.keyboard.addKey('Q').isDown && this.input.keyboard.addKey('V').isDown) {
+      this.player2.anims.play('left-rose-hug', true);
+    }
+    else if (this.input.keyboard.addKey('V').isDown) {
+      this.player2.anims.play('right-rose-hug', true);
+    }
+
+    // Smack animation
+    if (this.input.keyboard.addKey('Q').isDown && this.input.keyboard.addKey('B').isDown) {
+      this.player2.anims.play('left-rose-kiss', true);
+    }
+    else if (this.input.keyboard.addKey('B').isDown) {   
+      this.player2.anims.play('right-rose-kiss', true);
+    }
+
+    // Kiss attack
+    this.heartsPlayer1.getChildren().forEach((h) => {
+      h.update(); 
+      if(h.x < 0 || h.x > this.game.config.width) {
+        h.destroy();
+        this.kissPlayer1 = false;
+      }
+    });
+
+    this.heartsPlayer2.getChildren().forEach((h) => {
+      h.update(); 
+      if(h.x < 0 || h.x > this.game.config.width) {
+        h.destroy();
+        this.kissPlayer2 = false;
+      }
+    });
+
+    // Player 1 kiss attack
+    if(this.cursors.right.isDown && Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('P')) && !this.kissPlayer1){
+      this.createHeart(this.player1, 600);
+      this.kissPlayer1 = true;
+    }
+    else if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('P')) && !this.kissPlayer1){
+      this.createHeart(this.player1, -600);
+      this.kissPlayer1 = true;
+    }
+
+    // Player 2 kiss attack
+    if(this.input.keyboard.addKey('Q').isDown && Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('B')) && !this.kissPlayer2){
+      this.createHeart(this.player2, -600);
+      this.kissPlayer2 = true;
+    }
+    else if(Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('B')) && !this.kissPlayer2){
+      this.createHeart(this.player2, 600);
+      this.kissPlayer2 = true;
     }
   }
 
-  createPlatforms() {
-    const platforms = this.physics.add.staticGroup();
-
-    platforms
-      .create(400, 568, GROUND_KEY)
-      .setScale(2)
-      .refreshBody();
-
-    platforms.create(600, 400, GROUND_KEY);
-    platforms.create(50, 250, GROUND_KEY);
-    platforms.create(750, 220, GROUND_KEY);
-    return platforms;
-  }
-
-  createPlayer() {
-    const player = this.physics.add.sprite(100, 450, DUDE_KEY);
+  createPlayer(x, y, key) {
+    const player = this.physics.add.sprite(x, y, key);
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
-    /* The 'left' animation uses frames 0, 1, 2 and 3 and runs at 10 frames per second.
-    The 'repeat -1' value tells the animation to loop.
-    */
+    player.setSize(80,80);
+  
     this.anims.create({
-      key: 'left',
-      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 0, end: 3 }),
+      // eslint-disable-next-line prefer-template
+      key: 'left-' + key,
+      frames: this.anims.generateFrameNumbers(key, { start: 3, end: 0 }),
+      frameRate: 10,
+      repeat: -1,
+    });
+  
+    this.anims.create({
+      // eslint-disable-next-line prefer-template
+      key: 'turn-' + key,
+      // eslint-disable-next-line object-shorthand
+      frames: [{ key: key, frame: 3 }],
+    });
+
+    this.anims.create({
+      key: 'turn-rose-robot',
+      frames: [{ key: ROSE_ROBOT_KEY, frame: 4 }],
+    });
+  
+    this.anims.create({
+      // eslint-disable-next-line prefer-template
+      key: 'right-' + key,
+      frames: this.anims.generateFrameNumbers(key, { start: 4, end: 7 }),
       frameRate: 10,
       repeat: -1,
     });
 
+    let hugKey;
+    let kissKey;
+    if(key === ROSE_ROBOT_KEY) {
+      hugKey = ROSE_HUG_KEY;
+      kissKey = ROSE_KISS_KEY;
+    }
+    else {
+      hugKey = BLUE_HUG_KEY;
+      kissKey = BLUE_KISS_KEY;
+    }
+    
+    // HUG attack
     this.anims.create({
-      key: 'turn',
-      frames: [{ key: DUDE_KEY, frame: 4 }],
-      frameRate: 20,
+      // eslint-disable-next-line prefer-template
+      key: 'right-' + hugKey,
+      frames: [{ key: hugKey, frame: 3 }],
     });
 
     this.anims.create({
-      key: 'right',
-      frames: this.anims.generateFrameNumbers(DUDE_KEY, { start: 5, end: 8 }),
-      frameRate: 10,
-      repeat: -1,
+      // eslint-disable-next-line prefer-template
+      key: 'left-' + hugKey,
+      frames: [{ key: hugKey, frame: 0 }],
+    });
+
+    // KISS attack
+    this.anims.create({
+      // eslint-disable-next-line prefer-template
+      key: 'right-' + kissKey,
+      frames: [{ key: kissKey, frame: 2 }],
+    });
+
+    this.anims.create({
+      // eslint-disable-next-line prefer-template
+      key: 'left-' + kissKey,
+      frames: [{ key: kissKey, frame: 1 }],
     });
 
     return player;
   }
 
-  createStars() {
-    const stars = this.physics.add.group({
-      key: STAR_KEY,
-      repeat: 11,
-      setXY: { x: 12, y: 0, stepX: 70 },
-    });
-
-    stars.children.iterate((child) => {
-      child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-    });
-
-    return stars;
-  }
-
-  collectStar(player, star) {
-    star.disableBody(true, true);
-    this.scoreLabel.add(10);
-    if (this.stars.countActive(true) === 0) {
-      //  A new batch of stars to collect
-      this.stars.children.iterate((child) => {
-        child.enableBody(true, child.x, 0, true, true);
-      });
+  hugAttack(player1, player2) {
+    if(Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('O'))) { // player1
+      this.player2Love += 10;
+      this.setTintEffect(player2, 50);
+    } else if(Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('V'))) { // player2
+      this.player1Love += 10;
+      this.setTintEffect(player1, 50);
     }
-
-    this.bombSpawner.spawn(player.x);
+    if(this.player2Love === 100 || this.player1Love === 100) {
+      this.gameOver = true;
+    }
   }
 
-  createScoreLabel(x, y, score) {
-    const style = { fontSize: '32px', fill: '#000' };
-    const label = new ScoreLabel(this, x, y, score, style);
-    console.log('score:', label);
-    this.add.existing(label);
-
-    return label;
+  setTintEffect(player, time){
+    player.setTint(0xD038AC);
+    let key;
+    if (player === this.player1)
+      key = 'turn-blue-robot';
+    else key = 'turn-rose-robot';
+    player.anims.play(key);
+    // clear tint after "time" milliseconds
+    this.time.delayedCall(time, () => {
+      player.clearTint();
+    }, [], this);
   }
 
-  hitBomb(player) {
-    this.scoreLabel.setText(`GAME OVER : ( \nYour Score = ${this.scoreLabel.score}`);
-    this.physics.pause();
+  createHeart(player, velocityX){
+    const heartAttack = this.physics.add.sprite(player.x,player.y, HEART);
 
-    player.setTint(0xff0000);
+    heartAttack.anims.create({
+      key: HEART,
+      frames: this.anims.generateFrameNumbers(HEART, { start: 0, end: 11 }),
+      frameRate: 10,
+      repeat: -1,
+    });
+    heartAttack.anims.play(HEART);
 
-    player.anims.play('turn');
-
-    this.gameOver = true;
+    if(player === this.player1){
+      this.heartsPlayer1.add(heartAttack);
+    }
+    else {
+      this.heartsPlayer2.add(heartAttack);
+    }
+    heartAttack.body.setVelocityX(velocityX);
+    heartAttack.body.setAllowGravity(false);
   }
+
+  handleKissCollision(player, kiss) {
+    kiss.destroy();
+    if (player === this.player1) {
+      this.player1Love += 10;
+      this.setTintEffect(this.player1,100);
+      this.kissPlayer2 = false;
+    } else if (player === this.player2) {
+      this.player2Love += 10;
+      this.setTintEffect(this.player2,100);
+      this.kissPlayer1 = false;
+    }
+    if(this.player1Love === 100 || this.player2Love === 100){
+      this.gameOver = true;
+    }
+  }
+
+  updateBars() { // update players love bar
+    this.player1Bar = this.add.rectangle(this.game.config.width - 10, 10, this.player1Love*8, 50, 0xD038AC);
+    this.player2Bar = this.add.rectangle(10, 10, this.player2Love*8, 50, 0xD038AC);
+  }
+
+  endGame() {
+    this.sys.game.global = {winner: this.player2Love === 100 ? 'player1' : 'player2', loser: this.player2Love === 100 ? 'player2' : 'player1'};
+    this.scene.launch('end-game-scene');
+    this.scene.pause();
+    this.sound.pauseAll();
+  }
+
 }
 
 export default GameScene;

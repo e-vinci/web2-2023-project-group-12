@@ -9,17 +9,8 @@ Content-Type: application/json
     "password":"admin"
 }
 
-### Login the default admin
-POST {{baseUrl}}/auths/login
-Content-Type: application/json
 
-{
-    "username":"admin",
-    "password":"admin"
-}
-
-
-### Create the manager user
+### Register a user
 POST {{baseUrl}}/auths/register
 Content-Type: application/json
 
@@ -28,11 +19,42 @@ Content-Type: application/json
     "password":"manager"
 }
 
-### Login the manager user
+
+### Login the user 'manager'
 POST {{baseUrl}}/auths/login
 Content-Type: application/json
 
 {
     "username":"manager",
     "password":"manager"
+}
+
+
+### Register a user with a username already used
+POST {{baseUrl}}/auths/register
+Content-Type: application/json
+
+{
+    "username":"manager",
+    "password":"manager"
+}
+
+
+### Register a user with a short password
+POST {{baseUrl}}/auths/register
+Content-Type: application/json
+
+{
+    "username":"user",
+    "password":"ma"
+}
+
+
+### Login the user 'manager' with a wrong password
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"manager",
+    "password":"manag"
 }

@@ -18,14 +18,17 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cookie-parser": "~1.4.4",
+    "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "escape-html": "^1.0.3",
     "express": "~4.16.1",
     "jsonwebtoken": "^8.5.1",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
+    "@types/validator": "^13.11.7",
     "eslint": "^8.19.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "nodemon": "^2.0.19",

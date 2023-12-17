@@ -1,0 +1,15 @@
+@baseUrl = http://localhost:3000
+
+### read the user 'manager'
+GET {{baseUrl}}/users/manager
+
+
+### update the score of the user with its id=1
+PATCH {{baseUrl}}/users/1
+Content-Type: application/json
+
+{
+    "gamesPlayed": 2,
+    "gamesLost": 2,
+    "gamesWon": 0
+}
